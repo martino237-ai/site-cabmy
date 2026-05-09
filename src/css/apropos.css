@@ -1,0 +1,27 @@
+:root { --blue:#1a3a6b;--blue-mid:#2952a3;--blue-light:#e8eef8;--gold:#c9a84c;--gold-light:#f5e9c8;--dark:#0f1f3d; }
+    * { box-sizing:border-box;margin:0;padding:0; }
+    body { font-family:'DM Sans',sans-serif;color:var(--dark); }
+    h1,h2,h3,h4 { font-family:'Playfair Display',serif; }
+    .nav-link::after { content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:var(--gold);transition:width .3s; }
+    .nav-link:hover::after { width:100%; }
+    .nav-link { position:relative; }
+    .gold-line { width:60px;height:3px;background:var(--gold); }
+    .btn-primary { background:var(--gold);color:var(--dark);font-weight:600;transition:all .3s; }
+    .btn-primary:hover { background:#b8922e; }
+    .btn-outline { border:2px solid var(--gold);color:var(--gold);font-weight:600;transition:all .3s; }
+    .btn-outline:hover { background:var(--gold);color:var(--dark); }
+    .lang-active { background:var(--gold);color:var(--dark); }
+    .mobile-menu { display:none; }
+    .mobile-menu.open { display:block; }
+    .card-hover { transition:transform .3s,box-shadow .3s; }
+    .card-hover:hover { transform:translateY(-4px);box-shadow:0 16px 36px rgba(26,58,107,.12); }
+    .dropdown { position:relative; }
+    .dropdown-menu { display:none;position:absolute;top:100%;left:0;background:#fff;min-width:220px;box-shadow:0 10px 40px rgba(0,0,0,.12);border-top:3px solid var(--gold);z-index:100; }
+    .dropdown:hover .dropdown-menu { display:block; }
+    .dropdown-menu a { display:block;padding:10px 20px;color:var(--blue);font-size:.9rem;transition:background .2s; }
+    .dropdown-menu a:hover { background:var(--blue-light);color:var(--gold); }
+    .timeline-dot { width:16px;height:16px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:4px; }
+    .timeline-line { width:2px;background:linear-gradient(to bottom,var(--gold),var(--blue-light));flex-shrink:0; }
+    .page-hero { background:linear-gradient(135deg,var(--dark) 0%,var(--blue) 100%); }
+    .animate-fade { opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s; }
+    .animate-fade.visible { opacity:1;transform:translateY(0); }

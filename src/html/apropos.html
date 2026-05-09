@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>À propos – CABMY</title>
+  <link rel="stylesheet" href="../../output.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --blue:#1a3a6b;--blue-mid:#2952a3;--blue-light:#e8eef8;--gold:#c9a84c;--gold-light:#f5e9c8;--dark:#0f1f3d; }
+    * { box-sizing:border-box;margin:0;padding:0; }
+    body { font-family:'DM Sans',sans-serif;color:var(--dark); }
+    h1,h2,h3,h4 { font-family:'Playfair Display',serif; }
+    .nav-link::after { content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:var(--gold);transition:width .3s; }
+    .nav-link:hover::after { width:100%; }
+    .nav-link { position:relative; }
+    .gold-line { width:60px;height:3px;background:var(--gold); }
+    .btn-primary { background:var(--gold);color:var(--dark);font-weight:600;transition:all .3s; }
+    .btn-primary:hover { background:#b8922e; }
+    .btn-outline { border:2px solid var(--gold);color:var(--gold);font-weight:600;transition:all .3s; }
+    .btn-outline:hover { background:var(--gold);color:var(--dark); }
+    .lang-active { background:var(--gold);color:var(--dark); }
+    .mobile-menu { display:none; }
+    .mobile-menu.open { display:block; }
+    .card-hover { transition:transform .3s,box-shadow .3s; }
+    .card-hover:hover { transform:translateY(-4px);box-shadow:0 16px 36px rgba(26,58,107,.12); }
+    .dropdown { position:relative; }
+    .dropdown-menu { display:none;position:absolute;top:100%;left:0;background:#fff;min-width:220px;box-shadow:0 10px 40px rgba(0,0,0,.12);border-top:3px solid var(--gold);z-index:100; }
+    .dropdown:hover .dropdown-menu { display:block; }
+    .dropdown-menu a { display:block;padding:10px 20px;color:var(--blue);font-size:.9rem;transition:background .2s; }
+    .dropdown-menu a:hover { background:var(--blue-light);color:var(--gold); }
+    .timeline-dot { width:16px;height:16px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:4px; }
+    .timeline-line { width:2px;background:linear-gradient(to bottom,var(--gold),var(--blue-light));flex-shrink:0; }
+    .page-hero { background:linear-gradient(135deg,var(--dark) 0%,var(--blue) 100%); }
+    .animate-fade { opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s; }
+    .animate-fade.visible { opacity:1;transform:translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="bg-[#0f1f3d] text-white text-xs py-2 px-4 flex justify-between items-center">
+  <span class="opacity-70">📍 Nyom II, Petit Marché · Yaoundé</span>
+  <div class="flex gap-3 items-center">
+    <a href="tel:+237243850268" class="opacity-70 hover:opacity-100">📞 243 850 268 · 675 84 05 71</a>
+    <span class="opacity-30">|</span>
+    <button onclick="setLang('fr')" id="btn-fr" class="px-2 py-0.5 rounded text-xs font-semibold lang-active">FR</button>
+    <button onclick="setLang('en')" id="btn-en" class="px-2 py-0.5 rounded text-xs font-semibold hover:bg-white/10">EN</button>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="bg-white shadow-sm sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 flex justify-between items-center py-3">
+    <a href="../../index.html" class="flex items-center gap-3">
+      <img src="../../images/logo/WhatsApp Image 2025-09-23 at 19.42.18.jpeg" alt="Logo CABMY" class="w-12 h-12 rounded-full object-cover" />
+      <div>
+        <div class="font-bold text-sm leading-tight" style="color:var(--blue);font-family:'Playfair Display',serif">CABMY</div>
+        <div class="text-xs text-gray-500 leading-tight" data-fr="Collège Adventiste Bilingue Marathana" data-en="Marathana Bilingual Adventist College">Collège Adventiste Bilingue Marathana</div>
+      </div>
+    </a>
+    <div class="hidden lg:flex items-center gap-6 text-sm font-medium">
+      <a href="../../index.html" class="nav-link text-gray-600 hover:text-blue-800" data-fr="Accueil" data-en="Home">Accueil</a>
+      <a href="apropos.html" class="nav-link font-semibold" style="color:var(--blue)" data-fr="À propos" data-en="About">À propos</a>
+      <a href="enseignements.html" class="nav-link text-gray-600 hover:text-blue-800" data-fr="Enseignements" data-en="Academics">Enseignements</a>
+      <a href="vie-scolaire.html" class="nav-link text-gray-600 hover:text-blue-800" data-fr="Vie scolaire" data-en="School Life">Vie scolaire</a>
+      <div class="dropdown">
+        <a href="admissions.html" class="nav-link text-gray-600 hover:text-blue-800 flex items-center gap-1" data-fr="Admissions" data-en="Admissions">Admissions <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></a>
+        <div class="dropdown-menu">
+          <a href="admissions.html#conditions" data-fr="Conditions d'admission" data-en="Admission Conditions">Conditions d'admission</a>
+          <a href="admissions.html#frais" data-fr="Frais de scolarité" data-en="School Fees">Frais de scolarité</a>
+          <a href="admissions.html#calendrier" data-fr="Calendrier" data-en="Calendar">Calendrier</a>
+          <a href="admissions.html#tenues" data-fr="Tenues scolaires" data-en="School Uniforms">Tenues scolaires</a>
+        </div>
+      </div>
+      <a href="actualites.html" class="nav-link text-gray-600 hover:text-blue-800" data-fr="Actualités" data-en="News">Actualités</a>
+      <a href="contact.html" class="btn-primary px-4 py-2 rounded-lg text-sm" data-fr="Contact" data-en="Contact">Contact</a>
+    </div>
+    <button onclick="toggleMobile()" class="lg:hidden p-2 text-gray-600">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+  <div id="mobile-menu" class="mobile-menu lg:hidden bg-white border-t px-4 pb-4">
+    <div class="flex flex-col gap-3 pt-3 text-sm font-medium">
+      <a href="../../index.html" class="text-gray-700" data-fr="Accueil" data-en="Home">Accueil</a>
+      <a href="apropos.html" style="color:var(--blue)" data-fr="À propos" data-en="About">À propos</a>
+      <a href="enseignements.html" class="text-gray-700" data-fr="Enseignements" data-en="Academics">Enseignements</a>
+      <a href="vie-scolaire.html" class="text-gray-700" data-fr="Vie scolaire" data-en="School Life">Vie scolaire</a>
+      <a href="admissions.html" class="text-gray-700" data-fr="Admissions" data-en="Admissions">Admissions</a>
+      <a href="actualites.html" class="text-gray-700" data-fr="Actualités" data-en="News">Actualités</a>
+      <a href="contact.html" class="btn-primary px-4 py-2 rounded-lg text-center" data-fr="Contact" data-en="Contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero py-20 text-white">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="gold-line mb-4"></div>
+    <h1 class="text-5xl font-bold mb-4" data-fr="À propos du CABMY" data-en="About CABMY">À propos du CABMY</h1>
+    <p class="text-white/60 text-lg max-w-2xl" data-fr="Découvrez l'histoire, la mission et les valeurs du Collège Adventiste Bilingue Marathana de Yaoundé." data-en="Discover the history, mission and values of the Marathana Bilingual Adventist College of Yaoundé.">Découvrez l'histoire, la mission et les valeurs du Collège Adventiste Bilingue Marathana de Yaoundé.</p>
+    <div class="mt-4 text-sm text-white/40">
+      <a href="../../index.html" class="hover:text-white" data-fr="Accueil" data-en="Home">Accueil</a>
+      <span class="mx-2">›</span>
+      <span data-fr="À propos" data-en="About">À propos</span>
+    </div>
+  </div>
+</section>
+
+<!-- HISTORIQUE -->
+<section class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-16 items-start">
+    <div class="animate-fade">
+      <div class="gold-line mb-4"></div>
+      <h2 class="text-4xl font-bold mb-6" style="color:var(--blue)" data-fr="Notre histoire" data-en="Our History">Notre histoire</h2>
+      <p class="text-gray-500 leading-relaxed mb-6" data-fr="Le Collège Adventiste Bilingue Marathana de Yaoundé (CABMY) a ouvert ses portes en 2011 dans le quartier de Nyom, derrière Mvog-Mbi, à Yaoundé. Fondé sur les principes adventistes de l'éducation chrétienne intégrale, l'établissement s'est rapidement imposé comme un pilier de l'excellence académique dans la région." data-en="The Marathana Bilingual Adventist College of Yaoundé (CABMY) opened its doors in 2011 in the Nyom neighbourhood, behind Mvog-Mbi, in Yaoundé. Founded on Adventist principles of integral Christian education, the institution quickly established itself as a pillar of academic excellence in the region.">
+        Le Collège Adventiste Bilingue Marathana de Yaoundé (CABMY) a ouvert ses portes en 2011 dans le quartier de Nyom, derrière Mvog-Mbi, à Yaoundé. Fondé sur les principes adventistes de l'éducation chrétienne intégrale, l'établissement s'est rapidement imposé comme un pilier de l'excellence académique dans la région.
+      </p>
+      <p class="text-gray-500 leading-relaxed mb-6" data-fr="Depuis sa création, le CABMY offre un enseignement bilingue de qualité avec des sections francophone et anglophone, préparant les élèves aux examens nationaux (BEPC, Baccalauréat, GCE O/L et A/L). En 2023, répondant à un besoin croissant de formation continue, l'établissement a lancé ses cours du soir destinés aux adultes et travailleurs." data-en="Since its creation, CABMY has offered quality bilingual education with French and English sections, preparing students for national exams (BEPC, Baccalaureate, GCE O/L and A/L). In 2023, responding to a growing need for continuing education, the institution launched its evening classes for adults and workers.">
+        Depuis sa création, le CABMY offre un enseignement bilingue de qualité avec des sections francophone et anglophone, préparant les élèves aux examens nationaux (BEPC, Baccalauréat, GCE O/L et A/L). En 2023, répondant à un besoin croissant de formation continue, l'établissement a lancé ses cours du soir.
+      </p>
+      <div class="p-6 rounded-2xl border-l-4" style="background:var(--blue-light);border-color:var(--gold)">
+        <div class="text-2xl font-bold mb-1" style="color:var(--blue);font-family:'Playfair Display',serif" data-fr="« TRAVAIL – DISCIPLINE – SUCCÈS »" data-en="« WORK – DISCIPLINE – SUCCESS »">« TRAVAIL – DISCIPLINE – SUCCÈS »</div>
+        <div class="text-sm text-gray-500" data-fr="Devise du CABMY" data-en="CABMY Motto">Devise du CABMY</div>
+      </div>
+    </div>
+    <!-- TIMELINE -->
+    <div class="animate-fade">
+      <h3 class="text-2xl font-bold mb-8" style="color:var(--blue)" data-fr="Chronologie" data-en="Timeline">Chronologie</h3>
+      <div class="space-y-8">
+        <div class="flex gap-5">
+          <div class="flex flex-col items-center">
+            <div class="timeline-dot"></div>
+            <div class="timeline-line flex-1 mt-2"></div>
+          </div>
+          <div class="pb-8">
+            <div class="font-bold text-lg mb-1" style="color:var(--gold)">2011</div>
+            <div class="font-semibold mb-2" style="color:var(--blue)" data-fr="Ouverture du collège" data-en="College Opens">Ouverture du collège</div>
+            <div class="text-gray-500 text-sm" data-fr="Création du CABMY à Nyom, Yaoundé, avec les sections francophone et anglophone." data-en="CABMY founded in Nyom, Yaoundé, with French and English sections.">Création du CABMY à Nyom, Yaoundé, avec les sections francophone et anglophone.</div>
+          </div>
+        </div>
+        <div class="flex gap-5">
+          <div class="flex flex-col items-center">
+            <div class="timeline-dot"></div>
+            <div class="timeline-line flex-1 mt-2"></div>
+          </div>
+          <div class="pb-8">
+            <div class="font-bold text-lg mb-1" style="color:var(--gold)">2015</div>
+            <div class="font-semibold mb-2" style="color:var(--blue)" data-fr="Premières cohortes d'examens" data-en="First Exam Cohorts">Premières cohortes d'examens</div>
+            <div class="text-gray-500 text-sm" data-fr="Les premiers élèves passent les examens BEPC et GCE avec des résultats remarquables." data-en="The first students sit BEPC and GCE exams with remarkable results.">Les premiers élèves passent les examens BEPC et GCE avec des résultats remarquables.</div>
+          </div>
+        </div>
+        <div class="flex gap-5">
+          <div class="flex flex-col items-center">
+            <div class="timeline-dot"></div>
+            <div class="timeline-line flex-1 mt-2"></div>
+          </div>
+          <div class="pb-8">
+            <div class="font-bold text-lg mb-1" style="color:var(--gold)">2020</div>
+            <div class="font-semibold mb-2" style="color:var(--blue)" data-fr="Développement de l'établissement" data-en="Institution Development">Développement de l'établissement</div>
+            <div class="text-gray-500 text-sm" data-fr="Renforcement des infrastructures, recrutement d'enseignants qualifiés et expansion des activités parascolaires." data-en="Infrastructure strengthening, qualified teacher recruitment and expansion of extracurricular activities.">Renforcement des infrastructures, recrutement d'enseignants qualifiés et expansion des activités parascolaires.</div>
+          </div>
+        </div>
+        <div class="flex gap-5">
+          <div class="flex flex-col items-center">
+            <div class="timeline-dot" style="background:var(--blue)"></div>
+          </div>
+          <div>
+            <div class="font-bold text-lg mb-1" style="color:var(--blue)">2023</div>
+            <div class="font-semibold mb-2" style="color:var(--blue)" data-fr="Lancement des cours du soir" data-en="Evening Classes Launch">Lancement des cours du soir</div>
+            <div class="text-gray-500 text-sm" data-fr="Ouverture de la section cours du soir pour adultes et travailleurs souhaitant reprendre leurs études." data-en="Opening of the evening classes section for adults and workers wishing to resume their studies.">Ouverture de la section cours du soir pour adultes et travailleurs souhaitant reprendre leurs études.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION / VISION / VALEURS -->
+<section class="py-24" style="background:var(--blue-light)">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="text-center mb-16">
+      <div class="gold-line mx-auto mb-4"></div>
+      <h2 class="text-4xl font-bold" style="color:var(--blue)" data-fr="Mission, Vision & Valeurs" data-en="Mission, Vision & Values">Mission, Vision & Valeurs</h2>
+    </div>
+    <div class="grid lg:grid-cols-3 gap-8">
+      <div class="bg-white rounded-2xl p-8 card-hover text-center animate-fade">
+        <div class="w-16 h-16 rounded-full flex items-center justify-center text-2xl mx-auto mb-5" style="background:var(--blue-light)">🎯</div>
+        <h3 class="text-xl font-bold mb-4" style="color:var(--blue)" data-fr="Notre Mission" data-en="Our Mission">Notre Mission</h3>
+        <p class="text-gray-500 text-sm leading-relaxed" data-fr="Former des élèves complets sur les plans intellectuel, spirituel, physique et social, dans un cadre chrétien adventiste, bilingue et rigoureux, afin de les préparer à contribuer positivement à la société." data-en="To train well-rounded students intellectually, spiritually, physically and socially, in an Adventist Christian, bilingual and rigorous framework, to prepare them to contribute positively to society.">Former des élèves complets sur les plans intellectuel, spirituel, physique et social, dans un cadre chrétien adventiste, bilingue et rigoureux, afin de les préparer à contribuer positivement à la société.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-8 card-hover text-center animate-fade border-2" style="border-color:var(--gold)">
+        <div class="w-16 h-16 rounded-full flex items-center justify-center text-2xl mx-auto mb-5" style="background:var(--gold-light)">🔭</div>
+        <h3 class="text-xl font-bold mb-4" style="color:var(--blue)" data-fr="Notre Vision" data-en="Our Vision">Notre Vision</h3>
+        <p class="text-gray-500 text-sm leading-relaxed" data-fr="Être le collège de référence du Centre Cameroun, reconnu pour l'excellence de ses résultats académiques, la qualité de sa formation humaine et spirituelle, et son engagement pour l'éducation bilingue." data-en="To be the reference college of Central Cameroon, recognised for the excellence of its academic results, the quality of its human and spiritual training, and its commitment to bilingual education.">Être le collège de référence du Centre Cameroun, reconnu pour l'excellence de ses résultats académiques, la qualité de sa formation humaine et spirituelle, et son engagement pour l'éducation bilingue.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-8 card-hover text-center animate-fade">
+        <div class="w-16 h-16 rounded-full flex items-center justify-center text-2xl mx-auto mb-5" style="background:var(--blue-light)">⭐</div>
+        <h3 class="text-xl font-bold mb-4" style="color:var(--blue)" data-fr="Nos Valeurs" data-en="Our Values">Nos Valeurs</h3>
+        <div class="text-gray-500 text-sm text-left space-y-2">
+          <div class="flex gap-2 items-center"><span style="color:var(--gold)">✓</span> <span data-fr="Excellence académique" data-en="Academic excellence">Excellence académique</span></div>
+          <div class="flex gap-2 items-center"><span style="color:var(--gold)">✓</span> <span data-fr="Foi & spiritualité adventiste" data-en="Adventist faith & spirituality">Foi & spiritualité adventiste</span></div>
+          <div class="flex gap-2 items-center"><span style="color:var(--gold)">✓</span> <span data-fr="Discipline & intégrité" data-en="Discipline & integrity">Discipline & intégrité</span></div>
+          <div class="flex gap-2 items-center"><span style="color:var(--gold)">✓</span> <span data-fr="Bilinguisme & ouverture" data-en="Bilingualism & openness">Bilinguisme & ouverture</span></div>
+          <div class="flex gap-2 items-center"><span style="color:var(--gold)">✓</span> <span data-fr="Respect & bienveillance" data-en="Respect & kindness">Respect & bienveillance</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIRECTION -->
+<section class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="text-center mb-16">
+      <div class="gold-line mx-auto mb-4"></div>
+      <h2 class="text-4xl font-bold" style="color:var(--blue)" data-fr="Notre Direction" data-en="Our Leadership">Notre Direction</h2>
+      <p class="text-gray-500 mt-4 max-w-xl mx-auto" data-fr="Une équipe dévouée à l'excellence et au bien-être de chaque membre de la communauté scolaire." data-en="A team dedicated to excellence and the wellbeing of every member of the school community.">Une équipe dévouée à l'excellence et au bien-être de chaque membre de la communauté scolaire.</p>
+    </div>
+    <div class="grid lg:grid-cols-2 gap-10 max-w-4xl mx-auto">
+      <!-- Principal -->
+      <div class="rounded-2xl overflow-hidden border border-gray-100 shadow-sm card-hover animate-fade">
+        <div class="h-64 flex items-center justify-center" style="background:linear-gradient(135deg,var(--dark),var(--blue))">
+          <div class="text-center">
+            <img src="../../images/principal.jpeg" alt="Principal" class="" style="border-color:var(--gold)">
+            
+          </div>
+        </div>
+        <div class="p-6">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <h3 class="text-xl font-bold" style="color:var(--blue)">MBANA Marin</h3>
+              <div class="text-sm font-semibold" style="color:var(--gold)" data-fr="Principal" data-en="Principal">Principal</div>
+            </div>
+            <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background:var(--blue-light)">🎓</div>
+          </div>
+          <p class="text-gray-500 text-sm leading-relaxed" data-fr="Sous la direction de M. MBANA Marin, le CABMY s'est développé en un établissement de référence dans la région de Yaoundé. Sa vision pédagogique allie rigueur académique et développement humain intégral." data-en="Under the leadership of Mr. MBANA Marin, CABMY has grown into a reference institution in the Yaoundé region. His educational vision combines academic rigour and integral human development.">
+            Le principal pilote la vision éducative de l'établissement avec un accent sur la discipline, les résultats académiques et la formation morale des apprenants.
+          </p>
+        </div>
+      </div>
+      <!-- Gestionnaire -->
+      <div class="rounded-2xl overflow-hidden border border-gray-100 shadow-sm card-hover animate-fade">
+        <div class="h-64 flex items-center justify-center" style="background:linear-gradient(135deg,#5c3d00,var(--gold))">
+          <div class="text-center">
+            <img src="../../images/gestionnaire.jpeg" alt="Administrateur financier" class=" border-white" style="border-color:var(--gold)">
+          </div>
+        </div>
+        <div class="p-6">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <h3 class="text-xl font-bold" style="color:var(--blue)">NYANDOMO Marie</h3>
+              <div class="text-sm font-semibold" style="color:var(--gold)" data-fr="Administrateur financier" data-en="Financial Administrator">Administrateur financier</div>
+            </div>
+            <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background:var(--gold-light)">📊</div>
+          </div>
+          <p class="text-gray-500 text-sm leading-relaxed" data-fr="Mme NYANDOMO Marie assure la gestion administrative et financière du collège avec compétence et dévouement. Son rôle est essentiel au bon fonctionnement quotidien de l'établissement et à l'accueil des familles." data-en="Mrs. EBA Marie manages the college's administrative and financial affairs with competence and dedication. Her role is essential to the smooth daily running of the institution and to welcoming families.">
+            L'administration financière assure la gestion des inscriptions, des paiements et du suivi administratif des familles dans le respect des procédures officielles.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORGANIGRAMME SIMPLIFIÉ -->
+    <div class="mt-16 animate-fade">
+      <h3 class="text-2xl font-bold text-center mb-10" style="color:var(--blue)" data-fr="Organigramme de l'établissement" data-en="Institution Organisational Chart">Organigramme de l'établissement</h3>
+      <div class="flex flex-col items-center gap-0">
+        <!-- Principal -->
+        <div class="px-8 py-3 rounded-xl text-white font-semibold text-sm text-center" style="background:var(--blue)">
+          <span data-fr="Principal – MBANA Marin" data-en="Principal – MBANA Marin">Principal – MBANA Marin</span><br>
+          <span class="text-xs opacity-80">Direction générale</span>
+        </div>
+        <div class="w-px h-8" style="background:var(--gold)"></div>
+        <!-- Gestionnaire -->
+        <div class="px-8 py-3 rounded-xl text-white font-semibold text-sm text-center" style="background:var(--gold)">
+          <span style="color:var(--dark)" data-fr="Gestionnaire / Économe – NYANDOMO Marie" data-en="Manager / Bursar – NYANDOMO Marie">Gestionnaire / Économe – EBA Marie</span><br>
+          <span class="text-xs opacity-80" style="color:var(--dark)">Gestion financière et administrative</span>
+        </div>
+        <div class="w-px h-8" style="background:var(--blue-mid)"></div>
+        <!-- Administrative -->
+        <div class="flex gap-4 flex-wrap justify-center">
+          <div class="px-5 py-3 rounded-xl text-white text-xs font-medium text-center" style="background:var(--blue-mid)">
+            <span data-fr="Secrétaire – BETIMA (M.)" data-en="Secretary – BETIMA (M.)">Secrétaire – BETIMA (M.)</span><br>
+            <span class="text-xs opacity-80">Accueil, courrier, classement, agenda</span>
+          </div>
+          <div class="px-5 py-3 rounded-xl text-white text-xs font-medium text-center" style="background:var(--blue-mid)">
+            <span data-fr="Comptable – WANKI (M.)" data-en="Accountant – WANKI (M.)">Comptable – WANKI (M.)</span><br>
+            <span class="text-xs opacity-80">Tenue des comptes</span>
+          </div>
+          <div class="px-5 py-3 rounded-xl text-white text-xs font-medium text-center" style="background:var(--blue-mid)">
+            <span data-fr="Caissière – ESSEBE Elisabeth" data-en="Cashier – ESSEBE Elisabeth">Caissière – ESSEBE Elisabeth</span><br>
+            <span class="text-xs opacity-80">Réception des paiements</span>
+          </div>
+        </div>
+        <div class="w-px h-8" style="background:#ccc"></div>
+        <!-- Pedagogical -->
+        <div class="flex gap-4 flex-wrap justify-center">
+          <div class="px-5 py-2 rounded-lg text-xs text-center border" style="border-color:var(--blue-light);color:var(--blue)">
+            <span data-fr="Chef section anglophone – ATEBA (Mme)" data-en="Anglophone Section Head – ATEBA (Mme)">Chef section anglophone – ATEBA (Mme)</span><br>
+            <span class="text-xs opacity-80">Coordination GCE O/L et A/L</span>
+          </div>
+          <div class="px-5 py-2 rounded-lg text-xs text-center border" style="border-color:var(--blue-light);color:var(--blue)" data-fr="Chef 1er cycle francophone – MVOE JOSEPHINE" data-en="French 1st Cycle Head – MVOE JOSEPHINE">Chef 1er cycle francophone – MVOE JOSEPHINE</span><br>
+            <span class="text-xs opacity-80">Encadrement collège, suivi BEPC</span>
+          </div>
+          <div class="px-5 py-2 rounded-lg text-xs text-center border" style="border-color:var(--blue-light);color:var(--blue)" data-fr="Chef 2nd cycle francophone – TSALA CARINE" data-en="French 2nd Cycle Head – TSALA CARINE">Chef 2nd cycle francophone – TSALA CARINE</span><br>
+            <span class="text-xs opacity-80">Encadrement lycée, suivi Bac</span>
+          </div>
+          <div class="px-5 py-2 rounded-lg text-xs text-center border" style="border-color:var(--blue-light);color:var(--blue)" data-fr="Directeur des cours du soir – ASSAMBA Dieudonné" data-en="Evening Classes Director – ASSAMBA Dieudonné">Directeur des cours du soir – ASSAMBA Dieudonné</span><br>
+            <span class="text-xs opacity-80">Organisation cours du soir (créés en 2023)</span>
+          </div>
+        </div>
+        <div class="w-px h-8" style="background:#ccc"></div>
+        <!-- Surveillants -->
+        <div class="flex gap-4 flex-wrap justify-center">
+          <div class="px-5 py-2 rounded-lg text-xs text-center border" style="border-color:var(--blue-light);color:var(--blue)">
+            <span data-fr="Surveillant général – YOBO (M.)" data-en="General Supervisor – YOBO (M.)">Surveillant général – YOBO (M.)</span><br>
+            <span class="text-xs opacity-80">Discipline, ordre général</span>
+          </div>
+          <div class="px-5 py-2 rounded-lg text-xs text-center border" style="border-color:var(--blue-light);color:var(--blue)" data-fr="Surveillant général – ANGOULA (M.)" data-en="General Supervisor – ANGOULA (M.)">Surveillant général – ANGOULA (M.)</span><br>
+            <span class="text-xs opacity-80">Discipline, ordre général</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-16" style="background:linear-gradient(135deg,var(--blue) 0%,var(--blue-mid) 100%)">
+  <div class="max-w-3xl mx-auto px-4 text-center">
+    <h2 class="text-3xl font-bold text-white mb-4" data-fr="Rejoignez notre communauté" data-en="Join our community">Rejoignez notre communauté</h2>
+    <p class="text-white/70 mb-6" data-fr="Découvrez une école où l'excellence et les valeurs chrétiennes se rencontrent." data-en="Discover a school where excellence and Christian values meet.">Découvrez une école où l'excellence et les valeurs chrétiennes se rencontrent.</p>
+    <a href="admissions.html" class="btn-primary px-8 py-3 rounded-lg inline-block" data-fr="Demander une admission" data-en="Apply for Admission">Demander une admission</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="py-12" style="background:var(--dark)">
+  <div class="max-w-7xl mx-auto px-4 grid lg:grid-cols-4 gap-8">
+    <div>
+      <div class="font-bold text-white mb-3" style="font-family:'Playfair Display',serif">CABMY</div>
+      <p class="text-white/40 text-sm" data-fr="Collège Adventiste Bilingue Marathana de Yaoundé. Travail – Discipline – Succès." data-en="Marathana Bilingual Adventist College of Yaoundé. Work – Discipline – Success.">Collège Adventiste Bilingue Marathana de Yaoundé.</p>
+    </div>
+    <div>
+      <div class="font-bold text-white mb-3" data-fr="Navigation" data-en="Navigation">Navigation</div>
+      <div class="flex flex-col gap-2 text-sm text-white/50">
+        <a href="../../index.html" class="hover:text-white" data-fr="Accueil" data-en="Home">Accueil</a>
+        <a href="enseignements.html" class="hover:text-white" data-fr="Enseignements" data-en="Academics">Enseignements</a>
+        <a href="admissions.html" class="hover:text-white" data-fr="Admissions" data-en="Admissions">Admissions</a>
+        <a href="contact.html" class="hover:text-white" data-fr="Contact" data-en="Contact">Contact</a>
+      </div>
+    </div>
+    <div>
+      <div class="font-bold text-white mb-3" data-fr="Contact" data-en="Contact">Contact</div>
+      <div class="flex flex-col gap-2 text-sm text-white/50">
+        <div>📍 Nyom II, Petit Marché, Yaoundé</div>
+        <div>📞 243 850 268 / 675 84 05 71</div>
+        <div>✉ cabmy2011@gmail.com</div>
+      </div>
+    </div>
+    <div>
+      <div class="font-bold text-white mb-3" data-fr="Liens rapides" data-en="Quick Links">Liens rapides</div>
+      <div class="flex flex-col gap-2 text-sm text-white/50">
+        <a href="vie-scolaire.html" class="hover:text-white" data-fr="Vie scolaire" data-en="School Life">Vie scolaire</a>
+        <a href="actualites.html" class="hover:text-white" data-fr="Actualités" data-en="News">Actualités</a>
+        <a href="enseignements.html#soir" class="hover:text-white" data-fr="Cours du soir" data-en="Evening Classes">Cours du soir</a>
+      </div>
+    </div>
+  </div>
+  <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-white/10 text-center text-xs text-white/30">
+    © 2024 CABMY – Tous droits réservés
+  </div>
+</footer>
+
+<script>
+  let currentLang = localStorage.getItem('cabmy-lang') || 'fr';
+  function setLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('cabmy-lang', lang);
+    document.querySelectorAll('[data-fr]').forEach(el => {
+      el.textContent = el.getAttribute('data-' + lang) || el.textContent;
+    });
+    document.getElementById('btn-fr').classList.toggle('lang-active', lang === 'fr');
+    document.getElementById('btn-en').classList.toggle('lang-active', lang === 'en');
+    document.documentElement.lang = lang;
+  }
+  setLang(currentLang);
+  function toggleMobile() { document.getElementById('mobile-menu').classList.toggle('open'); }
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.animate-fade').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

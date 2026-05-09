@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vie Scolaire – CABMY</title>
+  <link rel="stylesheet" href="../../output.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--blue:#1a3a6b;--blue-mid:#2952a3;--blue-light:#e8eef8;--gold:#c9a84c;--gold-light:#f5e9c8;--dark:#0f1f3d;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'DM Sans',sans-serif;color:var(--dark);}
+    h1,h2,h3,h4{font-family:'Playfair Display',serif;}
+    .nav-link{position:relative;}.nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:var(--gold);transition:width .3s;}.nav-link:hover::after{width:100%;}
+    .gold-line{width:60px;height:3px;background:var(--gold);}
+    .btn-primary{background:var(--gold);color:var(--dark);font-weight:600;transition:all .3s;}.btn-primary:hover{background:#b8922e;}
+    .lang-active{background:var(--gold);color:var(--dark);}
+    .mobile-menu{display:none;}.mobile-menu.open{display:block;}
+    .card-hover{transition:transform .3s,box-shadow .3s;}.card-hover:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(26,58,107,.12);}
+    .dropdown{position:relative;}.dropdown-menu{display:none;position:absolute;top:100%;left:0;background:#fff;min-width:220px;box-shadow:0 10px 40px rgba(0,0,0,.12);border-top:3px solid var(--gold);z-index:100;}.dropdown:hover .dropdown-menu{display:block;}.dropdown-menu a{display:block;padding:10px 20px;color:var(--blue);font-size:.9rem;transition:background .2s;}.dropdown-menu a:hover{background:var(--blue-light);color:var(--gold);}
+    .page-hero{background:linear-gradient(135deg,var(--dark) 0%,var(--blue) 100%);}
+    .animate-fade{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s;}.animate-fade.visible{opacity:1;transform:translateY(0);}
+    .rule-item{border-left:4px solid var(--blue-light);padding-left:16px;transition:border-color .3s;}.rule-item:hover{border-color:var(--gold);}
+    .activity-card{position:relative;overflow:hidden;border-radius:16px;}
+    .activity-card .overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,31,61,.9) 0%,transparent 60%);opacity:0;transition:opacity .3s;}.activity-card:hover .overlay{opacity:1;}
+    .discipline-step{counter-increment:steps;}
+    .discipline-step::before{content:counter(steps);width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0;}
+    ol.steps-list{counter-reset:steps;}
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="bg-[#0f1f3d] text-white text-xs py-2 px-4 flex justify-between items-center">
+  <span class="opacity-70">📍 Nyom II, Petit Marché · Yaoundé</span>
+  <div class="flex gap-3 items-center">
+    <a href="tel:+237243850268" class="opacity-70 hover:opacity-100">📞 243 850 268 · 675 84 05 71</a>
+    <span class="opacity-30">|</span>
+    <button onclick="setLang('fr')" id="btn-fr" class="px-2 py-0.5 rounded text-xs font-semibold lang-active">FR</button>
+    <button onclick="setLang('en')" id="btn-en" class="px-2 py-0.5 rounded text-xs font-semibold hover:bg-white/10">EN</button>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="bg-white shadow-sm sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 flex justify-between items-center py-3">
+    <a href="index.html" class="flex items-center gap-3">
+      <div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg" style="background:var(--blue)"><span style="font-family:'Playfair Display',serif">CA</span></div>
+      <div>
+        <div class="font-bold text-sm leading-tight" style="color:var(--blue);font-family:'Playfair Display',serif">CABMY</div>
+        <div class="text-xs text-gray-500 leading-tight" data-fr="Collège Adventiste Bilingue Marathana" data-en="Marathana Bilingual Adventist College">Collège Adventiste Bilingue Marathana</div>
+      </div>
+    </a>
+    <div class="hidden lg:flex items-center gap-6 text-sm font-medium">
+      <a href="index.html" class="nav-link text-gray-600" data-fr="Accueil" data-en="Home">Accueil</a>
+      <a href="apropos.html" class="nav-link text-gray-600" data-fr="À propos" data-en="About">À propos</a>
+      <a href="enseignements.html" class="nav-link text-gray-600" data-fr="Enseignements" data-en="Academics">Enseignements</a>
+      <a href="vie-scolaire.html" class="nav-link font-semibold" style="color:var(--blue)" data-fr="Vie scolaire" data-en="School Life">Vie scolaire</a>
+      <div class="dropdown">
+        <a href="admissions.html" class="nav-link text-gray-600 flex items-center gap-1" data-fr="Admissions" data-en="Admissions">Admissions <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></a>
+        <div class="dropdown-menu">
+          <a href="admissions.html#conditions" data-fr="Conditions d'admission" data-en="Admission Conditions">Conditions d'admission</a>
+          <a href="admissions.html#frais" data-fr="Frais de scolarité" data-en="School Fees">Frais de scolarité</a>
+          <a href="admissions.html#calendrier" data-fr="Calendrier" data-en="Calendar">Calendrier</a>
+          <a href="admissions.html#tenues" data-fr="Tenues scolaires" data-en="School Uniforms">Tenues scolaires</a>
+        </div>
+      </div>
+      <a href="actualites.html" class="nav-link text-gray-600" data-fr="Actualités" data-en="News">Actualités</a>
+      <a href="contact.html" class="btn-primary px-4 py-2 rounded-lg text-sm">Contact</a>
+    </div>
+    <button onclick="toggleMobile()" class="lg:hidden p-2 text-gray-600">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+  <div id="mobile-menu" class="mobile-menu lg:hidden bg-white border-t px-4 pb-4">
+    <div class="flex flex-col gap-3 pt-3 text-sm font-medium">
+      <a href="index.html" class="text-gray-700">Accueil</a>
+      <a href="apropos.html" class="text-gray-700">À propos</a>
+      <a href="enseignements.html" class="text-gray-700">Enseignements</a>
+      <a href="vie-scolaire.html" style="color:var(--blue)">Vie scolaire</a>
+      <a href="admissions.html" class="text-gray-700">Admissions</a>
+      <a href="actualites.html" class="text-gray-700">Actualités</a>
+      <a href="contact.html" class="btn-primary px-4 py-2 rounded-lg text-center">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero py-20 text-white">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="gold-line mb-4"></div>
+    <h1 class="text-5xl font-bold mb-4" data-fr="Vie Scolaire" data-en="School Life">Vie Scolaire</h1>
+    <p class="text-white/60 text-lg max-w-2xl" data-fr="Au CABMY, la vie scolaire va bien au-delà des cours : discipline, spiritualité, activités et épanouissement personnel." data-en="At CABMY, school life goes far beyond lessons: discipline, spirituality, activities and personal development.">Au CABMY, la vie scolaire va bien au-delà des cours : discipline, spiritualité, activités et épanouissement personnel.</p>
+    <div class="mt-4 text-sm text-white/40">
+      <a href="index.html" class="hover:text-white">Accueil</a> <span class="mx-2">›</span>
+      <span data-fr="Vie scolaire" data-en="School Life">Vie scolaire</span>
+    </div>
+  </div>
+</section>
+
+<!-- RÈGLEMENT INTÉRIEUR -->
+<section class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="text-center mb-16 animate-fade">
+      <div class="gold-line mx-auto mb-4"></div>
+      <h2 class="text-4xl font-bold mb-4" style="color:var(--blue)" data-fr="Règlement intérieur" data-en="School Rules">Règlement intérieur</h2>
+      <p class="text-gray-500 max-w-xl mx-auto" data-fr="La discipline est le fondement de l'excellence. Nos règles visent à créer un environnement propice à l'apprentissage et au respect mutuel." data-en="Discipline is the foundation of excellence. Our rules aim to create an environment conducive to learning and mutual respect.">La discipline est le fondement de l'excellence. Nos règles visent à créer un environnement propice à l'apprentissage et au respect mutuel.</p>
+    </div>
+    <div class="grid lg:grid-cols-2 gap-10">
+      <!-- Ponctualité -->
+      <div class="animate-fade">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl" style="background:var(--blue-light)">⏰</div>
+          <h3 class="text-xl font-bold" style="color:var(--blue)" data-fr="Ponctualité & Présence" data-en="Punctuality & Attendance">Ponctualité & Présence</h3>
+        </div>
+        <div class="space-y-3">
+          <div class="rule-item"><p class="text-sm text-gray-600" data-fr="Les portes sont ouvertes à 7h15. Les cours débutent à 7h30 précises." data-en="Gates open at 7:15AM. Classes begin at 7:30AM sharp.">Les portes sont ouvertes à 7h15. Les cours débutent à 7h30 précises.</p></div>
+          <div class="rule-item"><p class="text-sm text-gray-600" data-fr="Tout retard doit être justifié par un billet signé par les parents ou tuteurs." data-en="All late arrivals must be justified by a note signed by parents or guardians.">Tout retard doit être justifié par un billet signé par les parents ou tuteurs.</p></div>
+          <div class="rule-item"><p class="text-sm text-gray-600" data-fr="Toute absence de plus de 3 jours consécutifs nécessite un certificat médical." data-en="Any absence of more than 3 consecutive days requires a medical certificate.">Toute absence de plus de 3 jours consécutifs nécessite un certificat médical.</p></div>
+          <div class="rule-item"><p class="text-sm text-gray-600" data-fr="Les élèves ne peuvent quitter l'enceinte scolaire sans autorisation officielle." data-en="Students may not leave the school premises without official authorisation.">Les élèves ne peuvent quitter l'enceinte scolaire sans autorisation officielle.</p></div>
+        </div>
+      </div>
+      <!-- Tenue & Comportement -->
+      <div class="animate-fade">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl" style="background:var(--blue-light)">👔</div>
+          <h3 class="text-xl font-bold" style="color:var(--blue)" data-fr="Tenue & Comportement" data-en="Uniform & Conduct">Tenue & Comportement</h3>
+        </div>
+        <div class="space-y-3">
+          <div class="rule-item"><p class="text-sm text-gray-600" data-fr="La tenue complète est obligatoire tous les jours scolaires, sans exception." data-en="Full uniform is compulsory every school day, without exception.">La tenue complète est obligatoire tous les jours scolaires, sans exception.</p></div>
+          <div class="rule-item"><p class="text-sm text-gray-600" data-fr="Le respect des enseignants, du personnel et des camarades est exigé en tout temps." data-en="Respect for teachers, staff and fellow students is required at all times.">Le respect des enseignants, du personnel et des camarades est exigé en tout temps.</p></div>
+          <div class="rule-item"><p class="text-sm text-gray-600" data-fr="Les téléphones portables sont interdits en classe. Ils doivent être éteints dès l'entrée." data-en="Mobile phones are forbidden in class. They must be switched off upon entry.">Les téléphones portables sont interdits en classe. Ils doivent être éteints dès l'entrée.</p></div>
+          <div class="rule-item"><p class="text-sm text-gray-600" data-fr="Toute forme de violence physique ou verbale est sanctionnée sévèrement." data-en="Any form of physical or verbal violence is severely sanctioned.">Toute forme de violence physique ou verbale est sanctionnée sévèrement.</p></div>
+        </div>
+      </div>
+      <!-- Travail scolaire -->
+      <div class="animate-fade">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl" style="background:var(--blue-light)">📚</div>
+          <h3 class="text-xl font-bold" style="color:var(--blue)" data-fr="Travail scolaire" data-en="Academic Work">Travail scolaire</h3>
+        </div>
+        <div class="space-y-3">
+          <div class="rule-item"><p class="text-sm text-gray-600" data-fr="Les devoirs et travaux doivent être rendus dans les délais fixés par les enseignants." data-en="Homework and coursework must be submitted by the deadlines set by teachers.">Les devoirs et travaux doivent être rendus dans les délais fixés par les enseignants.</p></div>
+          <div class="rule-item"><p class="text-sm text-gray-600" data-fr="La triche aux évaluations entraîne un zéro et une convocation des parents." data-en="Cheating in assessments results in a zero and a summons for parents.">La triche aux évaluations entraîne un zéro et une convocation des parents.</p></div>
+          <div class="rule-item"><p class="text-sm text-gray-600" data-fr="Le carnet de liaison doit être présenté à chaque demande des enseignants ou de la direction." data-en="The liaison notebook must be presented at every request from teachers or management.">Le carnet de liaison doit être présenté à chaque demande des enseignants ou de la direction.</p></div>
+        </div>
+      </div>
+      <!-- Vie commune -->
+      <div class="animate-fade">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl" style="background:var(--blue-light)">🤝</div>
+          <h3 class="text-xl font-bold" style="color:var(--blue)" data-fr="Vie commune" data-en="Community Life">Vie commune</h3>
+        </div>
+        <div class="space-y-3">
+          <div class="rule-item"><p class="text-sm text-gray-600" data-fr="Le respect du matériel et des locaux scolaires est une obligation pour tous." data-en="Respect for school equipment and premises is an obligation for all.">Le respect du matériel et des locaux scolaires est une obligation pour tous.</p></div>
+          <div class="rule-item"><p class="text-sm text-gray-600" data-fr="La consommation de nourriture ou de boissons en classe est interdite." data-en="Eating or drinking in class is forbidden.">La consommation de nourriture ou de boissons en classe est interdite.</p></div>
+          <div class="rule-item"><p class="text-sm text-gray-600" data-fr="Tout objet de valeur perdu dans l'enceinte est à déposer au secrétariat." data-en="Any valuable item found on the premises should be handed in at the secretariat.">Tout objet de valeur perdu dans l'enceinte est à déposer au secrétariat.</p></div>
+        </div>
+      </div>
+    </div>
+    <!-- Download -->
+    <div class="mt-10 p-5 rounded-2xl flex flex-col sm:flex-row gap-4 items-center justify-between animate-fade" style="background:var(--gold-light)">
+      <div>
+        <div class="font-bold" style="color:var(--dark)" data-fr="📄 Règlement intérieur complet" data-en="📄 Full School Rules">📄 Règlement intérieur complet</div>
+        <div class="text-sm text-gray-600" data-fr="Téléchargez le document officiel du règlement intérieur du CABMY." data-en="Download the official CABMY school rules document.">Téléchargez le document officiel du règlement intérieur du CABMY.</div>
+      </div>
+      <a href="#" class="btn-primary px-6 py-2 rounded-lg text-sm whitespace-nowrap" data-fr="Télécharger (PDF)" data-en="Download (PDF)">Télécharger (PDF)</a>
+    </div>
+  </div>
+</section>
+
+<!-- ACTIVITÉS PARASCOLAIRES -->
+<section class="py-24" style="background:var(--blue-light)">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="text-center mb-16 animate-fade">
+      <div class="gold-line mx-auto mb-4"></div>
+      <h2 class="text-4xl font-bold mb-4" style="color:var(--blue)" data-fr="Activités parascolaires" data-en="Extracurricular Activities">Activités parascolaires</h2>
+      <p class="text-gray-500 max-w-xl mx-auto" data-fr="Le CABMY offre un large éventail d'activités pour développer les talents et la personnalité de chaque élève." data-en="CABMY offers a wide range of activities to develop the talents and personality of each student.">Le CABMY offre un large éventail d'activités pour développer les talents et la personnalité de chaque élève.</p>
+    </div>
+    <div class="grid lg:grid-cols-4 gap-6">
+      <div class="bg-white rounded-2xl p-6 text-center card-hover animate-fade">
+        <div class="text-4xl mb-4">⚽</div>
+        <h3 class="font-bold text-lg mb-2" style="color:var(--blue)" data-fr="Sport" data-en="Sports">Sport</h3>
+        <p class="text-gray-500 text-sm" data-fr="Football, basketball, athlétisme, volleyball. Compétitions inter-écoles et championnats internes." data-en="Football, basketball, athletics, volleyball. Inter-school competitions and internal championships.">Football, basketball, athlétisme, volleyball. Compétitions inter-écoles et championnats internes.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 text-center card-hover animate-fade">
+        <div class="text-4xl mb-4">🎵</div>
+        <h3 class="font-bold text-lg mb-2" style="color:var(--blue)" data-fr="Chorale" data-en="Choir">Chorale</h3>
+        <p class="text-gray-500 text-sm" data-fr="Chorale scolaire active lors des cultes, événements et cérémonies officielles de l'établissement." data-en="Active school choir for worship services, events and official school ceremonies.">Chorale scolaire active lors des cultes, événements et cérémonies officielles de l'établissement.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 text-center card-hover animate-fade">
+        <div class="text-4xl mb-4">🗣️</div>
+        <h3 class="font-bold text-lg mb-2" style="color:var(--blue)" data-fr="Club de débat" data-en="Debate Club">Club de débat</h3>
+        <p class="text-gray-500 text-sm" data-fr="Développement de l'esprit critique, de la prise de parole et de l'argumentation en français et en anglais." data-en="Development of critical thinking, public speaking and argumentation in French and English.">Développement de l'esprit critique, de la prise de parole et de l'argumentation en français et en anglais.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-6 text-center card-hover animate-fade">
+        <div class="text-4xl mb-4">💻</div>
+        <h3 class="font-bold text-lg mb-2" style="color:var(--blue)" data-fr="Informatique" data-en="Computing">Informatique</h3>
+        <p class="text-gray-500 text-sm" data-fr="Initiation à l'informatique, au traitement de texte et aux outils numériques essentiels." data-en="Introduction to computing, word processing and essential digital tools.">Initiation à l'informatique, au traitement de texte et aux outils numériques essentiels.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIE SPIRITUELLE -->
+<section class="py-24 text-white" style="background:linear-gradient(135deg,var(--dark) 0%,var(--blue) 100%)">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+      <div class="animate-fade">
+        <div class="gold-line mb-4"></div>
+        <h2 class="text-4xl font-bold mb-6" data-fr="Vie spirituelle & Pastorale" data-en="Spiritual Life & Pastoral Care">Vie spirituelle & Pastorale</h2>
+        <p class="text-white/70 leading-relaxed mb-8" data-fr="La dimension spirituelle est au cœur de l'identité du CABMY. En tant qu'école adventiste, nous intégrons la foi chrétienne à l'ensemble de la vie scolaire, non pas de manière contraignante, mais comme un accompagnement bienveillant." data-en="The spiritual dimension is at the heart of CABMY's identity. As an Adventist school, we integrate the Christian faith throughout school life, not in a constraining way, but as caring accompaniment.">La dimension spirituelle est au cœur de l'identité du CABMY. En tant qu'école adventiste, nous intégrons la foi chrétienne à l'ensemble de la vie scolaire, non pas de manière contraignante, mais comme un accompagnement bienveillant.</p>
+        <div class="space-y-4">
+          <div class="flex gap-4 items-start p-4 rounded-xl bg-white/10">
+            <span class="text-2xl">⛪</span>
+            <div>
+              <div class="font-bold mb-1" data-fr="Cultes hebdomadaires" data-en="Weekly Worship Services">Cultes hebdomadaires</div>
+              <div class="text-white/60 text-sm" data-fr="Chaque semaine, un moment de recueillement et de partage pour toute la communauté scolaire." data-en="Each week, a moment of reflection and sharing for the entire school community.">Chaque semaine, un moment de recueillement et de partage pour toute la communauté scolaire.</div>
+            </div>
+          </div>
+          <div class="flex gap-4 items-start p-4 rounded-xl bg-white/10">
+            <span class="text-2xl">🙏</span>
+            <div>
+              <div class="font-bold mb-1" data-fr="Semaine de prière" data-en="Prayer Week">Semaine de prière</div>
+              <div class="text-white/60 text-sm" data-fr="Un moment fort dans l'année scolaire, dédié à la spiritualité, aux témoignages et à la cohésion." data-en="A highlight of the school year, dedicated to spirituality, testimonies and community cohesion.">Un moment fort dans l'année scolaire, dédié à la spiritualité, aux témoignages et à la cohésion.</div>
+            </div>
+          </div>
+          <div class="flex gap-4 items-start p-4 rounded-xl bg-white/10">
+            <span class="text-2xl">📖</span>
+            <div>
+              <div class="font-bold mb-1" data-fr="Étude biblique" data-en="Bible Study">Étude biblique</div>
+              <div class="text-white/60 text-sm" data-fr="Des groupes d'étude biblique pour approfondir la foi et les valeurs chrétiennes adventistes." data-en="Bible study groups to deepen faith and Adventist Christian values.">Des groupes d'étude biblique pour approfondir la foi et les valeurs chrétiennes adventistes.</div>
+            </div>
+          </div>
+          <div class="flex gap-4 items-start p-4 rounded-xl bg-white/10">
+            <span class="text-2xl">💛</span>
+            <div>
+              <div class="font-bold mb-1" data-fr="Accompagnement pastoral" data-en="Pastoral Support">Accompagnement pastoral</div>
+              <div class="text-white/60 text-sm" data-fr="Un pasteur ou conseiller disponible pour écouter et accompagner les élèves en difficulté." data-en="A pastor or counsellor available to listen and support students in difficulty.">Un pasteur ou conseiller disponible pour écouter et accompagner les élèves en difficulté.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- VALUES GRID -->
+      <div class="grid grid-cols-2 gap-4 animate-fade">
+        <div class="bg-white/10 rounded-2xl p-6 text-center">
+          <div class="text-3xl mb-2">✝️</div>
+          <div class="font-bold" data-fr="Foi adventiste" data-en="Adventist Faith">Foi adventiste</div>
+          <div class="text-white/50 text-xs mt-1" data-fr="Valeurs chrétiennes intégrées" data-en="Integrated Christian values">Valeurs chrétiennes intégrées</div>
+        </div>
+        <div class="bg-white/10 rounded-2xl p-6 text-center">
+          <div class="text-3xl mb-2">💪</div>
+          <div class="font-bold" data-fr="Résilience" data-en="Resilience">Résilience</div>
+          <div class="text-white/50 text-xs mt-1" data-fr="Faire face aux défis" data-en="Facing challenges">Faire face aux défis</div>
+        </div>
+        <div class="bg-white/10 rounded-2xl p-6 text-center">
+          <div class="text-3xl mb-2">🤲</div>
+          <div class="font-bold" data-fr="Service" data-en="Service">Service</div>
+          <div class="text-white/50 text-xs mt-1" data-fr="Servir les autres" data-en="Serving others">Servir les autres</div>
+        </div>
+        <div class="bg-white/10 rounded-2xl p-6 text-center">
+          <div class="text-3xl mb-2">🌱</div>
+          <div class="font-bold" data-fr="Croissance" data-en="Growth">Croissance</div>
+          <div class="text-white/50 text-xs mt-1" data-fr="Épanouissement personnel" data-en="Personal development">Épanouissement personnel</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SYSTÈME DE DISCIPLINE -->
+<section class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="text-center mb-16 animate-fade">
+      <div class="gold-line mx-auto mb-4"></div>
+      <h2 class="text-4xl font-bold mb-4" style="color:var(--blue)" data-fr="Système de discipline" data-en="Discipline System">Système de discipline</h2>
+      <p class="text-gray-500 max-w-xl mx-auto" data-fr="Notre approche disciplinaire est progressive, bienveillante et vise avant tout la correction et l'amélioration du comportement." data-en="Our disciplinary approach is progressive, caring and aims above all at correcting and improving behaviour.">Notre approche disciplinaire est progressive, bienveillante et vise avant tout la correction et l'amélioration du comportement.</p>
+    </div>
+    <div class="max-w-3xl mx-auto">
+      <ol class="steps-list space-y-4">
+        <li class="discipline-step flex gap-4 items-start p-5 rounded-2xl border border-gray-100 card-hover">
+          <div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0" style="background:var(--blue)">1</div>
+          <div>
+            <div class="font-bold mb-1" style="color:var(--blue)" data-fr="Avertissement verbal" data-en="Verbal Warning">Avertissement verbal</div>
+            <div class="text-gray-500 text-sm" data-fr="Rappel des règles par l'enseignant ou le responsable de salle. Première étape de la correction." data-en="Reminder of rules by the teacher or room supervisor. First step of correction.">Rappel des règles par l'enseignant ou le responsable de salle. Première étape de la correction.</div>
+          </div>
+        </li>
+        <li class="discipline-step flex gap-4 items-start p-5 rounded-2xl border border-gray-100 card-hover">
+          <div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0" style="background:var(--blue-mid)">2</div>
+          <div>
+            <div class="font-bold mb-1" style="color:var(--blue)" data-fr="Avertissement écrit" data-en="Written Warning">Avertissement écrit</div>
+            <div class="text-gray-500 text-sm" data-fr="Mention dans le carnet de liaison avec signature requise des parents ou tuteurs." data-en="Entry in the liaison notebook with required signature from parents or guardians.">Mention dans le carnet de liaison avec signature requise des parents ou tuteurs.</div>
+          </div>
+        </li>
+        <li class="discipline-step flex gap-4 items-start p-5 rounded-2xl border border-gray-100 card-hover">
+          <div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0" style="background:var(--gold)">3</div>
+          <div>
+            <div class="font-bold mb-1" style="color:var(--blue)" data-fr="Convocation des parents" data-en="Parent Summons">Convocation des parents</div>
+            <div class="text-gray-500 text-sm" data-fr="En cas de récidive ou de faute grave, les parents ou tuteurs sont convoqués pour un entretien avec la direction." data-en="In case of recurrence or serious offence, parents or guardians are summoned for a meeting with management.">En cas de récidive ou de faute grave, les parents ou tuteurs sont convoqués pour un entretien avec la direction.</div>
+          </div>
+        </li>
+        <li class="discipline-step flex gap-4 items-start p-5 rounded-2xl border border-gray-100 card-hover">
+          <div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0" style="background:#b34a00">4</div>
+          <div>
+            <div class="font-bold mb-1" style="color:var(--blue)" data-fr="Conseil de discipline" data-en="Disciplinary Council">Conseil de discipline</div>
+            <div class="text-gray-500 text-sm" data-fr="Pour les cas graves ou répétitifs : conseil de discipline avec possible suspension ou exclusion temporaire/définitive." data-en="For serious or repeated cases: disciplinary council with possible suspension or temporary/permanent exclusion.">Pour les cas graves ou répétitifs : conseil de discipline avec possible suspension ou exclusion temporaire/définitive.</div>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-16" style="background:linear-gradient(135deg,var(--blue) 0%,var(--blue-mid) 100%)">
+  <div class="max-w-3xl mx-auto px-4 text-center">
+    <h2 class="text-3xl font-bold text-white mb-4" data-fr="Des questions sur la vie scolaire ?" data-en="Questions about school life?">Des questions sur la vie scolaire ?</h2>
+    <p class="text-white/70 mb-6" data-fr="Notre équipe est disponible pour répondre à toutes vos questions." data-en="Our team is available to answer all your questions.">Notre équipe est disponible pour répondre à toutes vos questions.</p>
+    <a href="contact.html" class="btn-primary px-8 py-3 rounded-lg inline-block" data-fr="Nous contacter" data-en="Contact Us">Nous contacter</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="py-12" style="background:var(--dark)">
+  <div class="max-w-7xl mx-auto px-4 grid lg:grid-cols-4 gap-8">
+    <div><div class="font-bold text-white mb-3" style="font-family:'Playfair Display',serif">CABMY</div><p class="text-white/40 text-sm">Collège Adventiste Bilingue Marathana de Yaoundé.</p></div>
+    <div><div class="font-bold text-white mb-3">Navigation</div><div class="flex flex-col gap-2 text-sm text-white/50"><a href="index.html" class="hover:text-white">Accueil</a><a href="apropos.html" class="hover:text-white">À propos</a><a href="enseignements.html" class="hover:text-white">Enseignements</a><a href="admissions.html" class="hover:text-white">Admissions</a></div></div>
+    <div><div class="font-bold text-white mb-3">Vie scolaire</div><div class="flex flex-col gap-2 text-sm text-white/50"><a href="#" class="hover:text-white">Règlement intérieur</a><a href="#" class="hover:text-white">Activités</a><a href="#" class="hover:text-white">Pastorale</a><a href="#" class="hover:text-white">Discipline</a></div></div>
+    <div><div class="font-bold text-white mb-3">Contact</div><div class="flex flex-col gap-2 text-sm text-white/50"><div>📍 Nyom, Yaoundé</div><div>📞 +237 600 000 000</div><div>✉ contact@cabmy.cm</div></div></div>
+  </div>
+  <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-white/10 text-center text-xs text-white/30">© 2024 CABMY – Tous droits réservés</div>
+</footer>
+
+<script>
+  let currentLang=localStorage.getItem('cabmy-lang')||'fr';
+  function setLang(lang){currentLang=lang;localStorage.setItem('cabmy-lang',lang);document.querySelectorAll('[data-fr]').forEach(el=>{el.textContent=el.getAttribute('data-'+lang)||el.textContent;});document.getElementById('btn-fr').classList.toggle('lang-active',lang==='fr');document.getElementById('btn-en').classList.toggle('lang-active',lang==='en');document.documentElement.lang=lang;}
+  setLang(currentLang);
+  function toggleMobile(){document.getElementById('mobile-menu').classList.toggle('open');}
+  const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.1});
+  document.querySelectorAll('.animate-fade').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Actualités – CABMY</title>
+  <link rel="stylesheet" href="../../output.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--blue:#1a3a6b;--blue-mid:#2952a3;--blue-light:#e8eef8;--gold:#c9a84c;--gold-light:#f5e9c8;--dark:#0f1f3d;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'DM Sans',sans-serif;color:var(--dark);}
+    h1,h2,h3,h4{font-family:'Playfair Display',serif;}
+    .nav-link{position:relative;}.nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:var(--gold);transition:width .3s;}.nav-link:hover::after{width:100%;}
+    .gold-line{width:60px;height:3px;background:var(--gold);}
+    .btn-primary{background:var(--gold);color:var(--dark);font-weight:600;transition:all .3s;}.btn-primary:hover{background:#b8922e;}
+    .lang-active{background:var(--gold);color:var(--dark);}
+    .mobile-menu{display:none;}.mobile-menu.open{display:block;}
+    .card-hover{transition:transform .3s,box-shadow .3s;}.card-hover:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(26,58,107,.12);}
+    .dropdown{position:relative;}.dropdown-menu{display:none;position:absolute;top:100%;left:0;background:#fff;min-width:220px;box-shadow:0 10px 40px rgba(0,0,0,.12);border-top:3px solid var(--gold);z-index:100;}.dropdown:hover .dropdown-menu{display:block;}.dropdown-menu a{display:block;padding:10px 20px;color:var(--blue);font-size:.9rem;transition:background .2s;}.dropdown-menu a:hover{background:var(--blue-light);color:var(--gold);}
+    .page-hero{background:linear-gradient(135deg,var(--dark) 0%,var(--blue) 100%);}
+    .animate-fade{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s;}.animate-fade.visible{opacity:1;transform:translateY(0);}
+    .filter-btn{transition:all .3s;border:2px solid transparent;}.filter-btn.active{border-color:var(--blue);background:var(--blue);color:#fff;}.filter-btn:not(.active):hover{border-color:var(--blue-light);background:var(--blue-light);}
+    .article-card{display:none;}.article-card.show{display:block;}
+    .news-img{height:200px;display:flex;align-items:center;justify-content:center;font-size:3rem;border-radius:12px 12px 0 0;}
+    .featured-card{border-bottom:4px solid var(--gold);}
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="bg-[#0f1f3d] text-white text-xs py-2 px-4 flex justify-between items-center">
+  <span class="opacity-70">📍 Nyom II, Petit Marché · Yaoundé</span>
+  <div class="flex gap-3 items-center">
+    <a href="tel:+237243850268" class="opacity-70 hover:opacity-100">📞 243 850 268 · 675 84 05 71</a>
+    <span class="opacity-30">|</span>
+    <button onclick="setLang('fr')" id="btn-fr" class="px-2 py-0.5 rounded text-xs font-semibold lang-active">FR</button>
+    <button onclick="setLang('en')" id="btn-en" class="px-2 py-0.5 rounded text-xs font-semibold hover:bg-white/10">EN</button>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="bg-white shadow-sm sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 flex justify-between items-center py-3">
+    <a href="../../index.html" class="flex items-center gap-3">
+      <div><img src="../../images/logo/WhatsApp Image 2025-09-23 at 19.42.18.jpeg" alt="Logo CABMY" class="w-12 h-12 rounded-full object-cover" /></div>
+      <div>
+        <div class="font-bold text-sm leading-tight" style="color:var(--blue);font-family:'Playfair Display',serif">CABMY</div>
+        <div class="text-xs text-gray-500 leading-tight" data-fr="Collège Adventiste Bilingue Marathana" data-en="Marathana Bilingual Adventist College">Collège Adventiste Bilingue Marathana</div>
+      </div>
+    </a>
+    <div class="hidden lg:flex items-center gap-6 text-sm font-medium">
+      <a href="../../index.html" class="nav-link text-gray-600" data-fr="Accueil" data-en="Home">Accueil</a>
+      <a href="apropos.html" class="nav-link text-gray-600" data-fr="À propos" data-en="About">À propos</a>
+      <a href="enseignements.html" class="nav-link text-gray-600" data-fr="Enseignements" data-en="Academics">Enseignements</a>
+      <a href="vie-scolaire.html" class="nav-link text-gray-600" data-fr="Vie scolaire" data-en="School Life">Vie scolaire</a>
+      <div class="dropdown">
+        <a href="admissions.html" class="nav-link text-gray-600 flex items-center gap-1" data-fr="Admissions" data-en="Admissions">Admissions <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></a>
+        <div class="dropdown-menu">
+          <a href="admissions.html#conditions">Conditions d'admission</a>
+          <a href="admissions.html#frais">Frais de scolarité</a>
+          <a href="admissions.html#calendrier">Calendrier</a>
+          <a href="admissions.html#tenues">Tenues scolaires</a>
+        </div>
+      </div>
+      <a href="actualites.html" class="nav-link font-semibold" style="color:var(--blue)" data-fr="Actualités" data-en="News">Actualités</a>
+      <a href="contact.html" class="btn-primary px-4 py-2 rounded-lg text-sm">Contact</a>
+    </div>
+    <button onclick="toggleMobile()" class="lg:hidden p-2 text-gray-600">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+  <div id="mobile-menu" class="mobile-menu lg:hidden bg-white border-t px-4 pb-4">
+    <div class="flex flex-col gap-3 pt-3 text-sm font-medium">
+      <a href="../../index.html" class="text-gray-700">Accueil</a><a href="apropos.html" class="text-gray-700">À propos</a>
+      <a href="enseignements.html" class="text-gray-700">Enseignements</a><a href="vie-scolaire.html" class="text-gray-700">Vie scolaire</a>
+      <a href="admissions.html" class="text-gray-700">Admissions</a><a href="actualites.html" style="color:var(--blue)">Actualités</a>
+      <a href="contact.html" class="btn-primary px-4 py-2 rounded-lg text-center">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero py-20 text-white">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="gold-line mb-4"></div>
+    <h1 class="text-5xl font-bold mb-4" data-fr="Actualités" data-en="News">Actualités</h1>
+    <p class="text-white/60 text-lg max-w-2xl" data-fr="Suivez toute l'actualité du Collège Adventiste Bilingue Marathana de Yaoundé." data-en="Follow all the news from the Marathana Bilingual Adventist College of Yaoundé.">Suivez toute l'actualité du Collège Adventiste Bilingue Marathana de Yaoundé.</p>
+    <div class="mt-4 text-sm text-white/40">
+      <a href="../../index.html" class="hover:text-white">Accueil</a> <span class="mx-2">›</span>
+      <span data-fr="Actualités" data-en="News">Actualités</span>
+    </div>
+  </div>
+</section>
+
+<!-- CONTENU -->
+<section class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4">
+
+    <!-- ARTICLE À LA UNE -->
+    <div class="featured-card rounded-2xl overflow-hidden shadow-lg mb-16 grid lg:grid-cols-2 animate-fade">
+      <div class="flex items-center justify-center text-7xl" style="background:linear-gradient(135deg,var(--blue-light),var(--gold-light));min-height:300px;">🏅</div>
+      <div class="p-10 flex flex-col justify-center">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-xs font-bold px-3 py-1 rounded-full" style="background:var(--gold-light);color:#7a5c00" data-fr="À LA UNE" data-en="FEATURED">À LA UNE</span>
+          <span class="text-xs font-semibold px-3 py-1 rounded-full" style="background:var(--blue-light);color:var(--blue)" data-fr="Résultats" data-en="Results">Résultats</span>
+        </div>
+        <h2 class="text-3xl font-bold mb-4" style="color:var(--blue)" data-fr="BEPC 2024 : Le CABMY réalise un taux de réussite exceptionnel de 96%" data-en="BEPC 2024: CABMY achieves an exceptional 96% pass rate">BEPC 2024 : Le CABMY réalise un taux de réussite exceptionnel de 96%</h2>
+        <p class="text-gray-500 mb-6 leading-relaxed" data-fr="La communauté du CABMY célèbre une année exceptionnelle. Grâce au travail acharné des élèves et au dévouement du corps enseignant, le taux de réussite au BEPC 2024 atteint 96%, confirmant la position de l'établissement comme référence d'excellence dans la région." data-en="The CABMY community celebrates an exceptional year. Thanks to the hard work of students and the dedication of the teaching staff, the 2024 BEPC pass rate reaches 96%, confirming the school's position as a reference for excellence in the region.">La communauté du CABMY célèbre une année exceptionnelle. Grâce au travail acharné des élèves et au dévouement du corps enseignant, le taux de réussite au BEPC 2024 atteint 96%, confirmant la position de l'établissement.</p>
+        <div class="flex items-center gap-4 text-sm text-gray-400">
+          <span>📅 Juin 2024</span>
+          <span>✍️ Administration CABMY</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILTRES -->
+    <div class="flex flex-wrap gap-3 mb-10 animate-fade">
+      <button onclick="filterNews('all')" class="filter-btn active px-5 py-2 rounded-full text-sm font-medium" data-fr="Toutes" data-en="All">Toutes</button>
+      <button onclick="filterNews('resultats')" class="filter-btn px-5 py-2 rounded-full text-sm font-medium" data-fr="📊 Résultats" data-en="📊 Results">📊 Résultats</button>
+      <button onclick="filterNews('vie')" class="filter-btn px-5 py-2 rounded-full text-sm font-medium" data-fr="🏫 Vie du collège" data-en="🏫 College Life">🏫 Vie du collège</button>
+      <button onclick="filterNews('spiritualite')" class="filter-btn px-5 py-2 rounded-full text-sm font-medium" data-fr="⛪ Spiritualité" data-en="⛪ Spirituality">⛪ Spiritualité</button>
+      <button onclick="filterNews('soir')" class="filter-btn px-5 py-2 rounded-full text-sm font-medium" data-fr="🌙 Cours du soir" data-en="🌙 Evening Classes">🌙 Cours du soir</button>
+    </div>
+
+    <!-- GRILLE D'ARTICLES -->
+    <div id="articles-grid" class="grid lg:grid-cols-3 gap-8">
+
+      <div class="article-card show card-hover rounded-2xl overflow-hidden border border-gray-100 shadow-sm" data-cat="resultats">
+        <div class="news-img" style="background:linear-gradient(135deg,var(--blue-light),#d0ddf5)">🏅</div>
+        <div class="p-6">
+          <span class="text-xs font-semibold px-2 py-1 rounded" style="background:var(--blue-light);color:var(--blue)" data-fr="Résultats" data-en="Results">Résultats</span>
+          <h3 class="font-bold text-lg mt-3 mb-2" style="color:var(--blue)" data-fr="GCE 2024 : Excellents résultats pour la section anglophone" data-en="GCE 2024: Excellent results for the English section">GCE 2024 : Excellents résultats pour la section anglophone</h3>
+          <p class="text-gray-500 text-sm mb-4 leading-relaxed" data-fr="La section anglophone enregistre d'excellents résultats aux GCE O/L et A/L de 2024, avec plusieurs mentions très bien." data-en="The English section records excellent results in the 2024 GCE O/L and A/L, with several distinctions.">La section anglophone enregistre d'excellents résultats aux GCE O/L et A/L de 2024.</p>
+          <div class="flex justify-between items-center text-xs text-gray-400">
+            <span>Juillet 2024</span>
+            <a href="#" onclick="openArticle(this)" class="font-semibold" style="color:var(--gold)" data-fr="Lire l'article →" data-en="Read article →">Lire l'article →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card show card-hover rounded-2xl overflow-hidden border border-gray-100 shadow-sm" data-cat="spiritualite">
+        <div class="news-img" style="background:linear-gradient(135deg,#e8f0ff,#d5e3ff)">⛪</div>
+        <div class="p-6">
+          <span class="text-xs font-semibold px-2 py-1 rounded" style="background:var(--blue-light);color:var(--blue)" data-fr="Spiritualité" data-en="Spirituality">Spiritualité</span>
+          <h3 class="font-bold text-lg mt-3 mb-2" style="color:var(--blue)" data-fr="Semaine de prière 2024 : un moment de grâce pour tous" data-en="2024 Prayer Week: a moment of grace for all">Semaine de prière 2024 : un moment de grâce pour tous</h3>
+          <p class="text-gray-500 text-sm mb-4 leading-relaxed" data-fr="La communauté scolaire s'est réunie pour une semaine de prière enrichissante, pleine de témoignages et de partages fraternels." data-en="The school community gathered for an enriching prayer week, full of testimonies and fraternal sharing.">La communauté scolaire s'est réunie pour une semaine de prière enrichissante.</p>
+          <div class="flex justify-between items-center text-xs text-gray-400">
+            <span>Mai 2024</span>
+            <a href="#" onclick="openArticle(this)" class="font-semibold" style="color:var(--gold)" data-fr="Lire l'article →" data-en="Read article →">Lire l'article →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card show card-hover rounded-2xl overflow-hidden border border-gray-100 shadow-sm" data-cat="soir">
+        <div class="news-img" style="background:linear-gradient(135deg,var(--dark),var(--blue))">🌙</div>
+        <div class="p-6">
+          <span class="text-xs font-semibold px-2 py-1 rounded bg-gray-100 text-gray-600" data-fr="Cours du soir" data-en="Evening Classes">Cours du soir</span>
+          <h3 class="font-bold text-lg mt-3 mb-2" style="color:var(--blue)" data-fr="Rentrée 2024-2025 des cours du soir : inscriptions ouvertes" data-en="2024-2025 Evening Classes Term Begins: Enrolment Open">Rentrée 2024-2025 des cours du soir : inscriptions ouvertes</h3>
+          <p class="text-gray-500 text-sm mb-4 leading-relaxed" data-fr="Les inscriptions pour la nouvelle année des cours du soir sont officiellement ouvertes. Adultes et travailleurs, c'est votre moment !" data-en="Enrolment for the new evening classes year is officially open. Adults and workers, this is your moment!">Les inscriptions pour la nouvelle année des cours du soir sont officiellement ouvertes.</p>
+          <div class="flex justify-between items-center text-xs text-gray-400">
+            <span>Sept. 2024</span>
+            <a href="#" onclick="openArticle(this)" class="font-semibold" style="color:var(--gold)" data-fr="Lire l'article →" data-en="Read article →">Lire l'article →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card show card-hover rounded-2xl overflow-hidden border border-gray-100 shadow-sm" data-cat="vie">
+        <div class="news-img" style="background:linear-gradient(135deg,var(--gold-light),#ffe8a0)">⚽</div>
+        <div class="p-6">
+          <span class="text-xs font-semibold px-2 py-1 rounded" style="background:var(--gold-light);color:#7a5c00" data-fr="Vie du collège" data-en="College Life">Vie du collège</span>
+          <h3 class="font-bold text-lg mt-3 mb-2" style="color:var(--blue)" data-fr="Tournoi sportif inter-scolaire : le CABMY brille" data-en="Inter-school Sports Tournament: CABMY shines">Tournoi sportif inter-scolaire : le CABMY brille</h3>
+          <p class="text-gray-500 text-sm mb-4 leading-relaxed" data-fr="Nos élèves ont participé avec brio au tournoi sportif annuel de la région, remportant plusieurs trophées en football et en athlétisme." data-en="Our students brilliantly participated in the annual regional sports tournament, winning several trophies in football and athletics.">Nos élèves ont participé avec brio au tournoi sportif annuel de la région.</p>
+          <div class="flex justify-between items-center text-xs text-gray-400">
+            <span>Mars 2024</span>
+            <a href="#" onclick="openArticle(this)" class="font-semibold" style="color:var(--gold)" data-fr="Lire l'article →" data-en="Read article →">Lire l'article →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card show card-hover rounded-2xl overflow-hidden border border-gray-100 shadow-sm" data-cat="vie">
+        <div class="news-img" style="background:linear-gradient(135deg,#e8f5e8,#c8e6c8)">🎓</div>
+        <div class="p-6">
+          <span class="text-xs font-semibold px-2 py-1 rounded" style="background:var(--gold-light);color:#7a5c00" data-fr="Vie du collège" data-en="College Life">Vie du collège</span>
+          <h3 class="font-bold text-lg mt-3 mb-2" style="color:var(--blue)" data-fr="Cérémonie de remise des diplômes – Promotion 2024" data-en="Graduation Ceremony – Class of 2024">Cérémonie de remise des diplômes – Promotion 2024</h3>
+          <p class="text-gray-500 text-sm mb-4 leading-relaxed" data-fr="Une cérémonie émouvante pour récompenser les élèves de la promotion 2024 qui ont brillé aux examens nationaux." data-en="A moving ceremony to reward the class of 2024 students who excelled in national examinations.">Une cérémonie émouvante pour récompenser les élèves de la promotion 2024.</p>
+          <div class="flex justify-between items-center text-xs text-gray-400">
+            <span>Août 2024</span>
+            <a href="#" onclick="openArticle(this)" class="font-semibold" style="color:var(--gold)" data-fr="Lire l'article →" data-en="Read article →">Lire l'article →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card show card-hover rounded-2xl overflow-hidden border border-gray-100 shadow-sm" data-cat="spiritualite">
+        <div class="news-img" style="background:linear-gradient(135deg,#f0e8ff,#e0d0ff)">🙏</div>
+        <div class="p-6">
+          <span class="text-xs font-semibold px-2 py-1 rounded" style="background:var(--blue-light);color:var(--blue)" data-fr="Spiritualité" data-en="Spirituality">Spiritualité</span>
+          <h3 class="font-bold text-lg mt-3 mb-2" style="color:var(--blue)" data-fr="Culte de rentrée 2024-2025 : une nouvelle année sous la bénédiction" data-en="2024-2025 Opening Worship: A New Year Under Blessing">Culte de rentrée 2024-2025 : une nouvelle année sous la bénédiction</h3>
+          <p class="text-gray-500 text-sm mb-4 leading-relaxed" data-fr="L'année scolaire a débuté avec un culte solennel réunissant élèves, enseignants et parents pour une invocation collective." data-en="The school year began with a solemn worship service bringing together students, teachers and parents for a collective invocation.">L'année scolaire a débuté avec un culte solennel réunissant élèves, enseignants et parents.</p>
+          <div class="flex justify-between items-center text-xs text-gray-400">
+            <span>Sept. 2024</span>
+            <a href="#" onclick="openArticle(this)" class="font-semibold" style="color:var(--gold)" data-fr="Lire l'article →" data-en="Read article →">Lire l'article →</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- AUCUN RÉSULTAT -->
+    <div id="no-results" class="hidden text-center py-20 text-gray-400">
+      <div class="text-5xl mb-4">📭</div>
+      <div class="text-lg font-medium" data-fr="Aucun article dans cette catégorie" data-en="No articles in this category">Aucun article dans cette catégorie</div>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL ARTICLE -->
+<div id="article-modal" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4">
+  <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto shadow-2xl">
+    <div class="p-8">
+      <div class="flex justify-between items-start mb-4">
+        <div class="text-xs font-semibold px-3 py-1 rounded-full" style="background:var(--blue-light);color:var(--blue)" data-fr="Actualité CABMY" data-en="CABMY News">Actualité CABMY</div>
+        <button onclick="closeArticle()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+      </div>
+      <h2 id="modal-title" class="text-2xl font-bold mb-2" style="color:var(--blue)"></h2>
+      <div id="modal-date" class="text-sm text-gray-400 mb-6"></div>
+      <div id="modal-content" class="text-gray-600 leading-relaxed text-sm"></div>
+      <div class="mt-8 pt-6 border-t border-gray-100 flex justify-between items-center">
+        <div class="text-xs text-gray-400" data-fr="Collège Adventiste Bilingue Marathana de Yaoundé" data-en="Marathana Bilingual Adventist College of Yaoundé">Collège Adventiste Bilingue Marathana de Yaoundé</div>
+        <button onclick="closeArticle()" class="btn-primary px-5 py-2 rounded-lg text-sm" data-fr="Fermer" data-en="Close">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="py-16" style="background:linear-gradient(135deg,var(--blue) 0%,var(--blue-mid) 100%)">
+  <div class="max-w-3xl mx-auto px-4 text-center">
+    <h2 class="text-3xl font-bold text-white mb-4" data-fr="Ne manquez aucune actualité" data-en="Don't miss any news">Ne manquez aucune actualité</h2>
+    <p class="text-white/70 mb-6" data-fr="Contactez-nous pour rester informé des événements et activités du CABMY." data-en="Contact us to stay informed about CABMY events and activities.">Contactez-nous pour rester informé des événements et activités du CABMY.</p>
+    <a href="contact.html" class="btn-primary px-8 py-3 rounded-lg inline-block" data-fr="Nous contacter" data-en="Contact Us">Nous contacter</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="py-12" style="background:var(--dark)">
+  <div class="max-w-7xl mx-auto px-4 grid lg:grid-cols-4 gap-8">
+    <div><div class="font-bold text-white mb-3" style="font-family:'Playfair Display',serif">CABMY</div><p class="text-white/40 text-sm">Collège Adventiste Bilingue Marathana de Yaoundé.</p></div>
+    <div><div class="font-bold text-white mb-3">Navigation</div><div class="flex flex-col gap-2 text-sm text-white/50"><a href="index.html" class="hover:text-white">Accueil</a><a href="apropos.html" class="hover:text-white">À propos</a><a href="enseignements.html" class="hover:text-white">Enseignements</a><a href="admissions.html" class="hover:text-white">Admissions</a></div></div>
+    <div><div class="font-bold text-white mb-3">Catégories</div><div class="flex flex-col gap-2 text-sm text-white/50"><a href="#" onclick="filterNews('resultats')" class="hover:text-white">Résultats</a><a href="#" onclick="filterNews('vie')" class="hover:text-white">Vie du collège</a><a href="#" onclick="filterNews('spiritualite')" class="hover:text-white">Spiritualité</a><a href="#" onclick="filterNews('soir')" class="hover:text-white">Cours du soir</a></div></div>
+    <div><div class="font-bold text-white mb-3">Contact</div><div class="flex flex-col gap-2 text-sm text-white/50"><div>📍 Nyom, Yaoundé</div><div>📞 +237 600 000 000</div><div>✉ contact@cabmy.cm</div></div></div>
+  </div>
+  <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-white/10 text-center text-xs text-white/30">© 2024 CABMY – Tous droits réservés</div>
+</footer>
+
+<script>
+  let currentLang=localStorage.getItem('cabmy-lang')||'fr';
+  function setLang(lang){currentLang=lang;localStorage.setItem('cabmy-lang',lang);document.querySelectorAll('[data-fr]').forEach(el=>{el.textContent=el.getAttribute('data-'+lang)||el.textContent;});document.getElementById('btn-fr').classList.toggle('lang-active',lang==='fr');document.getElementById('btn-en').classList.toggle('lang-active',lang==='en');document.documentElement.lang=lang;}
+  setLang(currentLang);
+  function toggleMobile(){document.getElementById('mobile-menu').classList.toggle('open');}
+
+  function filterNews(cat){
+    const cards=document.querySelectorAll('.article-card');
+    let visible=0;
+    cards.forEach(c=>{
+      if(cat==='all'||c.dataset.cat===cat){c.classList.add('show');visible++;}
+      else{c.classList.remove('show');}
+    });
+    document.getElementById('no-results').classList.toggle('hidden',visible>0);
+    document.querySelectorAll('.filter-btn').forEach(b=>{b.classList.remove('active');});
+    event.target.classList.add('active');
+  }
+
+  function openArticle(el){
+    const card=el.closest('.article-card');
+    const title=card.querySelector('h3').textContent;
+    const content=card.querySelector('p').textContent;
+    const date=card.querySelector('.text-xs.text-gray-400 span').textContent;
+    document.getElementById('modal-title').textContent=title;
+    document.getElementById('modal-content').textContent=content+' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum. Donec in efficitur leo, in commodo odio. Sed aliquam urna leo, pretium justo faucibus condimentum.';
+    document.getElementById('modal-date').textContent='📅 '+date+' · Administration CABMY';
+    document.getElementById('article-modal').classList.remove('hidden');
+    document.getElementById('article-modal').classList.add('flex');
+  }
+  function closeArticle(){
+    document.getElementById('article-modal').classList.add('hidden');
+    document.getElementById('article-modal').classList.remove('flex');
+  }
+
+  const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.1});
+  document.querySelectorAll('.animate-fade').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>

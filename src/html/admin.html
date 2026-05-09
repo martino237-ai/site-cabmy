@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Administration – CABMY</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/admin.css">
+    
+</head>
+<body>
+
+<!-- ===== ÉCRAN DE CONNEXION ===== -->
+<div id="login-screen" class="login-screen">
+  <div style="background:#fff;border-radius:20px;padding:48px;max-width:400px;width:100%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.2);">
+    <div style="width:64px;height:64px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:1.4rem;color:#fff;margin:0 auto 20px;">CA</div>
+    <h1 style="color:var(--blue);font-size:1.6rem;margin-bottom:4px;">Administration</h1>
+    <p style="color:#6b7280;font-size:.9rem;margin-bottom:28px;">CABMY – Espace réservé</p>
+    <div style="text-align:left;margin-bottom:16px;">
+      <label>Identifiant</label>
+      <input type="text" id="login-user" class="form-input" placeholder="admin" style="margin-top:5px;">
+    </div>
+    <div style="text-align:left;margin-bottom:24px;">
+      <label>Mot de passe</label>
+      <input type="password" id="login-pass" class="form-input" placeholder="••••••••" style="margin-top:5px;">
+    </div>
+    <div id="login-error" style="display:none;background:#fee2e2;color:#991b1b;padding:10px;border-radius:8px;margin-bottom:12px;font-size:.85rem;">❌ Identifiants incorrects</div>
+    <button onclick="doLogin()" class="btn-primary" style="width:100%;padding:12px;">Connexion →</button>
+    <div style="margin-top:20px;font-size:.75rem;color:#9ca3af;">Identifiants par défaut : admin / cabmy2024</div>
+  </div>
+</div>
+
+<!-- ===== INTERFACE ADMIN ===== -->
+<div id="admin-ui" style="display:none;">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div style="padding:24px 20px;border-bottom:1px solid rgba(255,255,255,.1);">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <img src="../../images/logo/WhatsApp Image 2025-09-23 at 19.42.18.jpeg" alt="Logo CABMY" class="w-12 h-12 rounded-full object-cover" />
+      
+        <div>
+          <div style="font-family:'Playfair Display',serif;font-weight:700;color:#fff;font-size:.95rem;">CABMY Admin</div>
+          <div style="font-size:.72rem;color:rgba(255,255,255,.4);">Tableau de bord</div>
+        </div>
+      </div>
+    </div>
+    <nav style="padding:16px 0;">
+      <div style="padding:8px 20px;font-size:.72rem;color:rgba(255,255,255,.3);letter-spacing:.1em;font-weight:700;margin-bottom:4px;">PRINCIPAL</div>
+      <a href="#" onclick="showSection('dashboard')" class="sidebar-link active" id="nav-dashboard">
+        <span>📊</span> Tableau de bord
+      </a>
+      <a href="#" onclick="showSection('articles')" class="sidebar-link" id="nav-articles">
+        <span>📰</span> Actualités
+      </a>
+      <div style="padding:8px 20px;font-size:.72rem;color:rgba(255,255,255,.3);letter-spacing:.1em;font-weight:700;margin:12px 0 4px;">PARAMÈTRES</div>
+      <a href="#" onclick="showSection('frais')" class="sidebar-link" id="nav-frais">
+        <span>💰</span> Frais de scolarité
+      </a>
+      <a href="#" onclick="showSection('contacts')" class="sidebar-link" id="nav-contacts">
+        <span>📬</span> Messages reçus
+      </a>
+      <a href="#" onclick="showSection('preinscriptions')" class="sidebar-link" id="nav-preinscriptions">
+        <span>✏️</span> Pré-inscriptions
+      </a>
+      <div style="padding:8px 20px;font-size:.72rem;color:rgba(255,255,255,.3);letter-spacing:.1em;font-weight:700;margin:12px 0 4px;">SITE</div>
+      <a href="../../index.html" target="_blank" class="sidebar-link">
+        <span>🌐</span> Voir le site
+      </a>
+      <a href="#" onclick="doLogout()" class="sidebar-link" style="margin-top:auto;">
+        <span>🚪</span> Déconnexion
+      </a>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-content">
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div>
+        <h2 id="page-title" style="font-size:1.2rem;color:var(--dark);">Tableau de bord</h2>
+        <div style="font-size:.8rem;color:#6b7280;">Bienvenue dans l'espace d'administration du CABMY</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="font-size:.85rem;color:#6b7280;" id="admin-date"></div>
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.85rem;">A</div>
+      </div>
+    </div>
+
+    <div style="padding:32px;">
+
+      <!-- ===== DASHBOARD ===== -->
+      <div id="section-dashboard">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:28px;">
+          <div class="stat-card">
+            <div style="font-size:.8rem;color:#6b7280;margin-bottom:4px;font-weight:600;">ACTUALITÉS PUBLIÉES</div>
+            <div style="font-size:2rem;font-weight:700;color:var(--blue);font-family:'Playfair Display',serif;" id="count-articles">0</div>
+          </div>
+          <div class="stat-card" style="border-color:var(--blue);">
+            <div style="font-size:.8rem;color:#6b7280;margin-bottom:4px;font-weight:600;">MESSAGES REÇUS</div>
+            <div style="font-size:2rem;font-weight:700;color:var(--blue);font-family:'Playfair Display',serif;" id="count-messages">0</div>
+          </div>
+          <div class="stat-card" style="border-color:#10b981;">
+            <div style="font-size:.8rem;color:#6b7280;margin-bottom:4px;font-weight:600;">PRÉ-INSCRIPTIONS</div>
+            <div style="font-size:2rem;font-weight:700;color:var(--blue);font-family:'Playfair Display',serif;" id="count-pi">0</div>
+          </div>
+          <div class="stat-card" style="border-color:#f59e0b;">
+            <div style="font-size:.8rem;color:#6b7280;margin-bottom:4px;font-weight:600;">BROUILLONS</div>
+            <div style="font-size:2rem;font-weight:700;color:var(--blue);font-family:'Playfair Display',serif;" id="count-drafts">0</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:2fr 1fr;gap:20px;">
+          <div class="card">
+            <div style="font-weight:700;color:var(--blue);margin-bottom:16px;font-size:1.05rem;">Actualités récentes</div>
+            <div id="recent-articles-list" style="space-y:8px;"></div>
+            <button onclick="showSection('articles')" style="margin-top:16px;background:var(--blue-light);color:var(--blue);border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.85rem;">Gérer les actualités →</button>
+          </div>
+          <div class="card">
+            <div style="font-weight:700;color:var(--blue);margin-bottom:16px;font-size:1.05rem;">Accès rapides</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <button onclick="openNewArticle()" class="btn-primary" style="width:100%;text-align:left;padding:12px 16px;">✍️ Nouvel article</button>
+              <button onclick="showSection('preinscriptions')" style="background:var(--blue-light);color:var(--blue);border:none;padding:12px 16px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;text-align:left;">✏️ Pré-inscriptions</button>
+              <button onclick="showSection('contacts')" style="background:var(--blue-light);color:var(--blue);border:none;padding:12px 16px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;text-align:left;">📬 Messages</button>
+              <a href="index.html" target="_blank" style="display:block;background:#f3f4f6;color:#374151;padding:12px 16px;border-radius:8px;font-weight:600;text-decoration:none;font-size:.9rem;">🌐 Voir le site</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== ACTUALITÉS ===== -->
+      <div id="section-articles" style="display:none;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+          <div style="font-weight:700;font-size:1.1rem;color:var(--blue);">Gestion des actualités</div>
+          <button onclick="openNewArticle()" class="btn-primary">+ Nouvel article</button>
+        </div>
+        <div class="card">
+          <table>
+            <thead>
+              <tr>
+                <th>Titre</th><th>Catégorie</th><th>Date</th><th>Statut</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="articles-tbody"></tbody>
+          </table>
+          <div id="no-articles" style="text-align:center;padding:40px;color:#9ca3af;display:none;">
+            <div style="font-size:2rem;margin-bottom:8px;">📭</div>
+            Aucun article. Créez votre premier article !
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== FRAIS ===== -->
+      <div id="section-frais" style="display:none;">
+        <div style="font-weight:700;font-size:1.1rem;color:var(--blue);margin-bottom:20px;">Mise à jour des frais de scolarité</div>
+        <div class="card">
+          <p style="color:#6b7280;font-size:.9rem;margin-bottom:20px;">Modifiez les montants ci-dessous. Ces informations seront affichées sur la page Admissions.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
+            <div>
+              <div style="font-weight:700;color:var(--blue);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--gold);">Section Francophone (FCFA)</div>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div><label>Frais d'inscription</label><input type="number" id="f-fr-inscription" class="form-input" placeholder="Ex: 25000"></div>
+                <div><label>Mensualité</label><input type="number" id="f-fr-mensualite" class="form-input" placeholder="Ex: 15000"></div>
+                <div><label>Tenue scolaire</label><input type="number" id="f-fr-tenue" class="form-input" placeholder="Ex: 12000"></div>
+                <div><label>Tenue de sport</label><input type="number" id="f-fr-sport" class="form-input" placeholder="Ex: 8000"></div>
+              </div>
+            </div>
+            <div>
+              <div style="font-weight:700;color:var(--blue);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--gold);">Section Anglophone (FCFA)</div>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div><label>Frais d'inscription</label><input type="number" id="f-en-inscription" class="form-input" placeholder="Ex: 25000"></div>
+                <div><label>Mensualité</label><input type="number" id="f-en-mensualite" class="form-input" placeholder="Ex: 15000"></div>
+                <div><label>Tenue scolaire</label><input type="number" id="f-en-tenue" class="form-input" placeholder="Ex: 12000"></div>
+                <div><label>Tenue de sport</label><input type="number" id="f-en-sport" class="form-input" placeholder="Ex: 8000"></div>
+              </div>
+            </div>
+            <div>
+              <div style="font-weight:700;color:var(--blue);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--gold);">Cours du Soir (FCFA)</div>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div><label>Frais d'inscription</label><input type="number" id="f-cs-inscription" class="form-input" placeholder="Ex: 20000"></div>
+                <div><label>Mensualité</label><input type="number" id="f-cs-mensualite" class="form-input" placeholder="Ex: 12000"></div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:24px;display:flex;gap:12px;">
+            <button onclick="saveFrais()" class="btn-primary">💾 Enregistrer les frais</button>
+            <button onclick="loadFrais()" style="background:#f3f4f6;color:#374151;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;">↺ Réinitialiser</button>
+          </div>
+          <div id="frais-saved" style="display:none;background:#d1fae5;color:#065f46;padding:10px 16px;border-radius:8px;margin-top:12px;font-size:.9rem;">✅ Frais enregistrés avec succès !</div>
+        </div>
+      </div>
+
+      <!-- ===== MESSAGES ===== -->
+      <div id="section-contacts" style="display:none;">
+        <div style="font-weight:700;font-size:1.1rem;color:var(--blue);margin-bottom:20px;">Messages reçus via le formulaire de contact</div>
+        <div class="card">
+          <div id="contacts-list"></div>
+          <div id="no-contacts" style="text-align:center;padding:40px;color:#9ca3af;">
+            <div style="font-size:2rem;margin-bottom:8px;">📭</div>
+            Aucun message reçu pour l'instant.
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== PRÉ-INSCRIPTIONS ===== -->
+      <div id="section-preinscriptions" style="display:none;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+          <div style="font-weight:700;font-size:1.1rem;color:var(--blue);">Pré-inscriptions reçues</div>
+          <button onclick="exportPI()" style="background:var(--blue-light);color:var(--blue);border:none;padding:10px 16px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.85rem;">📥 Exporter CSV</button>
+        </div>
+        <div class="card">
+          <table>
+            <thead><tr><th>Élève</th><th>Niveau</th><th>Section</th><th>Téléphone</th><th>Date</th><th>Action</th></tr></thead>
+            <tbody id="pi-tbody"></tbody>
+          </table>
+          <div id="no-pi" style="text-align:center;padding:40px;color:#9ca3af;">
+            <div style="font-size:2rem;margin-bottom:8px;">📋</div>
+            Aucune pré-inscription reçue pour l'instant.
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /padding -->
+  </div><!-- /main-content -->
+</div><!-- /admin-ui -->
+
+<!-- ===== MODAL ARTICLE ===== -->
+<div id="modal-article" class="modal">
+  <div class="modal-box" style="padding:32px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+      <h2 style="font-size:1.4rem;color:var(--blue);" id="modal-article-title">Nouvel article</h2>
+      <button onclick="closeModal('modal-article')" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:#6b7280;">✕</button>
+    </div>
+    <form id="article-form" onsubmit="saveArticle(event)" style="display:flex;flex-direction:column;gap:16px;">
+      <input type="hidden" id="article-id">
+      <div><label>Titre de l'article *</label><input type="text" id="art-titre" class="form-input" required placeholder="Ex: Résultats BEPC 2024..."></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label>Catégorie *</label>
+          <select id="art-cat" class="form-input" required>
+            <option value="">-- Choisir --</option>
+            <option value="resultats">📊 Résultats</option>
+            <option value="vie">🏫 Vie du collège</option>
+            <option value="spiritualite">⛪ Spiritualité</option>
+            <option value="soir">🌙 Cours du soir</option>
+          </select>
+        </div>
+        <div>
+          <label>Statut</label>
+          <select id="art-statut" class="form-input">
+            <option value="publie">✅ Publié</option>
+            <option value="brouillon">📝 Brouillon</option>
+          </select>
+        </div>
+      </div>
+      <div><label>Résumé (affiché en liste) *</label><textarea id="art-resume" class="form-input" style="min-height:80px;" required placeholder="Résumé court de l'article..."></textarea></div>
+      <div><label>Contenu complet</label><textarea id="art-contenu" class="form-input" style="min-height:120px;" placeholder="Contenu détaillé de l'article..."></textarea></div>
+      <div><label>Emoji/Icône (affiché en illustration)</label><input type="text" id="art-emoji" class="form-input" placeholder="Ex: 🏅 ou 🎓 ou ⛪"></div>
+      <div style="display:flex;gap:12px;margin-top:8px;">
+        <button type="submit" class="btn-primary">💾 Enregistrer</button>
+        <button type="button" onclick="closeModal('modal-article')" style="background:#f3f4f6;color:#374151;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;">Annuler</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+// ===== AUTH =====
+const ADMIN_USER = 'admin';
+const ADMIN_PASS = 'cabmy2024';
+
+function doLogin() {
+  const u = document.getElementById('login-user').value;
+  const p = document.getElementById('login-pass').value;
+  if(u === ADMIN_USER && p === ADMIN_PASS) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-ui').style.display = 'block';
+    initAdmin();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+  }
+}
+document.getElementById('login-pass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+
+function doLogout() {
+  document.getElementById('admin-ui').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('login-user').value = '';
+  document.getElementById('login-pass').value = '';
+}
+
+// ===== DATA (localStorage) =====
+function getData(key, def=[]) {
+  try { return JSON.parse(localStorage.getItem('cabmy_'+key)) || def; } catch { return def; }
+}
+function setData(key, val) { localStorage.setItem('cabmy_'+key, JSON.stringify(val)); }
+
+// ===== INIT =====
+function initAdmin() {
+  document.getElementById('admin-date').textContent = new Date().toLocaleDateString('fr-FR', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  updateCounts();
+  renderRecentArticles();
+  renderArticlesTable();
+  loadFrais();
+  renderContacts();
+  renderPI();
+}
+
+function updateCounts() {
+  const arts = getData('articles');
+  const msgs = getData('messages');
+  const pis = getData('preinscriptions');
+  document.getElementById('count-articles').textContent = arts.filter(a=>a.statut==='publie').length;
+  document.getElementById('count-messages').textContent = msgs.length;
+  document.getElementById('count-pi').textContent = pis.length;
+  document.getElementById('count-drafts').textContent = arts.filter(a=>a.statut==='brouillon').length;
+}
+
+// ===== SECTIONS =====
+const sections = ['dashboard','articles','frais','contacts','preinscriptions'];
+function showSection(name) {
+  sections.forEach(s => {
+    document.getElementById('section-'+s).style.display = s===name ? 'block' : 'none';
+    const nav = document.getElementById('nav-'+s);
+    if(nav) { nav.classList.toggle('active', s===name); }
+  });
+  const titles = {dashboard:'Tableau de bord',articles:'Actualités',frais:'Frais de scolarité',contacts:'Messages reçus',preinscriptions:'Pré-inscriptions'};
+  document.getElementById('page-title').textContent = titles[name] || '';
+  if(name==='articles') renderArticlesTable();
+  if(name==='contacts') renderContacts();
+  if(name==='preinscriptions') renderPI();
+}
+
+// ===== ARTICLES =====
+const catLabels = {resultats:'📊 Résultats',vie:'🏫 Vie du collège',spiritualite:'⛪ Spiritualité',soir:'🌙 Cours du soir'};
+const catClasses = {resultats:'tag-resultats',vie:'tag-vie',spiritualite:'tag-spiritualite',soir:'tag-soir'};
+
+function renderRecentArticles() {
+  const arts = getData('articles').slice(0,4);
+  const el = document.getElementById('recent-articles-list');
+  if(!arts.length) { el.innerHTML = '<div style="color:#9ca3af;font-size:.9rem;padding:12px 0;">Aucun article encore.</div>'; return; }
+  el.innerHTML = arts.map(a => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f3f4f6;">
+      <div style="font-size:.9rem;font-weight:500;color:var(--dark);">${a.titre}</div>
+      <span class="tag ${catClasses[a.cat]||''}">${catLabels[a.cat]||a.cat}</span>
+    </div>
+  `).join('');
+}
+
+function renderArticlesTable() {
+  const arts = getData('articles');
+  const tbody = document.getElementById('articles-tbody');
+  document.getElementById('no-articles').style.display = arts.length ? 'none' : 'block';
+  tbody.innerHTML = arts.map((a,i) => `
+    <tr>
+      <td style="font-weight:600;max-width:280px;">${a.emoji||''} ${a.titre}</td>
+      <td><span class="tag ${catClasses[a.cat]||''}">${catLabels[a.cat]||a.cat}</span></td>
+      <td style="color:#6b7280;font-size:.85rem;">${a.date}</td>
+      <td><span class="${a.statut==='publie'?'badge-pub':'badge-draft'}">${a.statut==='publie'?'✅ Publié':'📝 Brouillon'}</span></td>
+      <td style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn-edit" onclick="editArticle(${i})">✏️ Modifier</button>
+        <button class="btn-danger" onclick="deleteArticle(${i})">🗑️ Suppr.</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function openNewArticle() {
+  document.getElementById('article-id').value = '';
+  document.getElementById('modal-article-title').textContent = 'Nouvel article';
+  document.getElementById('article-form').reset();
+  document.getElementById('modal-article').classList.add('open');
+}
+
+function editArticle(i) {
+  const arts = getData('articles');
+  const a = arts[i];
+  document.getElementById('article-id').value = i;
+  document.getElementById('modal-article-title').textContent = 'Modifier l\'article';
+  document.getElementById('art-titre').value = a.titre;
+  document.getElementById('art-cat').value = a.cat;
+  document.getElementById('art-statut').value = a.statut;
+  document.getElementById('art-resume').value = a.resume;
+  document.getElementById('art-contenu').value = a.contenu||'';
+  document.getElementById('art-emoji').value = a.emoji||'';
+  document.getElementById('modal-article').classList.add('open');
+}
+
+function saveArticle(e) {
+  e.preventDefault();
+  const arts = getData('articles');
+  const id = document.getElementById('article-id').value;
+  const article = {
+    titre: document.getElementById('art-titre').value,
+    cat: document.getElementById('art-cat').value,
+    statut: document.getElementById('art-statut').value,
+    resume: document.getElementById('art-resume').value,
+    contenu: document.getElementById('art-contenu').value,
+    emoji: document.getElementById('art-emoji').value || '📰',
+    date: new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'})
+  };
+  if(id !== '') { arts[parseInt(id)] = article; } else { arts.unshift(article); }
+  setData('articles', arts);
+  closeModal('modal-article');
+  renderArticlesTable();
+  renderRecentArticles();
+  updateCounts();
+}
+
+function deleteArticle(i) {
+  if(!confirm('Supprimer cet article ?')) return;
+  const arts = getData('articles');
+  arts.splice(i, 1);
+  setData('articles', arts);
+  renderArticlesTable();
+  updateCounts();
+}
+
+// ===== FRAIS =====
+const fraisKeys = ['fr-inscription','fr-mensualite','fr-tenue','fr-sport','en-inscription','en-mensualite','en-tenue','en-sport','cs-inscription','cs-mensualite'];
+function loadFrais() {
+  const saved = getData('frais', {});
+  fraisKeys.forEach(k => { const el=document.getElementById('f-'+k); if(el&&saved[k]) el.value=saved[k]; });
+}
+function saveFrais() {
+  const obj = {};
+  fraisKeys.forEach(k => { const el=document.getElementById('f-'+k); if(el) obj[k]=el.value; });
+  setData('frais', obj);
+  const msg = document.getElementById('frais-saved');
+  msg.style.display='block';
+  setTimeout(()=>msg.style.display='none', 3000);
+}
+
+// ===== MESSAGES =====
+function renderContacts() {
+  const msgs = getData('messages');
+  const el = document.getElementById('contacts-list');
+  const empty = document.getElementById('no-contacts');
+  empty.style.display = msgs.length ? 'none' : 'block';
+  el.innerHTML = msgs.map((m,i) => `
+    <div style="padding:16px;border:1px solid #f3f4f6;border-radius:12px;margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;">
+        <div>
+          <div style="font-weight:700;color:var(--dark);">${m.nom} <span style="color:#6b7280;font-weight:400;">– ${m.telephone||''}</span></div>
+          <div style="font-size:.8rem;color:#9ca3af;">${m.date} · ${m.sujet||'Message général'}</div>
+        </div>
+        <button onclick="deleteMsg(${i})" class="btn-danger">🗑️</button>
+      </div>
+      <div style="font-size:.9rem;color:#374151;background:#f8faff;padding:12px;border-radius:8px;">${m.message}</div>
+      ${m.email ? `<div style="margin-top:8px;"><a href="mailto:${m.email}" style="font-size:.85rem;color:var(--blue);text-decoration:none;">✉ Répondre à ${m.email}</a></div>` : ''}
+    </div>
+  `).join('');
+}
+function deleteMsg(i) {
+  if(!confirm('Supprimer ce message ?')) return;
+  const msgs = getData('messages'); msgs.splice(i,1); setData('messages',msgs);
+  renderContacts(); updateCounts();
+}
+
+// ===== PRÉ-INSCRIPTIONS =====
+function renderPI() {
+  const pis = getData('preinscriptions');
+  const tbody = document.getElementById('pi-tbody');
+  const empty = document.getElementById('no-pi');
+  empty.style.display = pis.length ? 'none' : 'block';
+  tbody.innerHTML = pis.map((p,i) => `
+    <tr>
+      <td style="font-weight:600;">${p.nom}</td>
+      <td>${p.niveau}</td>
+      <td><span style="background:var(--blue-light);color:var(--blue);padding:3px 10px;border-radius:20px;font-size:.78rem;font-weight:600;">${p.section}</span></td>
+      <td><a href="tel:${p.tel}" style="color:var(--blue);text-decoration:none;">${p.tel}</a></td>
+      <td style="color:#6b7280;font-size:.85rem;">${p.date}</td>
+      <td><button onclick="deletePI(${i})" class="btn-danger">🗑️</button></td>
+    </tr>
+  `).join('');
+}
+function deletePI(i) {
+  if(!confirm('Supprimer cette pré-inscription ?')) return;
+  const pis = getData('preinscriptions'); pis.splice(i,1); setData('preinscriptions',pis);
+  renderPI(); updateCounts();
+}
+function exportPI() {
+  const pis = getData('preinscriptions');
+  if(!pis.length) { alert('Aucune pré-inscription à exporter.'); return; }
+  const csv = ['Nom,Niveau,Section,Téléphone,Date', ...pis.map(p=>`${p.nom},${p.niveau},${p.section},${p.tel},${p.date}`)].join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download='preinscriptions-cabmy.csv'; a.click();
+}
+
+// ===== MODAL =====
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal').forEach(m => m.addEventListener('click', e => { if(e.target===m) m.classList.remove('open'); }));
+
+// ===== DÉMO DATA =====
+// Pré-charger quelques données de démo si vide
+if(!getData('articles').length) {
+  setData('articles', [
+    {titre:'BEPC 2024 : 96% de réussite au CABMY',cat:'resultats',statut:'publie',resume:'Le CABMY célèbre une année exceptionnelle aux examens du BEPC.',emoji:'🏅',date:'15 juin 2024',contenu:'Contenu complet...'},
+    {titre:'Semaine de prière 2024',cat:'spiritualite',statut:'publie',resume:'Un moment de grâce et de recueillement pour toute la communauté.',emoji:'⛪',date:'10 mai 2024',contenu:'Contenu complet...'},
+    {titre:'Inscription cours du soir ouverte',cat:'soir',statut:'publie',resume:'Les inscriptions pour les cours du soir 2024-2025 sont ouvertes.',emoji:'🌙',date:'01 sept. 2024',contenu:'Contenu complet...'},
+  ]);
+}
+</script>
+</body>
+</html>

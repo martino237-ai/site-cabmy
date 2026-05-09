@@ -1,0 +1,26 @@
+@tailwind base; 
+@tailwind components; 
+@tailwind utilities; 
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btn-primary {
+    @apply bg-[#C6A43F] text-white font-semibold py-3 px-8 rounded-lg transition-all hover:bg-opacity-90;
+  }
+  .btn-outline {
+    @apply border-2 border-[#C6A43F] text-[#C6A43F] font-semibold py-3 px-8 rounded-lg transition-all hover:bg-[#C6A43F] hover:text-white;
+  }
+  .gold-line {
+    @apply w-12 h-0.5 bg-[#C6A43F];
+  }
+  .card-hover {
+    @apply transition-all hover:scale-105 hover:bg-white/20;
+  }
+}
+
+:root {
+  --gold: #C6A43F;
+}

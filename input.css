@@ -1,0 +1,186 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Variables couleurs personnalisées */
+:root {
+  --blue: #1a3a6b;
+  --blue-mid: #2952a3;
+  --blue-light: #e8eef8;
+  --blue-dark: #0f1f3d;
+  --gold: #c9a84c;
+  --gold-light: #f5e9c8;
+  --gold-dark: #8a6620;
+  --white: #ffffff;
+  --gray: #6b7280;
+  --dark: #0f1f3d;
+  --green-success: #065f46;
+  --green-bg: #d1fae5;
+}
+
+/* Styles personnalisés */
+@layer components {
+  .btn-primary {
+    @apply bg-[var(--gold)] text-[var(--dark)] font-bold transition-all duration-300 inline-block px-8 py-3 rounded-lg;
+  }
+
+  .btn-primary:hover {
+    @apply bg-[#b8922e] -translate-y-0.5 shadow-lg;
+  }
+
+  .btn-outline {
+    @apply border-2 border-[var(--gold)] text-[var(--gold)] font-bold transition-all duration-300 inline-block px-8 py-3 rounded-lg;
+  }
+
+  .btn-outline:hover {
+    @apply bg-[var(--gold)] text-[var(--dark)];
+  }
+
+  .card-hover {
+    @apply transition-transform duration-300 cursor-pointer;
+  }
+
+  .card-hover:hover {
+    @apply -translate-y-1.5 shadow-2xl;
+  }
+
+  .gold-line {
+    @apply w-[60px] h-[3px] bg-[var(--gold)];
+  }
+
+  .nav-link {
+    @apply relative;
+  }
+
+  .nav-link::after {
+    @apply absolute bottom-[-2px] left-0 w-0 h-[2px] bg-[var(--gold)] transition-all duration-300;
+    content: '';
+  }
+
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+
+  .animate-fade {
+    @apply opacity-0 translate-y-7 transition-all duration-700;
+  }
+
+  .animate-fade.visible {
+    @apply opacity-100 translate-y-0;
+  }
+
+  .animate-fade-left {
+    @apply opacity-0 -translate-x-7 transition-all duration-700;
+  }
+
+  .animate-fade-left.visible {
+    @apply opacity-100 translate-x-0;
+  }
+
+  .animate-fade-right {
+    @apply opacity-0 translate-x-7 transition-all duration-700;
+  }
+
+  .animate-fade-right.visible {
+    @apply opacity-100 translate-x-0;
+  }
+}
+
+/* Styles du carrousel */
+#hero-bg-slider > div {
+  @apply transition-opacity duration-1000 ease-in-out;
+}
+
+.bg-gold {
+  @apply bg-[var(--gold)];
+}
+
+.scale-125 {
+  @apply scale-125;
+}
+
+/* Mobile menu */
+.mobile-menu {
+  @apply hidden;
+}
+
+.mobile-menu.open {
+  @apply block;
+}
+
+/* Dropdown */
+.dropdown {
+  @apply relative;
+}
+
+.dropdown-menu {
+  @apply hidden absolute top-full left-0 bg-white min-w-[230px] shadow-2xl border-t-4 border-[var(--gold)] z-100 rounded-b-3xl;
+}
+
+.dropdown:hover .dropdown-menu {
+  @apply block;
+}
+
+.dropdown-menu a {
+  @apply block px-5 py-3 text-[var(--blue)] text-sm font-medium transition-all duration-200 no-underline;
+}
+
+.dropdown-menu a:hover {
+  @apply bg-[var(--blue-light)] text-[var(--gold-dark)] pl-7;
+}
+
+/* Lang toggle */
+.lang-active {
+  @apply bg-[var(--gold)] !important text-[var(--dark)] !important;
+}
+
+/* Form inputs */
+.form-input {
+  @apply w-full px-4 py-3 border-2 border-gray-200 rounded-2.5 font-sans text-base transition-all duration-300 outline-none bg-white text-[var(--dark)];
+}
+
+.form-input:focus {
+  @apply border-[var(--blue)] shadow-lg shadow-blue-200/50;
+}
+
+.form-input::placeholder {
+  @apply text-gray-400;
+}
+
+textarea.form-input {
+  @apply resize-vertical min-h-[140px];
+}
+
+/* Tables */
+table {
+  @apply w-full border-collapse;
+}
+
+th {
+  @apply bg-[var(--blue)] text-white px-4 py-3 text-left font-sans text-sm font-semibold;
+}
+
+td {
+  @apply px-4 py-3 border-b border-blue-50 text-sm;
+}
+
+tr:hover td {
+  @apply bg-[var(--blue-light)];
+}
+
+.amount {
+  @apply font-bold text-[var(--blue)];
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  @apply w-1.5;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-slate-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-[var(--blue-mid)] rounded;
+}

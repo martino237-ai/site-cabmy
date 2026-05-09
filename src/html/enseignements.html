@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enseignements – CABMY</title>
+  <link rel="stylesheet" href="../../output.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--blue:#1a3a6b;--blue-mid:#2952a3;--blue-light:#e8eef8;--gold:#c9a84c;--gold-light:#f5e9c8;--dark:#0f1f3d;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'DM Sans',sans-serif;color:var(--dark);}
+    h1,h2,h3,h4{font-family:'Playfair Display',serif;}
+    .nav-link{position:relative;}.nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:var(--gold);transition:width .3s;}.nav-link:hover::after{width:100%;}
+    .gold-line{width:60px;height:3px;background:var(--gold);}
+    .btn-primary{background:var(--gold);color:var(--dark);font-weight:600;transition:all .3s;}.btn-primary:hover{background:#b8922e;}
+    .lang-active{background:var(--gold);color:var(--dark);}
+    .mobile-menu{display:none;}.mobile-menu.open{display:block;}
+    .card-hover{transition:transform .3s,box-shadow .3s;}.card-hover:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(26,58,107,.12);}
+    .dropdown{position:relative;}.dropdown-menu{display:none;position:absolute;top:100%;left:0;background:#fff;min-width:220px;box-shadow:0 10px 40px rgba(0,0,0,.12);border-top:3px solid var(--gold);z-index:100;}.dropdown:hover .dropdown-menu{display:block;}.dropdown-menu a{display:block;padding:10px 20px;color:var(--blue);font-size:.9rem;transition:background .2s;}.dropdown-menu a:hover{background:var(--blue-light);color:var(--gold);}
+    .tab-btn{transition:all .3s;}.tab-btn.active{background:var(--blue);color:#fff;}
+    .tab-content{display:none;}.tab-content.active{display:block;}
+    .page-hero{background:linear-gradient(135deg,var(--dark) 0%,var(--blue) 100%);}
+    .animate-fade{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s;}.animate-fade.visible{opacity:1;transform:translateY(0);}
+    .soir-section{background:linear-gradient(135deg,var(--dark) 0%,#1e3060 100%);}
+    .matiere-tag{background:var(--blue-light);color:var(--blue);padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:500;}
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="bg-[#0f1f3d] text-white text-xs py-2 px-4 flex justify-between items-center">
+  <span class="opacity-70">📍 Nyom II, Petit Marché · Yaoundé</span>
+  <div class="flex gap-3 items-center">
+    <a href="tel:+237243850268" class="opacity-70 hover:opacity-100">📞 243 850 268 · 675 84 05 71</a>
+    <span class="opacity-30">|</span>
+    <button onclick="setLang('fr')" id="btn-fr" class="px-2 py-0.5 rounded text-xs font-semibold lang-active">FR</button>
+    <button onclick="setLang('en')" id="btn-en" class="px-2 py-0.5 rounded text-xs font-semibold hover:bg-white/10">EN</button>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="bg-white shadow-sm sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 flex justify-between items-center py-3">
+    <a href="../../index.html" class="flex items-center gap-3">
+      <img src="../../images/logo/WhatsApp Image 2025-09-23 at 19.42.18.jpeg" alt="Logo CABMY" class="w-12 h-12 rounded-full object-cover" />
+      <div>
+        <div class="font-bold text-sm leading-tight" style="color:var(--blue);font-family:'Playfair Display',serif">CABMY</div>
+        <div class="text-xs text-gray-500 leading-tight" data-fr="Collège Adventiste Bilingue Marathana" data-en="Marathana Bilingual Adventist College">Collège Adventiste Bilingue Marathana</div>
+      </div>
+    </a>
+    <div class="hidden lg:flex items-center gap-6 text-sm font-medium">
+      <a href="../../index.html" class="nav-link text-gray-600 hover:text-blue-800" data-fr="Accueil" data-en="Home">Accueil</a>
+      <a href="apropos.html" class="nav-link text-gray-600 hover:text-blue-800" data-fr="À propos" data-en="About">À propos</a>
+      <a href="enseignements.html" class="nav-link font-semibold" style="color:var(--blue)" data-fr="Enseignements" data-en="Academics">Enseignements</a>
+      <a href="vie-scolaire.html" class="nav-link text-gray-600 hover:text-blue-800" data-fr="Vie scolaire" data-en="School Life">Vie scolaire</a>
+      <div class="dropdown">
+        <a href="admissions.html" class="nav-link text-gray-600 hover:text-blue-800 flex items-center gap-1" data-fr="Admissions" data-en="Admissions">Admissions <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></a>
+        <div class="dropdown-menu">
+          <a href="admissions.html#conditions" data-fr="Conditions d'admission" data-en="Admission Conditions">Conditions d'admission</a>
+          <a href="admissions.html#frais" data-fr="Frais de scolarité" data-en="School Fees">Frais de scolarité</a>
+          <a href="admissions.html#calendrier" data-fr="Calendrier" data-en="Calendar">Calendrier</a>
+          <a href="admissions.html#tenues" data-fr="Tenues scolaires" data-en="School Uniforms">Tenues scolaires</a>
+        </div>
+      </div>
+      <a href="actualites.html" class="nav-link text-gray-600 hover:text-blue-800" data-fr="Actualités" data-en="News">Actualités</a>
+      <a href="contact.html" class="btn-primary px-4 py-2 rounded-lg text-sm" data-fr="Contact" data-en="Contact">Contact</a>
+    </div>
+    <button onclick="toggleMobile()" class="lg:hidden p-2 text-gray-600">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+  <div id="mobile-menu" class="mobile-menu lg:hidden bg-white border-t px-4 pb-4">
+    <div class="flex flex-col gap-3 pt-3 text-sm font-medium">
+      <a href="../../index.html" class="text-gray-700" data-fr="Accueil" data-en="Home">Accueil</a>
+      <a href="apropos.html" class="text-gray-700" data-fr="À propos" data-en="About">À propos</a>
+      <a href="enseignements.html" style="color:var(--blue)" data-fr="Enseignements" data-en="Academics">Enseignements</a>
+      <a href="vie-scolaire.html" class="text-gray-700" data-fr="Vie scolaire" data-en="School Life">Vie scolaire</a>
+      <a href="admissions.html" class="text-gray-700" data-fr="Admissions" data-en="Admissions">Admissions</a>
+      <a href="actualites.html" class="text-gray-700" data-fr="Actualités" data-en="News">Actualités</a>
+      <a href="contact.html" class="btn-primary px-4 py-2 rounded-lg text-center">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero py-20 text-white">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="gold-line mb-4"></div>
+    <h1 class="text-5xl font-bold mb-4" data-fr="Nos Enseignements" data-en="Our Academics">Nos Enseignements</h1>
+    <p class="text-white/60 text-lg max-w-2xl" data-fr="Trois sections complémentaires pour accompagner chaque apprenant vers l'excellence." data-en="Three complementary sections to guide every learner towards excellence.">Trois sections complémentaires pour accompagner chaque apprenant vers l'excellence.</p>
+    <div class="mt-4 text-sm text-white/40">
+      <a href="../../index.html" class="hover:text-white" data-fr="Accueil" data-en="Home">Accueil</a> <span class="mx-2">›</span>
+      <span data-fr="Enseignements" data-en="Academics">Enseignements</span>
+    </div>
+  </div>
+</section>
+
+<!-- TABS -->
+<section class="bg-white border-b sticky top-[73px] z-40">
+  <div class="max-w-7xl mx-auto px-4 flex gap-0 overflow-x-auto">
+    <button onclick="showTab('franco')" id="tab-franco" class="tab-btn active px-6 py-4 text-sm font-semibold whitespace-nowrap border-b-2 border-transparent" data-fr="🇫🇷 Section Francophone" data-en="🇫🇷 French Section">🇫🇷 Section Francophone</button>
+    <button onclick="showTab('anglo')" id="tab-anglo" class="tab-btn px-6 py-4 text-sm font-semibold whitespace-nowrap border-b-2 border-transparent text-gray-500" data-fr="🇬🇧 Section Anglophone" data-en="🇬🇧 English Section">🇬🇧 Section Anglophone</button>
+    <button onclick="showTab('soir')" id="tab-soir" class="tab-btn px-6 py-4 text-sm font-semibold whitespace-nowrap border-b-2 border-transparent text-gray-500" data-fr="🌙 Cours du Soir" data-en="🌙 Evening Classes">🌙 Cours du Soir</button>
+  </div>
+</section>
+
+<!-- FRANCO -->
+<div id="content-franco" class="tab-content active">
+  <section id="franco" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="grid lg:grid-cols-2 gap-16 items-start mb-20">
+        <div class="animate-fade">
+          <div class="gold-line mb-4"></div>
+          <h2 class="text-4xl font-bold mb-4" style="color:var(--blue)" data-fr="Section Francophone" data-en="French Section">Section Francophone</h2>
+          <p class="text-gray-500 leading-relaxed mb-6" data-fr="Classes ouvertes (prospectus 2024-2025): Enseignement francophone: 1er et 2nd cycle – toutes les séries. Enseignement anglophone: Form 1 à Upper Sixth (Arts & Sciences). Sciences et technologies du tertiaire (STT): 2nde STT/G – 1ère : ACC, CG, SES; Terminale : ACC, CG, SES." data-en="Open classes (2024-2025 brochure): French teaching: 1st and 2nd cycle – all series. English teaching: Form 1 to Upper Sixth (Arts & Sciences). Tertiary sciences and technologies (STT): 2nde STT/G – 1ère : ACC, CG, SES; Terminale : ACC, CG, SES.">
+            Classes ouvertes (prospectus 2024-2025): 6e, 5e, 4e All, 4e Esp, 3e All, 3e Esp, 2nde A4 All, 2nde A4 Esp, 2nde C, 1ere A4 All, 1ere A4 Esp, PC, PD, Tle A4 All, Tle A4 Esp, Tle C, Tle D.
+          </p>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="p-4 rounded-xl" style="background:var(--blue-light)">
+              <div class="font-bold mb-1" style="color:var(--blue)" data-fr="Collège (4 ans)" data-en="College (4 years)">Collège (4 ans)</div>
+              <div class="text-sm text-gray-500">6ème · 5ème · 4ème · 3ème</div>
+              <div class="text-xs mt-2 font-semibold" style="color:var(--gold)">→ BEPC</div>
+            </div>
+            <div class="p-4 rounded-xl" style="background:var(--blue-light)">
+              <div class="font-bold mb-1" style="color:var(--blue)" data-fr="Lycée (3 ans)" data-en="High School (3 years)">Lycée (3 ans)</div>
+              <div class="text-sm text-gray-500">2nde · 1ère · Terminale</div>
+              <div class="text-xs mt-2 font-semibold" style="color:var(--gold)">→ Baccalauréat</div>
+            </div>
+          </div>
+        </div>
+        <div class="space-y-4 animate-fade">
+          <div class="flex items-center gap-3 p-4 rounded-xl border" style="border-color:var(--blue-light)">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white text-sm" style="background:var(--blue)">📚</div>
+            <div>
+              <div class="font-semibold text-sm" style="color:var(--blue)" data-fr="Matières principales" data-en="Core Subjects">Matières principales</div>
+              <div class="text-xs text-gray-500" data-fr="Français, Maths, Sciences, Histoire-Géo, Anglais, Philosophie…" data-en="French, Maths, Sciences, History-Geography, English, Philosophy…">Français, Maths, Sciences, Histoire-Géo, Anglais, Philosophie…</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 p-4 rounded-xl border" style="border-color:var(--blue-light)">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white text-sm" style="background:var(--blue)">🎓</div>
+            <div>
+              <div class="font-semibold text-sm" style="color:var(--blue)" data-fr="Examens officiels" data-en="Official Exams">Examens officiels</div>
+              <div class="text-xs text-gray-500" data-fr="BEPC (3ème) · Probatoire (1ère) · Baccalauréat (Tle)" data-en="BEPC (3rd) · Probatoire (1st) · Baccalaureate (Terminal)">BEPC (3ème) · Probatoire (1ère) · Baccalauréat (Tle)</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 p-4 rounded-xl border" style="border-color:var(--blue-light)">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white text-sm" style="background:var(--blue)">⏰</div>
+            <div>
+              <div class="font-semibold text-sm" style="color:var(--blue)" data-fr="Horaires" data-en="Schedule">Horaires</div>
+              <div class="text-xs text-gray-500" data-fr="Lundi – Vendredi · 7h30 – 16h00" data-en="Monday – Friday · 7:30AM – 4:00PM">Lundi – Vendredi · 7h30 – 16h00</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Matières par niveau -->
+      <h3 class="text-2xl font-bold mb-8" style="color:var(--blue)" data-fr="Matières par niveau" data-en="Subjects by Level">Matières par niveau</h3>
+      <div class="grid lg:grid-cols-2 gap-6">
+        <div class="rounded-2xl border border-gray-100 p-6 card-hover">
+          <div class="flex justify-between items-center mb-4">
+            <h4 class="font-bold" style="color:var(--blue)" data-fr="Collège (6ème – 3ème)" data-en="Middle School (6th – 3rd)">Collège (6ème – 3ème)</h4>
+            <span class="text-xs px-3 py-1 rounded-full" style="background:var(--gold-light);color:#7a5c00">→ BEPC</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="matiere-tag">Français</span><span class="matiere-tag">Mathématiques</span><span class="matiere-tag">Anglais</span>
+            <span class="matiere-tag">SVT</span><span class="matiere-tag">Physique-Chimie</span><span class="matiere-tag">Histoire-Géo</span>
+            <span class="matiere-tag">EPS</span><span class="matiere-tag">Éducation Civique</span><span class="matiere-tag">Informatique</span>
+            <span class="matiere-tag">Dessin</span><span class="matiere-tag">Culture religieuse</span>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-gray-100 p-6 card-hover">
+          <div class="flex justify-between items-center mb-4">
+            <h4 class="font-bold" style="color:var(--blue)" data-fr="Lycée (2nde – Terminale)" data-en="High School (2nd – Terminal)">Lycée (2nde – Terminale)</h4>
+            <span class="text-xs px-3 py-1 rounded-full" style="background:var(--gold-light);color:#7a5c00">→ Bac</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="matiere-tag">Français</span><span class="matiere-tag">Philosophie</span><span class="matiere-tag">Anglais</span>
+            <span class="matiere-tag">Mathématiques</span><span class="matiere-tag">SVT</span><span class="matiere-tag">Physique-Chimie</span>
+            <span class="matiere-tag">Histoire-Géo</span><span class="matiere-tag">Économie</span><span class="matiere-tag">EPS</span>
+            <span class="matiere-tag">Informatique</span><span class="matiere-tag">Culture religieuse</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ANGLO -->
+<div id="content-anglo" class="tab-content">
+  <section id="anglo" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="grid lg:grid-cols-2 gap-16 items-start mb-20">
+        <div class="animate-fade">
+          <div class="gold-line mb-4"></div>
+          <h2 class="text-4xl font-bold mb-4" style="color:var(--blue)" data-fr="Section Anglophone" data-en="English Section">Section Anglophone</h2>
+          <p class="text-gray-500 leading-relaxed mb-6" data-fr="Classes ouvertes (prospectus 2024-2025): F2, F3, F4 Arts, F4 Sc, F5 Arts, F5 Sc, Lower 6 Arts, Lower 6 Sc, Upper 6 Arts, Upper 6 Sc." data-en="Open classes (2024-2025 brochure): F2, F3, F4 Arts, F4 Sc, F5 Arts, F5 Sc, Lower 6 Arts, Lower 6 Sc, Upper 6 Arts, Upper 6 Sc.">
+            Classes ouvertes (prospectus 2024-2025): F2, F3, F4 Arts, F4 Sc, F5 Arts, F5 Sc, Lower 6 Arts, Lower 6 Sc, Upper 6 Arts, Upper 6 Sc.
+          </p>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="p-4 rounded-xl" style="background:var(--gold-light)">
+              <div class="font-bold mb-1" style="color:var(--blue)" data-fr="Secondaire (5 ans)" data-en="Secondary (5 years)">Secondaire (5 ans)</div>
+              <div class="text-sm text-gray-500">Form 1 · 2 · 3 · 4 · 5</div>
+              <div class="text-xs mt-2 font-semibold" style="color:var(--gold)">→ GCE O/L</div>
+            </div>
+            <div class="p-4 rounded-xl" style="background:var(--gold-light)">
+              <div class="font-bold mb-1" style="color:var(--blue)" data-fr="Supérieur (2 ans)" data-en="Sixth Form (2 years)">Sixth Form (2 ans)</div>
+              <div class="text-sm text-gray-500">Lower Sixth · Upper Sixth</div>
+              <div class="text-xs mt-2 font-semibold" style="color:var(--gold)">→ GCE A/L</div>
+            </div>
+          </div>
+        </div>
+        <div class="space-y-4 animate-fade">
+          <div class="flex items-center gap-3 p-4 rounded-xl border" style="border-color:var(--gold-light)">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white text-sm" style="background:var(--gold)">📚</div>
+            <div>
+              <div class="font-semibold text-sm" style="color:var(--blue)" data-fr="Matières principales" data-en="Core Subjects">Core Subjects</div>
+              <div class="text-xs text-gray-500">English, Maths, Sciences, History, Geography, French…</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 p-4 rounded-xl border" style="border-color:var(--gold-light)">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white text-sm" style="background:var(--gold)">🎓</div>
+            <div>
+              <div class="font-semibold text-sm" style="color:var(--blue)">Official Examinations</div>
+              <div class="text-xs text-gray-500">GCE O/L (Form 5) · GCE A/L (Upper Sixth)</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 p-4 rounded-xl border" style="border-color:var(--gold-light)">
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white text-sm" style="background:var(--gold)">🌍</div>
+            <div>
+              <div class="font-semibold text-sm" style="color:var(--blue)">International Recognition</div>
+              <div class="text-xs text-gray-500">GCE certificates recognised across Africa and beyond</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Subjects grid -->
+      <h3 class="text-2xl font-bold mb-8" style="color:var(--blue)">Subjects by Level</h3>
+      <div class="grid lg:grid-cols-2 gap-6">
+        <div class="rounded-2xl border border-gray-100 p-6 card-hover">
+          <div class="flex justify-between items-center mb-4">
+            <h4 class="font-bold" style="color:var(--blue)">Secondary (Form 1 – Form 5)</h4>
+            <span class="text-xs px-3 py-1 rounded-full" style="background:var(--gold-light);color:#7a5c00">→ GCE O/L</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="matiere-tag">English Language</span><span class="matiere-tag">Mathematics</span><span class="matiere-tag">French</span>
+            <span class="matiere-tag">Biology</span><span class="matiere-tag">Chemistry</span><span class="matiere-tag">Physics</span>
+            <span class="matiere-tag">History</span><span class="matiere-tag">Geography</span><span class="matiere-tag">Computer Science</span>
+            <span class="matiere-tag">Religious Studies</span><span class="matiere-tag">Physical Education</span>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-gray-100 p-6 card-hover">
+          <div class="flex justify-between items-center mb-4">
+            <h4 class="font-bold" style="color:var(--blue)">Sixth Form (L. Sixth – U. Sixth)</h4>
+            <span class="text-xs px-3 py-1 rounded-full" style="background:var(--gold-light);color:#7a5c00">→ GCE A/L</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="matiere-tag">English Literature</span><span class="matiere-tag">Mathematics</span>
+            <span class="matiere-tag">Biology</span><span class="matiere-tag">Chemistry</span><span class="matiere-tag">Physics</span>
+            <span class="matiere-tag">Economics</span><span class="matiere-tag">History</span><span class="matiere-tag">Geography</span>
+            <span class="matiere-tag">Computer Science</span><span class="matiere-tag">Religious Studies</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- COURS DU SOIR -->
+<div id="content-soir" class="tab-content">
+  <section id="soir" class="soir-section py-24 text-white">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex items-center gap-4 mb-3">
+        <div class="gold-line"></div>
+        <span class="text-xs font-bold tracking-widest uppercase" style="color:var(--gold)" data-fr="DEPUIS 2023" data-en="SINCE 2023">DEPUIS 2023</span>
+      </div>
+      <h2 class="text-4xl font-bold mb-4" data-fr="Cours du Soir" data-en="Evening Classes">Cours du Soir</h2>
+      <p class="text-white/60 text-lg max-w-2xl mb-12" data-fr="Pour adultes et travailleurs souhaitant obtenir leur diplôme ou reprendre leurs études. Une seconde chance, à votre rythme." data-en="For adults and workers wishing to obtain their diploma or resume their studies. A second chance, at your own pace.">Pour adultes et travailleurs souhaitant obtenir leur diplôme ou reprendre leurs études. Une seconde chance, à votre rythme.</p>
+
+      <div class="grid lg:grid-cols-3 gap-8 mb-16">
+        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+          <div class="text-3xl mb-3">🕕</div>
+          <h3 class="font-bold text-lg mb-2" data-fr="Horaires" data-en="Schedule">Horaires</h3>
+          <div class="text-white/70 text-sm space-y-1">
+            <div data-fr="📅 Lundi – Vendredi : 18h00 – 21h30" data-en="📅 Monday – Friday: 6:00PM – 9:30PM">📅 Lundi – Vendredi : 18h00 – 21h30</div>
+            <div data-fr="📅 Samedi : 8h00 – 12h00" data-en="📅 Saturday: 8:00AM – 12:00PM">📅 Samedi : 8h00 – 12h00</div>
+          </div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+          <div class="text-3xl mb-3">👥</div>
+          <h3 class="font-bold text-lg mb-2" data-fr="Public cible" data-en="Target Audience">Public cible</h3>
+          <div class="text-white/70 text-sm space-y-1">
+            <div data-fr="✓ Adultes et travailleurs" data-en="✓ Adults and workers">✓ Adultes et travailleurs</div>
+            <div data-fr="✓ Personnes n'ayant pas terminé leurs études" data-en="✓ People who did not finish their studies">✓ Personnes n'ayant pas terminé leurs études</div>
+            <div data-fr="✓ Toute personne souhaitant un diplôme" data-en="✓ Anyone wishing to obtain a diploma">✓ Toute personne souhaitant un diplôme</div>
+          </div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+          <div class="text-3xl mb-3">🎓</div>
+          <h3 class="font-bold text-lg mb-2" data-fr="Examens préparés" data-en="Exams Prepared">Examens préparés</h3>
+          <div class="text-white/70 text-sm space-y-1">
+            <div>✓ BEPC</div>
+            <div data-fr="✓ Probatoire" data-en="✓ Probatoire">✓ Probatoire</div>
+            <div data-fr="✓ Baccalauréat" data-en="✓ Baccalaureate">✓ Baccalauréat</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA inscription cours du soir -->
+      <div class="max-w-2xl mx-auto text-center bg-white/10 rounded-2xl p-10 border border-white/20">
+        <h3 class="text-2xl font-bold mb-3" data-fr="Intéressé(e) par les cours du soir ?" data-en="Interested in Evening Classes?">Intéressé(e) par les cours du soir ?</h3>
+        <p class="text-white/60 mb-6 text-sm" data-fr="Contactez-nous ou visitez le secrétariat pour obtenir plus d'informations et vous inscrire. Places limitées." data-en="Contact us or visit the secretariat for more information and to enrol. Limited places.">Contactez-nous ou visitez le secrétariat pour obtenir plus d'informations et vous inscrire. Places limitées.</p>
+        <div class="flex flex-wrap gap-4 justify-center">
+          <a href="contact.html" class="btn-primary px-6 py-3 rounded-lg inline-block" data-fr="S'inscrire maintenant" data-en="Enrol Now">S'inscrire maintenant</a>
+          <a href="tel:+237 675 84 05 71" class="border-2 border-white/30 text-white px-6 py-3 rounded-lg inline-block hover:bg-white/10" data-fr="Appeler le secrétariat" data-en="Call the Secretariat">Appeler le secrétariat</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- FOOTER -->
+<footer class="py-12" style="background:var(--dark)">
+  <div class="max-w-7xl mx-auto px-4 grid lg:grid-cols-4 gap-8">
+    <div><div class="font-bold text-white mb-3" style="font-family:'Playfair Display',serif">CABMY</div><p class="text-white/40 text-sm">Collège Adventiste Bilingue Marathana de Yaoundé.</p></div>
+    <div><div class="font-bold text-white mb-3">Navigation</div><div class="flex flex-col gap-2 text-sm text-white/50"><a href="index.html" class="hover:text-white">Accueil</a><a href="apropos.html" class="hover:text-white">À propos</a><a href="admissions.html" class="hover:text-white">Admissions</a><a href="contact.html" class="hover:text-white">Contact</a></div></div>
+    <div><div class="font-bold text-white mb-3">Contact</div><div class="flex flex-col gap-2 text-sm text-white/50"><div>📍 Nyom, Yaoundé</div><div>📞 +237 600 000 000</div><div>✉ contact@cabmy.cm</div></div></div>
+    <div><div class="font-bold text-white mb-3">Sections</div><div class="flex flex-col gap-2 text-sm text-white/50"><a href="#" onclick="showTab('franco')" class="hover:text-white">Section Francophone</a><a href="#" onclick="showTab('anglo')" class="hover:text-white">Section Anglophone</a><a href="#" onclick="showTab('soir')" class="hover:text-white">Cours du Soir</a></div></div>
+  </div>
+  <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-white/10 text-center text-xs text-white/30">© 2024 CABMY – Tous droits réservés</div>
+</footer>
+
+<script>
+  let currentLang = localStorage.getItem('cabmy-lang')||'fr';
+  function setLang(lang){currentLang=lang;localStorage.setItem('cabmy-lang',lang);document.querySelectorAll('[data-fr]').forEach(el=>{el.textContent=el.getAttribute('data-'+lang)||el.textContent;});document.getElementById('btn-fr').classList.toggle('lang-active',lang==='fr');document.getElementById('btn-en').classList.toggle('lang-active',lang==='en');document.documentElement.lang=lang;}
+  setLang(currentLang);
+  function toggleMobile(){document.getElementById('mobile-menu').classList.toggle('open');}
+  function showTab(tab){
+    ['franco','anglo','soir'].forEach(t=>{
+      document.getElementById('content-'+t).classList.remove('active');
+      const btn=document.getElementById('tab-'+t);
+      btn.classList.remove('active');btn.classList.add('text-gray-500');
+      btn.style.borderBottomColor='transparent';btn.style.color='';
+    });
+    document.getElementById('content-'+tab).classList.add('active');
+    const active=document.getElementById('tab-'+tab);
+    active.classList.add('active');active.classList.remove('text-gray-500');
+    active.style.borderBottomColor='var(--gold)';active.style.color='var(--blue)';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  // Check hash
+  if(window.location.hash==='#soir') showTab('soir');
+  if(window.location.hash==='#anglo') showTab('anglo');
+  const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.1});
+  document.querySelectorAll('.animate-fade').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Formulaire d'inscription – CABMY</title>
+  <link rel="stylesheet" href="../../output.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--blue:#1a3a6b;--blue-mid:#2952a3;--blue-light:#e8eef8;--gold:#c9a84c;--gold-light:#f5e9c8;--dark:#0f1f3d;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'DM Sans',sans-serif;background:#f0f4ff;color:var(--dark);}
+    h1,h2,h3{font-family:'Playfair Display',serif;}
+    .form-page{background:#fff;max-width:820px;margin:32px auto;border-radius:0;box-shadow:0 8px 48px rgba(0,0,0,.12);}
+    .form-header{background:linear-gradient(135deg,var(--dark) 0%,var(--blue) 100%);color:#fff;padding:32px 40px;position:relative;overflow:hidden;}
+    .form-header::after{content:'';position:absolute;right:-40px;top:-40px;width:200px;height:200px;border-radius:50%;border:2px solid rgba(255,255,255,.08);}
+    .form-header::before{content:'';position:absolute;right:20px;top:20px;width:120px;height:120px;border-radius:50%;border:1px solid rgba(255,255,255,.05);}
+    .form-body{padding:40px;}
+    .section-title{font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--blue);padding:8px 0 6px;border-bottom:2px solid var(--gold);margin-bottom:18px;}
+    .form-group{margin-bottom:14px;}
+    label{display:block;font-size:.78rem;font-weight:700;color:#374151;margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em;}
+    .field-line{border-bottom:1.5px solid #cbd5e1;padding:6px 4px;font-size:.95rem;min-height:28px;color:var(--dark);}
+    .field-line input{width:100%;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:.95rem;color:var(--dark);background:transparent;}
+    .field-line select{width:100%;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:.95rem;color:var(--dark);background:transparent;}
+    .form-row{display:grid;gap:20px;}
+    .form-row.cols-2{grid-template-columns:1fr 1fr;}
+    .form-row.cols-3{grid-template-columns:1fr 1fr 1fr;}
+    .checkbox-group{display:flex;flex-wrap:wrap;gap:16px;margin-top:4px;}
+    .checkbox-item{display:flex;align-items:center;gap:6px;font-size:.9rem;}
+    .checkbox-item input{width:16px;height:16px;accent-color:var(--blue);}
+    .signature-box{border:1.5px dashed #cbd5e1;height:80px;border-radius:8px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;color:#9ca3af;font-size:.8rem;}
+    .section-block{margin-bottom:32px;}
+    .form-footer{background:var(--dark);color:#fff;padding:20px 40px;text-align:center;font-size:.8rem;}
+    .gold-badge{background:var(--gold);color:var(--dark);padding:3px 12px;border-radius:20px;font-weight:700;font-size:.78rem;display:inline-block;}
+    .photo-box{width:110px;height:130px;border:2px dashed #cbd5e1;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;color:#9ca3af;font-size:.75rem;text-align:center;flex-shrink:0;}
+    .info-row{display:flex;align-items:start;gap:24px;}
+    @media print{
+      body{background:#fff;}
+      .form-page{margin:0;box-shadow:none;border-radius:0;}
+      .no-print{display:none!important;}
+      @page{margin:0;size:A4;}
+    }
+    .btn-print{background:var(--gold);color:var(--dark);font-weight:700;padding:12px 28px;border-radius:10px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.95rem;display:flex;align-items:center;gap:8px;transition:all .3s;}
+    .btn-print:hover{background:#b8922e;transform:translateY(-2px);}
+    .btn-back{background:var(--blue-light);color:var(--blue);font-weight:700;padding:12px 24px;border-radius:10px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.95rem;text-decoration:none;display:flex;align-items:center;gap:8px;}
+    .watermark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-35deg);font-size:80px;font-weight:900;color:rgba(26,58,107,.04);font-family:'Playfair Display',serif;pointer-events:none;white-space:nowrap;z-index:0;}
+    .form-body{position:relative;}
+  </style>
+</head>
+<body>
+
+<!-- BARRE D'ACTIONS -->
+<div class="no-print" style="background:var(--dark);padding:14px 32px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:50;">
+  <div style="display:flex;align-items:center;gap:16px;">
+    <a href="admissions.html" class="btn-back">← Retour aux admissions</a>
+    <span style="color:rgba(255,255,255,.4);font-size:.85rem;" data-fr="Formulaire d'inscription officiel" data-en="Official Registration Form">Formulaire d'inscription officiel</span>
+  </div>
+  <div style="display:flex;gap:12px;">
+    <button class="btn-print" onclick="window.print()">🖨️ Imprimer / Télécharger PDF</button>
+  </div>
+</div>
+
+<!-- PAGE DU FORMULAIRE -->
+<div class="form-page" id="form-page">
+
+  <!-- EN-TÊTE -->
+  <div class="form-header">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1;">
+      <div>
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+          <div style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.15);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:1.3rem;color:#fff;flex-shrink:0;">CA</div>
+          <div>
+            <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:1.3rem;letter-spacing:.03em;">CABMY</div>
+            <div style="font-size:.82rem;opacity:.75;line-height:1.4;">Collège Adventiste Bilingue Marathana de Yaoundé<br>Nyom II, Petit Marché · Yaoundé, Cameroun</div>
+          </div>
+        </div>
+        <div style="margin-top:4px;">
+          <div style="font-size:.68rem;opacity:.5;letter-spacing:.15em;text-transform:uppercase;margin-bottom:4px;">Année scolaire</div>
+          <div style="font-size:1.5rem;font-family:'Playfair Display',serif;font-weight:700;color:var(--gold);">2024 – 2025</div>
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;letter-spacing:.04em;margin-bottom:6px;">FICHE D'INSCRIPTION</div>
+        <div class="gold-badge">FORMULAIRE OFFICIEL</div>
+        <div style="margin-top:12px;font-size:.75rem;opacity:.5;">N° de dossier : ___________</div>
+        <div style="margin-top:4px;font-size:.75rem;opacity:.5;">Date de dépôt : ___________</div>
+        <div style="margin-top:4px;font-size:.75rem;opacity:.5;">Visa du secrétariat : ______</div>
+      </div>
+    </div>
+    <!-- DEVISE -->
+    <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,.15);font-size:.75rem;letter-spacing:.25em;text-transform:uppercase;opacity:.7;position:relative;z-index:1;">
+      ✦ TRAVAIL &nbsp;–&nbsp; DISCIPLINE &nbsp;–&nbsp; SUCCÈS ✦
+    </div>
+  </div>
+
+  <!-- CORPS DU FORMULAIRE -->
+  <div class="form-body">
+    <div class="watermark">CABMY</div>
+
+    <!-- SECTION ÉLÈVE -->
+    <div class="section-block">
+      <div class="section-title">I. Informations sur l'élève</div>
+      <div class="info-row">
+        <div style="flex:1;">
+          <div class="form-row cols-2">
+            <div class="form-group">
+              <label>Nom de famille</label>
+              <div class="field-line"><input type="text" placeholder=""></div>
+            </div>
+            <div class="form-group">
+              <label>Prénom(s)</label>
+              <div class="field-line"><input type="text" placeholder=""></div>
+            </div>
+          </div>
+          <div class="form-row cols-3">
+            <div class="form-group">
+              <label>Date de naissance</label>
+              <div class="field-line"><input type="date"></div>
+            </div>
+            <div class="form-group">
+              <label>Lieu de naissance</label>
+              <div class="field-line"><input type="text"></div>
+            </div>
+            <div class="form-group">
+              <label>Sexe</label>
+              <div class="checkbox-group" style="margin-top:10px;">
+                <div class="checkbox-item"><input type="checkbox"> Masculin</div>
+                <div class="checkbox-item"><input type="checkbox"> Féminin</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row cols-2">
+            <div class="form-group">
+              <label>Nationalité</label>
+              <div class="field-line"><input type="text" value="Camerounaise"></div>
+            </div>
+            <div class="form-group">
+              <label>N° Extrait d'acte de naissance</label>
+              <div class="field-line"><input type="text"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Adresse de résidence</label>
+            <div class="field-line"><input type="text"></div>
+          </div>
+        </div>
+        <!-- PHOTO -->
+        <div>
+          <label style="text-align:center;margin-bottom:6px;">Photo d'identité</label>
+          <div class="photo-box">
+            <span style="font-size:1.8rem;">📷</span>
+            <span>4×4 cm<br>récente</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION SCOLARITÉ -->
+    <div class="section-block">
+      <div class="section-title">II. Informations scolaires</div>
+      <div class="form-row cols-2">
+        <div class="form-group">
+          <label>Section demandée</label>
+          <div class="checkbox-group" style="margin-top:10px;">
+            <div class="checkbox-item"><input type="checkbox"> Francophone</div>
+            <div class="checkbox-item"><input type="checkbox"> Anglophone</div>
+            <div class="checkbox-item"><input type="checkbox"> Cours du soir</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Classe / Niveau demandé(e)</label>
+          <div class="field-line">
+            <select>
+              <option value="">-- Sélectionner --</option>
+              <optgroup label="Section Francophone">
+                <option>6ème</option><option>5ème</option><option>4ème</option><option>3ème</option>
+                <option>2nde</option><option>1ère</option><option>Terminale</option>
+              </optgroup>
+              <optgroup label="Section Anglophone">
+                <option>Form 1</option><option>Form 2</option><option>Form 3</option>
+                <option>Form 4</option><option>Form 5</option>
+                <option>Lower Sixth</option><option>Upper Sixth</option>
+              </optgroup>
+              <optgroup label="Cours du soir">
+                <option>Cours du soir</option>
+              </optgroup>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="form-row cols-2">
+        <div class="form-group">
+          <label>Ancien établissement</label>
+          <div class="field-line"><input type="text"></div>
+        </div>
+        <div class="form-group">
+          <label>Dernière classe fréquentée</label>
+          <div class="field-line"><input type="text"></div>
+        </div>
+      </div>
+      <div class="form-row cols-3">
+        <div class="form-group">
+          <label>Moyenne générale (année préc.)</label>
+          <div class="field-line"><input type="text" placeholder="/20"></div>
+        </div>
+        <div class="form-group">
+          <label>Résultat obtenu</label>
+          <div class="checkbox-group" style="margin-top:8px;">
+            <div class="checkbox-item"><input type="checkbox"> Admis</div>
+            <div class="checkbox-item"><input type="checkbox"> Redouble</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Examen préparé (si applicable)</label>
+          <div class="field-line">
+            <select>
+              <option value="">--</option>
+              <option>BEPC</option><option>Probatoire</option>
+              <option>Baccalauréat</option><option>GCE O/L</option><option>GCE A/L</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION PARENTS -->
+    <div class="section-block">
+      <div class="section-title">III. Informations sur le parent / tuteur</div>
+      <div style="background:var(--blue-light);border-radius:12px;padding:18px;margin-bottom:16px;">
+        <div style="font-weight:700;font-size:.85rem;color:var(--blue);margin-bottom:12px;">Père / Tuteur légal</div>
+        <div class="form-row cols-3">
+          <div class="form-group"><label>Nom & Prénom</label><div class="field-line" style="background:transparent;"><input type="text"></div></div>
+          <div class="form-group"><label>Téléphone principal</label><div class="field-line" style="background:transparent;"><input type="tel" placeholder="+237 6XX XXX XXX"></div></div>
+          <div class="form-group"><label>Profession</label><div class="field-line" style="background:transparent;"><input type="text"></div></div>
+        </div>
+        <div class="form-row cols-2">
+          <div class="form-group"><label>Email</label><div class="field-line" style="background:transparent;"><input type="email"></div></div>
+          <div class="form-group"><label>WhatsApp</label><div class="field-line" style="background:transparent;"><input type="tel"></div></div>
+        </div>
+      </div>
+      <div style="background:#f8faff;border-radius:12px;padding:18px;">
+        <div style="font-weight:700;font-size:.85rem;color:var(--blue);margin-bottom:12px;">Mère / Second tuteur</div>
+        <div class="form-row cols-3">
+          <div class="form-group"><label>Nom & Prénom</label><div class="field-line"><input type="text"></div></div>
+          <div class="form-group"><label>Téléphone</label><div class="field-line"><input type="tel" placeholder="+237 6XX XXX XXX"></div></div>
+          <div class="form-group"><label>Profession</label><div class="field-line"><input type="text"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION PIÈCES -->
+    <div class="section-block">
+      <div class="section-title">IV. Pièces du dossier (cocher les pièces fournies)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 32px;">
+        <div class="checkbox-item" style="padding:8px;border-bottom:1px solid #f0f0f0;">
+          <input type="checkbox"> <span>Extrait d'acte de naissance (original + copie)</span>
+        </div>
+        <div class="checkbox-item" style="padding:8px;border-bottom:1px solid #f0f0f0;">
+          <input type="checkbox"> <span>Certificat de scolarité de l'année précédente</span>
+        </div>
+        <div class="checkbox-item" style="padding:8px;border-bottom:1px solid #f0f0f0;">
+          <input type="checkbox"> <span>Bulletins de notes des 2 dernières années</span>
+        </div>
+        <div class="checkbox-item" style="padding:8px;border-bottom:1px solid #f0f0f0;">
+          <input type="checkbox"> <span>4 photos d'identité récentes (4×4 cm)</span>
+        </div>
+        <div class="checkbox-item" style="padding:8px;border-bottom:1px solid #f0f0f0;">
+          <input type="checkbox"> <span>Photocopie CNI parent ou tuteur légal</span>
+        </div>
+        <div class="checkbox-item" style="padding:8px;border-bottom:1px solid #f0f0f0;">
+          <input type="checkbox"> <span>Formulaire d'inscription rempli et signé</span>
+        </div>
+        <div class="checkbox-item" style="padding:8px;">
+          <input type="checkbox"> <span>Reçu de paiement des frais d'inscription</span>
+        </div>
+        <div class="checkbox-item" style="padding:8px;">
+          <input type="checkbox"> <span>Autres : ___________________________</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION SANTÉ -->
+    <div class="section-block">
+      <div class="section-title">V. Informations médicales (facultatif)</div>
+      <div class="form-row cols-2">
+        <div class="form-group">
+          <label>Allergies connues</label>
+          <div class="field-line"><input type="text" placeholder="Aucune / Préciser..."></div>
+        </div>
+        <div class="form-group">
+          <label>Traitement médical en cours</label>
+          <div class="field-line"><input type="text" placeholder="Aucun / Préciser..."></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Personne à contacter en cas d'urgence (si différente du tuteur)</label>
+        <div class="form-row cols-2">
+          <div class="field-line"><input type="text" placeholder="Nom & Prénom"></div>
+          <div class="field-line"><input type="tel" placeholder="Téléphone"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DÉCLARATION & SIGNATURES -->
+    <div class="section-block">
+      <div class="section-title">VI. Déclaration & Signatures</div>
+      <div style="background:var(--gold-light);border-radius:10px;padding:16px;margin-bottom:20px;font-size:.85rem;line-height:1.6;color:#5c3e00;border-left:4px solid var(--gold);">
+        Je soussigné(e), parent ou tuteur légal de l'élève désigné(e) ci-dessus, déclare avoir pris connaissance du règlement intérieur du <strong>Collège Adventiste Bilingue Marathana de Yaoundé (CABMY)</strong> et m'engage à le faire respecter par mon enfant. J'autorise l'établissement à prendre toutes les mesures nécessaires en cas d'urgence médicale si je suis injoignable.
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;">
+        <div>
+          <div style="font-size:.8rem;font-weight:700;color:var(--blue);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em;">Signature du parent/tuteur</div>
+          <div class="signature-box">Signature & date</div>
+        </div>
+        <div>
+          <div style="font-size:.8rem;font-weight:700;color:var(--blue);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em;">Signature du candidat</div>
+          <div class="signature-box">Signature</div>
+        </div>
+        <div>
+          <div style="font-size:.8rem;font-weight:700;color:var(--blue);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em;">Cachet & visa du secrétariat</div>
+          <div class="signature-box">Cachet officiel</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RÉSERVÉ ADMINISTRATION -->
+    <div class="section-block">
+      <div class="section-title">VII. Réservé à l'administration</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+        <div class="form-group">
+          <label>Dossier complet</label>
+          <div class="checkbox-group" style="margin-top:8px;">
+            <div class="checkbox-item"><input type="checkbox"> Oui</div>
+            <div class="checkbox-item"><input type="checkbox"> Non</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Décision d'admission</label>
+          <div class="checkbox-group" style="margin-top:8px;">
+            <div class="checkbox-item"><input type="checkbox"> Admis(e)</div>
+            <div class="checkbox-item"><input type="checkbox"> Refusé(e)</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Frais payés</label>
+          <div class="checkbox-group" style="margin-top:8px;">
+            <div class="checkbox-item"><input type="checkbox"> Complets</div>
+            <div class="checkbox-item"><input type="checkbox"> Partiels</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-row cols-2">
+        <div class="form-group">
+          <label>Observations</label>
+          <div class="field-line"><input type="text"></div>
+        </div>
+        <div class="form-group">
+          <label>Visa du Principal / Directeur</label>
+          <div class="signature-box" style="height:60px;">Signature</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PIED DE PAGE -->
+  <div class="form-footer">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+      <div style="font-family:'Playfair Display',serif;font-weight:700;color:var(--gold);font-size:1rem;">CABMY</div>
+      <div style="opacity:.6;">Collège Adventiste Bilingue Marathana de Yaoundé · Nyom, derrière Mvog-Mbi · Yaoundé, Cameroun</div>
+      <div style="opacity:.6;">📞 +237 600 000 000 · ✉ contact@cabmy.cm</div>
+    </div>
+    <div style="margin-top:10px;opacity:.35;font-size:.72rem;letter-spacing:.1em;">TRAVAIL · DISCIPLINE · SUCCÈS · Année scolaire 2024–2025</div>
+  </div>
+</div>
+
+<!-- ESPACE BAS -->
+<div class="no-print" style="height:48px;"></div>
+
+<script>
+  // Empêcher la soumission HTML native (formulaire print uniquement)
+  document.querySelectorAll('input,select,textarea').forEach(el=>{el.addEventListener('change',()=>{});});
+</script>
+</body>
+</html>

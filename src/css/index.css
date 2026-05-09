@@ -1,0 +1,76 @@
+ :root {
+      --blue: #1a3a6b;
+      --blue-mid: #2952a3;
+      --blue-light: #e8eef8;
+      --gold: #c9a84c;
+      --gold-light: #f5e9c8;
+      --white: #ffffff;
+      --gray: #6b7280;
+      --dark: #0f1f3d;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; color: var(--dark); background: #fff; overflow-x: hidden; }
+    h1,h2,h3,h4 { font-family: 'Playfair Display', serif; }
+    .nav-link { position: relative; }
+    .nav-link::after { content:''; position:absolute; bottom:-2px; left:0; width:0; height:2px; background:var(--gold); transition:width .3s; }
+    .nav-link:hover::after { width:100%; }
+    .hero-bg {
+      background: linear-gradient(135deg, var(--dark) 0%, var(--blue) 50%, #1e4080 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .gold-line { width: 60px; height: 3px; background: var(--gold); }
+    .card-hover { transition: transform .3s, box-shadow .3s; }
+    .card-hover:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(26,58,107,0.15); }
+    .section-section { background: linear-gradient(135deg, var(--blue) 0%, var(--blue-mid) 100%); }
+    .stat-card { border-left: 4px solid var(--gold); }
+    .btn-primary { background: var(--gold); color: var(--dark); font-weight: 600; transition: all .3s; }
+    .btn-primary:hover { background: #b8922e; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,.4); }
+    .btn-outline { border: 2px solid var(--gold); color: var(--gold); font-weight: 600; transition: all .3s; }
+    .btn-outline:hover { background: var(--gold); color: var(--dark); }
+    .lang-active { background: var(--gold); color: var(--dark); }
+    .mobile-menu { display: none; }
+    .mobile-menu.open { display: block; }
+    .dropdown { position: relative; }
+    .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #fff; min-width: 220px; box-shadow: 0 10px 40px rgba(0,0,0,.12); border-top: 3px solid var(--gold); z-index: 100; }
+    .dropdown:hover .dropdown-menu { display: block; }
+    .dropdown-menu a { display: block; padding: 10px 20px; color: var(--blue); font-size: .9rem; transition: background .2s; }
+    .dropdown-menu a:hover { background: var(--blue-light); color: var(--gold); }
+    .animate-fade { opacity: 0; transform: translateY(24px); transition: opacity .7s, transform .7s; }
+    .animate-fade.visible { opacity: 1; transform: translateY(0); }
+    .news-card { border-bottom: 3px solid transparent; transition: border-color .3s; }
+    .news-card:hover { border-color: var(--gold); }
+    .devote-banner { background: linear-gradient(90deg, var(--gold) 0%, #e8c060 100%); }
+    footer { background: var(--dark); }
+
+    /* Styles supplémentaires */
+.bg-gold {
+    background-color: var(--gold, #C6A43F);
+}
+
+.scale-125 {
+    transform: scale(1.25);
+}
+
+/* Animation de fondu */
+#hero-bg-slider > div {
+    transition: opacity 1s ease-in-out;
+}
+
+/* S'assurer que les images couvrent bien tout l'écran */
+.hero-bg {
+    min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+    .hero-bg .max-w-7xl {
+        padding-top: 6rem;
+        padding-bottom: 6rem;
+    }
+}

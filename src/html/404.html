@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Page introuvable – CABMY</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--blue:#1a3a6b;--gold:#c9a84c;--dark:#0f1f3d;}
+    body{font-family:'DM Sans',sans-serif;background:var(--dark);color:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px;}
+    h1,h2{font-family:'Playfair Display',serif;}
+    .gold{color:var(--gold);}
+    .btn-g{background:var(--gold);color:var(--dark);font-weight:700;padding:14px 36px;border-radius:12px;display:inline-block;text-decoration:none;transition:all .3s;margin:8px;}
+    .btn-g:hover{background:#b8922e;transform:translateY(-2px);}
+    .btn-o{border:2px solid rgba(255,255,255,.3);color:#fff;font-weight:700;padding:14px 36px;border-radius:12px;display:inline-block;text-decoration:none;transition:all .3s;margin:8px;}
+    .btn-o:hover{border-color:var(--gold);color:var(--gold);}
+    .big-404{font-size:clamp(80px,20vw,180px);font-weight:700;line-height:1;font-family:'Playfair Display',serif;background:linear-gradient(135deg,#fff 0%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .circle{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.05);}
+    .links-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;max-width:600px;margin:32px auto 0;}
+    .quick-link{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px;text-decoration:none;color:#fff;font-size:.9rem;transition:all .3s;}
+    .quick-link:hover{background:rgba(201,168,76,.15);border-color:var(--gold);color:var(--gold);}
+  </style>
+</head>
+<body>
+  <!-- Cercles décoratifs -->
+  <div class="circle" style="width:600px;height:600px;top:50%;left:50%;transform:translate(-50%,-50%);opacity:.3;"></div>
+  <div class="circle" style="width:400px;height:400px;top:50%;left:50%;transform:translate(-50%,-50%);opacity:.2;"></div>
+
+  <div style="position:relative;z-index:1;max-width:700px;">
+    <!-- Logo -->
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:12px;text-decoration:none;margin-bottom:48px;">
+      <div style="width:52px;height:52px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:1.2rem;color:#fff;border:2px solid var(--gold);">CA</div>
+      <div style="text-align:left;">
+        <div style="font-family:'Playfair Display',serif;font-weight:700;color:#fff;font-size:1rem;" data-fr="CABMY" data-en="CABMY">CABMY</div>
+        <div style="font-size:.75rem;color:rgba(255,255,255,.5);" data-fr="Collège Adventiste Bilingue Marathana" data-en="Marathana Bilingual Adventist College">Collège Adventiste Bilingue Marathana</div>
+      </div>
+    </a>
+
+    <div class="big-404">404</div>
+
+    <h2 style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:700;margin:16px 0 12px;" data-fr="Page introuvable" data-en="Page Not Found">Page introuvable</h2>
+    <p style="color:rgba(255,255,255,.55);max-width:480px;margin:0 auto 32px;line-height:1.7;" data-fr="La page que vous cherchez n'existe pas ou a été déplacée. Revenez à l'accueil pour continuer votre navigation." data-en="The page you are looking for does not exist or has been moved. Return to the home page to continue browsing.">
+      La page que vous cherchez n'existe pas ou a été déplacée. Revenez à l'accueil pour continuer votre navigation.
+    </p>
+
+    <div>
+      <a href="index.html" class="btn-g" data-fr="← Retour à l'accueil" data-en="← Back to Home">← Retour à l'accueil</a>
+      <a href="contact.html" class="btn-o" data-fr="Nous contacter" data-en="Contact Us">Nous contacter</a>
+    </div>
+
+    <div class="links-grid">
+      <a href="enseignements.html" class="quick-link" data-fr="📚 Enseignements" data-en="📚 Academics">📚 Enseignements</a>
+      <a href="admissions.html" class="quick-link" data-fr="✏️ Admissions" data-en="✏️ Admissions">✏️ Admissions</a>
+      <a href="actualites.html" class="quick-link" data-fr="📰 Actualités" data-en="📰 News">📰 Actualités</a>
+      <a href="apropos.html" class="quick-link" data-fr="ℹ️ À propos" data-en="ℹ️ About">ℹ️ À propos</a>
+    </div>
+
+    <div style="margin-top:48px;font-size:.8rem;color:rgba(255,255,255,.25);" data-fr="TRAVAIL · DISCIPLINE · SUCCÈS" data-en="WORK · DISCIPLINE · SUCCESS">TRAVAIL · DISCIPLINE · SUCCÈS</div>
+  </div>
+
+  <script>
+    let lang=localStorage.getItem('cabmy-lang')||'fr';
+    document.querySelectorAll('[data-fr]').forEach(el=>{const v=el.getAttribute('data-'+lang);if(v)el.textContent=v;});
+    document.documentElement.lang=lang;
+  </script>
+</body>
+</html>

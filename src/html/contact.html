@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact – CABMY</title>
+  <link rel="stylesheet" href="../../output.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--blue:#1a3a6b;--blue-mid:#2952a3;--blue-light:#e8eef8;--gold:#c9a84c;--gold-light:#f5e9c8;--dark:#0f1f3d;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'DM Sans',sans-serif;color:var(--dark);}
+    h1,h2,h3,h4{font-family:'Playfair Display',serif;}
+    .nav-link{position:relative;}.nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:var(--gold);transition:width .3s;}.nav-link:hover::after{width:100%;}
+    .gold-line{width:60px;height:3px;background:var(--gold);}
+    .btn-primary{background:var(--gold);color:var(--dark);font-weight:600;transition:all .3s;}.btn-primary:hover{background:#b8922e;transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,.4);}
+    .lang-active{background:var(--gold);color:var(--dark);}
+    .mobile-menu{display:none;}.mobile-menu.open{display:block;}
+    .card-hover{transition:transform .3s,box-shadow .3s;}.card-hover:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(26,58,107,.12);}
+    .dropdown{position:relative;}.dropdown-menu{display:none;position:absolute;top:100%;left:0;background:#fff;min-width:220px;box-shadow:0 10px 40px rgba(0,0,0,.12);border-top:3px solid var(--gold);z-index:100;}.dropdown:hover .dropdown-menu{display:block;}.dropdown-menu a{display:block;padding:10px 20px;color:var(--blue);font-size:.9rem;transition:background .2s;}.dropdown-menu a:hover{background:var(--blue-light);color:var(--gold);}
+    .page-hero{background:linear-gradient(135deg,var(--dark) 0%,var(--blue) 100%);}
+    .animate-fade{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s;}.animate-fade.visible{opacity:1;transform:translateY(0);}
+    .form-input{width:100%;padding:12px 16px;border:2px solid #e5e7eb;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.95rem;transition:border-color .3s;outline:none;background:#fff;}
+    .form-input:focus{border-color:var(--blue);}
+    .form-input::placeholder{color:#9ca3af;}
+    textarea.form-input{resize:vertical;min-height:140px;}
+    .contact-card{border-top:4px solid var(--blue);transition:border-color .3s;}.contact-card:hover{border-color:var(--gold);}
+    .map-container{background:var(--blue-light);border-radius:16px;overflow:hidden;position:relative;}
+    .success-msg{display:none;background:#d1fae5;color:#065f46;padding:16px;border-radius:10px;margin-top:12px;}
+    label{display:block;font-size:.875rem;font-weight:600;margin-bottom:6px;color:var(--dark);}
+    .whatsapp-btn{background:#25D366;color:#fff;transition:all .3s;}.whatsapp-btn:hover{background:#128C7E;transform:translateY(-2px);}
+    .required{color:#ef4444;margin-left:2px;}
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="bg-[#0f1f3d] text-white text-xs py-2 px-4 flex justify-between items-center">
+  <span class="opacity-70">📍 Nyom II, Petit Marché · Yaoundé</span>
+  <div class="flex gap-3 items-center">
+    <a href="tel:+237243850268" class="opacity-70 hover:opacity-100">📞 243 850 268 · 675 84 05 71</a>
+    <span class="opacity-30">|</span>
+    <button onclick="setLang('fr')" id="btn-fr" class="px-2 py-0.5 rounded text-xs font-semibold lang-active">FR</button>
+    <button onclick="setLang('en')" id="btn-en" class="px-2 py-0.5 rounded text-xs font-semibold hover:bg-white/10">EN</button>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="bg-white shadow-sm sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 flex justify-between items-center py-3">
+    <a href="../../index.html" class="flex items-center gap-3">
+      <img src="../../images/logo/WhatsApp Image 2025-09-23 at 19.42.18.jpeg" alt="Logo CABMY" class="w-12 h-12 rounded-full object-cover" />
+      <div>
+        <div class="font-bold text-sm leading-tight" style="color:var(--blue);font-family:'Playfair Display',serif">CABMY</div>
+        <div class="text-xs text-gray-500 leading-tight" data-fr="Collège Adventiste Bilingue Marathana" data-en="Marathana Bilingual Adventist College">Collège Adventiste Bilingue Marathana</div>
+      </div>
+    </a>
+    <div class="hidden lg:flex items-center gap-6 text-sm font-medium">
+      <a href="index.html" class="nav-link text-gray-600" data-fr="Accueil" data-en="Home">Accueil</a>
+      <a href="apropos.html" class="nav-link text-gray-600" data-fr="À propos" data-en="About">À propos</a>
+      <a href="enseignements.html" class="nav-link text-gray-600" data-fr="Enseignements" data-en="Academics">Enseignements</a>
+      <a href="vie-scolaire.html" class="nav-link text-gray-600" data-fr="Vie scolaire" data-en="School Life">Vie scolaire</a>
+      <div class="dropdown">
+        <a href="admissions.html" class="nav-link text-gray-600 flex items-center gap-1" data-fr="Admissions" data-en="Admissions">Admissions <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></a>
+        <div class="dropdown-menu">
+          <a href="admissions.html#conditions">Conditions d'admission</a>
+          <a href="admissions.html#frais">Frais de scolarité</a>
+          <a href="admissions.html#calendrier">Calendrier</a>
+          <a href="admissions.html#tenues">Tenues scolaires</a>
+        </div>
+      </div>
+      <a href="actualites.html" class="nav-link text-gray-600" data-fr="Actualités" data-en="News">Actualités</a>
+      <a href="contact.html" class="btn-primary px-4 py-2 rounded-lg text-sm" style="color:var(--dark)" data-fr="Contact" data-en="Contact">Contact</a>
+    </div>
+    <button onclick="toggleMobile()" class="lg:hidden p-2 text-gray-600">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+  <div id="mobile-menu" class="mobile-menu lg:hidden bg-white border-t px-4 pb-4">
+    <div class="flex flex-col gap-3 pt-3 text-sm font-medium">
+      <a href="../../index.html" class="text-gray-700">Accueil</a><a href="apropos.html" class="text-gray-700">À propos</a>
+      <a href="enseignements.html" class="text-gray-700">Enseignements</a><a href="vie-scolaire.html" class="text-gray-700">Vie scolaire</a>
+      <a href="admissions.html" class="text-gray-700">Admissions</a><a href="actualites.html" class="text-gray-700">Actualités</a>
+      <a href="contact.html" class="btn-primary px-4 py-2 rounded-lg text-center">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero py-20 text-white">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="gold-line mb-4"></div>
+    <h1 class="text-5xl font-bold mb-4" data-fr="Contactez-nous" data-en="Contact Us">Contactez-nous</h1>
+    <p class="text-white/60 text-lg max-w-2xl" data-fr="Notre équipe est à votre écoute. Écrivez-nous, appelez-nous ou rendez-nous visite au secrétariat." data-en="Our team is here to listen. Write to us, call us or visit us at the secretariat.">Notre équipe est à votre écoute. Écrivez-nous, appelez-nous ou rendez-nous visite au secrétariat.</p>
+    <div class="mt-4 text-sm text-white/40">
+      <a href="../../index.html" class="hover:text-white">Accueil</a> <span class="mx-2">›</span>
+      <span data-fr="Contact" data-en="Contact">Contact</span>
+    </div>
+  </div>
+</section>
+
+<!-- INFOS RAPIDES -->
+<section class="py-12" style="background:var(--blue-light)">
+  <div class="max-w-7xl mx-auto px-4 grid lg:grid-cols-4 gap-5">
+    <a href="tel:+237243850268" class="contact-card bg-white rounded-2xl p-6 flex items-center gap-4 card-hover text-decoration-none">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white text-xl flex-shrink-0" style="background:var(--blue)">📞</div>
+      <div>
+        <div class="font-bold text-sm" style="color:var(--blue)" data-fr="Téléphone" data-en="Phone">Téléphone</div>
+        <div class="text-gray-600 text-sm">243 850 268 / 675 84 05 71</div>
+      </div>
+    </a>
+    <a href="mailto:cabmy2011@gmail.com" class="contact-card bg-white rounded-2xl p-6 flex items-center gap-4 card-hover">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white text-xl flex-shrink-0" style="background:var(--blue)">✉</div>
+      <div>
+        <div class="font-bold text-sm" style="color:var(--blue)" data-fr="Email" data-en="Email">Email</div>
+        <div class="text-gray-600 text-sm">cabmy2011@gmail.com</div>
+      </div>
+    </a>
+    <a href="https://wa.me/237675840571" target="_blank" class="contact-card bg-white rounded-2xl p-6 flex items-center gap-4 card-hover">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white text-xl flex-shrink-0" style="background:#25D366">💬</div>
+      <div>
+        <div class="font-bold text-sm" style="color:var(--blue)">WhatsApp</div>
+        <div class="text-gray-600 text-sm">+237 675 84 05 71</div>
+      </div>
+    </a>
+    <div class="contact-card bg-white rounded-2xl p-6 flex items-center gap-4">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white text-xl flex-shrink-0" style="background:var(--gold)">📍</div>
+      <div>
+        <div class="font-bold text-sm" style="color:var(--blue)" data-fr="Adresse" data-en="Address">Adresse</div>
+        <div class="text-gray-600 text-sm" data-fr="Nyom II, Petit Marché, Yaoundé" data-en="Nyom II, Petit Marche, Yaounde">Nyom II, Petit Marché, Yaoundé</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORMULAIRE + INFOS -->
+<section class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-16">
+
+    <!-- FORMULAIRE DE CONTACT -->
+    <div class="animate-fade">
+      <div class="gold-line mb-4"></div>
+      <h2 class="text-3xl font-bold mb-2" style="color:var(--blue)" data-fr="Envoyer un message" data-en="Send a Message">Envoyer un message</h2>
+      <p class="text-gray-500 mb-8 text-sm" data-fr="Remplissez le formulaire ci-dessous et nous vous répondrons dans les plus brefs délais." data-en="Fill in the form below and we will get back to you as soon as possible.">Remplissez le formulaire ci-dessous et nous vous répondrons dans les plus brefs délais.</p>
+
+      <form id="contact-form" onsubmit="submitForm(event)" class="space-y-5">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="nom" data-fr="Nom complet" data-en="Full Name">Nom complet <span class="required">*</span></label>
+            <input type="text" id="nom" class="form-input" placeholder="Ex: Jean Dupont" required>
+          </div>
+          <div>
+            <label for="telephone" data-fr="Téléphone" data-en="Phone">Téléphone <span class="required">*</span></label>
+            <input type="tel" id="telephone" class="form-input" placeholder="+237 6XX XXX XXX" required>
+          </div>
+        </div>
+        <div>
+          <label for="email" data-fr="Adresse email" data-en="Email Address">Adresse email</label>
+          <input type="email" id="email" class="form-input" placeholder="exemple@email.com">
+        </div>
+        <div>
+          <label for="sujet" data-fr="Sujet" data-en="Subject">Sujet <span class="required">*</span></label>
+          <select id="sujet" class="form-input" required>
+            <option value="" data-fr="-- Choisir un sujet --" data-en="-- Choose a subject --">-- Choisir un sujet --</option>
+            <option value="inscription" data-fr="Inscription / Admission" data-en="Enrolment / Admission">Inscription / Admission</option>
+            <option value="frais" data-fr="Frais de scolarité" data-en="School Fees">Frais de scolarité</option>
+            <option value="soir" data-fr="Cours du soir" data-en="Evening Classes">Cours du soir</option>
+            <option value="info" data-fr="Demande d'information" data-en="Information Request">Demande d'information</option>
+            <option value="autre" data-fr="Autre" data-en="Other">Autre</option>
+          </select>
+        </div>
+        <div>
+          <label for="message" data-fr="Message" data-en="Message">Message <span class="required">*</span></label>
+          <textarea id="message" class="form-input" placeholder="Votre message..." required></textarea>
+        </div>
+        <!-- Anti-spam -->
+        <div class="p-4 rounded-xl" style="background:var(--blue-light)">
+          <label class="text-xs font-semibold" style="color:var(--blue)" data-fr="Vérification anti-spam : Combien font 3 + 2 ?" data-en="Anti-spam check: What is 3 + 2?">Vérification anti-spam : Combien font 3 + 2 ?</label>
+          <input type="number" id="antispam" class="form-input mt-2" placeholder="Votre réponse" required min="5" max="5">
+        </div>
+        <button type="submit" class="btn-primary w-full py-4 rounded-xl text-base font-bold" data-fr="Envoyer le message ✉" data-en="Send Message ✉">Envoyer le message ✉</button>
+        <div id="success-msg" class="success-msg" data-fr="✅ Message envoyé ! Nous vous répondrons dans les plus brefs délais." data-en="✅ Message sent! We will get back to you as soon as possible.">✅ Message envoyé ! Nous vous répondrons dans les plus brefs délais.</div>
+        <div id="error-msg" style="display:none;background:#fee2e2;color:#991b1b;padding:12px;border-radius:8px;" data-fr="❌ Réponse incorrecte à la vérification anti-spam." data-en="❌ Incorrect answer to the anti-spam check.">❌ Réponse incorrecte à la vérification anti-spam.</div>
+      </form>
+    </div>
+
+    <!-- INFOS + HORAIRES + FORMULAIRE PRÉ-INSCRIPTION -->
+    <div class="space-y-8 animate-fade">
+
+      <!-- HORAIRES -->
+      <div class="rounded-2xl p-8" style="background:var(--blue-light)">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white" style="background:var(--blue)">🕐</div>
+          <h3 class="text-xl font-bold" style="color:var(--blue)" data-fr="Horaires du secrétariat" data-en="Secretariat Hours">Horaires du secrétariat</h3>
+        </div>
+        <div class="space-y-3">
+          <div class="flex justify-between text-sm py-2 border-b border-white/60">
+            <span class="font-medium" data-fr="Lundi – Vendredi" data-en="Monday – Friday">Lundi – Vendredi</span>
+            <span class="font-bold" style="color:var(--blue)">7h30 – 17h00</span>
+          </div>
+          <div class="flex justify-between text-sm py-2 border-b border-white/60">
+            <span class="font-medium" data-fr="Samedi" data-en="Saturday">Samedi</span>
+            <span class="font-bold" style="color:var(--blue)" data-fr="8h00 – 12h00 (cérémonie de culte)" data-en="8:00AM – 12:00PM (sabbat)">8h00 – 12h00 (sabbat)</span>
+          </div>
+          <div class="flex justify-between text-sm py-2">
+            <span class="font-medium" data-fr="Dimanche" data-en="Sunday">Dimanche</span>
+            <span class="text-gray-400" data-fr="Fermé" data-en="Closed">Fermé</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRÉ-INSCRIPTION RAPIDE -->
+      <div class="rounded-2xl border-2 p-8" style="border-color:var(--gold)">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center text-white" style="background:var(--gold)">✏️</div>
+          <h3 class="text-xl font-bold" style="color:var(--blue)" data-fr="Pré-inscription rapide" data-en="Quick Pre-registration">Pré-inscription rapide</h3>
+        </div>
+        <p class="text-gray-500 text-sm mb-5" data-fr="Remplissez ce formulaire court pour signaler votre intérêt. Notre équipe vous contactera rapidement." data-en="Fill in this short form to express your interest. Our team will contact you quickly.">Remplissez ce formulaire court pour signaler votre intérêt. Notre équipe vous contactera rapidement.</p>
+        <form id="preinscription-form" onsubmit="submitPreInscription(event)" class="space-y-4">
+          <div>
+            <label for="pi-nom" data-fr="Nom de l'élève" data-en="Student Name">Nom de l'élève</label>
+            <input type="text" id="pi-nom" class="form-input" required>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label for="pi-niveau" data-fr="Niveau souhaité" data-en="Desired Level">Niveau souhaité</label>
+              <select id="pi-niveau" class="form-input" required>
+                <option value="">--</option>
+                <optgroup label="Section Franco.">
+                  <option>6ème</option><option>5ème</option><option>4ème</option><option>3ème</option>
+                  <option>2nde</option><option>1ère</option><option>Terminale</option>
+                </optgroup>
+                <optgroup label="Section Anglo.">
+                  <option>Form 1</option><option>Form 2</option><option>Form 3</option><option>Form 4</option><option>Form 5</option>
+                  <option>Lower Sixth</option><option>Upper Sixth</option>
+                </optgroup>
+                <optgroup label="Cours du soir">
+                  <option data-fr="Cours du soir" data-en="Evening Classes">Cours du soir</option>
+                </optgroup>
+              </select>
+            </div>
+            <div>
+              <label for="pi-section" data-fr="Section" data-en="Section">Section</label>
+              <select id="pi-section" class="form-input" required>
+                <option value="">--</option>
+                <option value="franco" data-fr="Francophone" data-en="French">Francophone</option>
+                <option value="anglo" data-fr="Anglophone" data-en="English">Anglophone</option>
+                <option value="soir" data-fr="Cours du soir" data-en="Evening Classes">Cours du soir</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label for="pi-tel" data-fr="Téléphone parent/tuteur" data-en="Parent/Guardian Phone">Téléphone parent/tuteur</label>
+            <input type="tel" id="pi-tel" class="form-input" placeholder="+237 6XX XXX XXX" required>
+          </div>
+          <button type="submit" class="btn-primary w-full py-3 rounded-xl font-bold" data-fr="Envoyer ma pré-inscription" data-en="Send my Pre-registration">Envoyer ma pré-inscription</button>
+          <div id="pi-success" style="display:none;background:#d1fae5;color:#065f46;padding:12px;border-radius:8px;" data-fr="✅ Pré-inscription enregistrée ! Nous vous contacterons bientôt." data-en="✅ Pre-registration recorded! We will contact you soon.">✅ Pré-inscription enregistrée ! Nous vous contacterons bientôt.</div>
+        </form>
+      </div>
+
+      <!-- CONTACT RAPIDE -->
+      <div class="grid grid-cols-2 gap-4">
+        <a href="tel:+237600000000" class="btn-primary px-4 py-4 rounded-xl text-center font-bold text-sm block" data-fr="📞 Appeler" data-en="📞 Call">📞 Appeler</a>
+        <a href="https://wa.me/237600000000" target="_blank" class="whatsapp-btn px-4 py-4 rounded-xl text-center font-bold text-sm block" data-fr="💬 WhatsApp" data-en="💬 WhatsApp">💬 WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLAN D'ACCÈS -->
+<section class="py-16" style="background:var(--blue-light)">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="text-center mb-10 animate-fade">
+      <div class="gold-line mx-auto mb-4"></div>
+      <h2 class="text-3xl font-bold" style="color:var(--blue)" data-fr="Plan d'accès" data-en="How to Find Us">Plan d'accès</h2>
+      <p class="text-gray-500 mt-2 text-sm" data-fr="Situé au quartier Nyom II, Petit Marché, Yaoundé, Cameroun" data-en="Located at Nyom II, Petit Marche, Yaounde, Cameroon">Situé au quartier Nyom II, Petit Marché, Yaoundé, Cameroun</p>
+    </div>
+    <div class="map-container animate-fade" style="height:400px;">
+      <iframe
+        src="https://www.google.com/maps?q=Nyom+II+Petit+Marche+Yaounde&output=embed"
+        width="100%" height="400" style="border:0;border-radius:16px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+    <div class="mt-6 grid lg:grid-cols-3 gap-5">
+      <div class="bg-white rounded-xl p-5">
+        <div class="font-bold mb-2" style="color:var(--blue)" data-fr="🚌 En transport commun" data-en="🚌 By public transport">🚌 En transport commun</div>
+        <div class="text-sm text-gray-500" data-fr="Prendre un taxi ou bus direction Nyom II (Petit Marche)." data-en="Take a taxi or bus towards Nyom II (Petit Marche).">Prendre un taxi ou bus direction Nyom II (Petit Marche).</div>
+      </div>
+      <div class="bg-white rounded-xl p-5">
+        <div class="font-bold mb-2" style="color:var(--blue)" data-fr="🏙️ Repère principal" data-en="🏙️ Main Landmark">🏙️ Repère principal</div>
+        <div class="text-sm text-gray-500" data-fr="Le college est situe a Nyom II, au niveau du Petit Marche." data-en="The school is located in Nyom II, around Petit Marche.">Le college est situe a Nyom II, au niveau du Petit Marche.</div>
+      </div>
+      <div class="bg-white rounded-xl p-5">
+        <div class="font-bold mb-2" style="color:var(--blue)" data-fr="📞 En cas de difficulté" data-en="📞 If you have trouble finding us">📞 En cas de difficulté</div>
+        <div class="text-sm text-gray-500" data-fr="Appelez-nous au 243 850 268 / 675 84 05 71 et nous vous guiderons." data-en="Call us on 243 850 268 / 675 84 05 71 and we will guide you.">Appelez-nous au 243 850 268 / 675 84 05 71 et nous vous guiderons.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="py-12" style="background:var(--dark)">
+  <div class="max-w-7xl mx-auto px-4 grid lg:grid-cols-4 gap-8">
+    <div>
+      <div class="font-bold text-white mb-3" style="font-family:'Playfair Display',serif">CABMY</div>
+      <p class="text-white/40 text-sm mb-4">Collège Adventiste Bilingue Marathana de Yaoundé.</p>
+      <div class="text-xs font-bold tracking-widest" style="color:var(--gold)">TRAVAIL · DISCIPLINE · SUCCÈS</div>
+    </div>
+    <div><div class="font-bold text-white mb-3">Navigation</div><div class="flex flex-col gap-2 text-sm text-white/50"><a href="index.html" class="hover:text-white">Accueil</a><a href="apropos.html" class="hover:text-white">À propos</a><a href="enseignements.html" class="hover:text-white">Enseignements</a><a href="admissions.html" class="hover:text-white">Admissions</a><a href="actualites.html" class="hover:text-white">Actualités</a></div></div>
+    <div><div class="font-bold text-white mb-3">Sections</div><div class="flex flex-col gap-2 text-sm text-white/50"><a href="enseignements.html#franco" class="hover:text-white">Section Francophone</a><a href="enseignements.html#anglo" class="hover:text-white">Section Anglophone</a><a href="enseignements.html#soir" class="hover:text-white">Cours du Soir</a><a href="vie-scolaire.html" class="hover:text-white">Vie scolaire</a></div></div>
+    <div><div class="font-bold text-white mb-3">Contact</div><div class="flex flex-col gap-3 text-sm text-white/50"><div>📍 Nyom, derrière Mvog-Mbi, Yaoundé</div><div>📞 +237 600 000 000</div><div>✉ contact@cabmy.cm</div><div>💬 WhatsApp : +237 600 000 000</div><div class="text-xs mt-1 opacity-50">Lun–Ven : 7h30–17h00</div></div></div>
+  </div>
+  <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-white/10 flex flex-wrap justify-between items-center text-xs text-white/30">
+    <span>© 2024 CABMY – Collège Adventiste Bilingue Marathana de Yaoundé</span>
+    <span data-fr="Tous droits réservés" data-en="All rights reserved">Tous droits réservés</span>
+  </div>
+</footer>
+
+<script>
+  let currentLang=localStorage.getItem('cabmy-lang')||'fr';
+  function setLang(lang){
+    currentLang=lang;localStorage.setItem('cabmy-lang',lang);
+    document.querySelectorAll('[data-fr]').forEach(el=>{el.textContent=el.getAttribute('data-'+lang)||el.textContent;});
+    document.getElementById('btn-fr').classList.toggle('lang-active',lang==='fr');
+    document.getElementById('btn-en').classList.toggle('lang-active',lang==='en');
+    document.documentElement.lang=lang;
+  }
+  setLang(currentLang);
+  function toggleMobile(){document.getElementById('mobile-menu').classList.toggle('open');}
+
+  function submitForm(e){
+    e.preventDefault();
+    const spam=parseInt(document.getElementById('antispam').value);
+    document.getElementById('error-msg').style.display='none';
+    document.getElementById('success-msg').style.display='none';
+    if(spam!==5){document.getElementById('error-msg').style.display='block';return;}
+    // Simulate send
+    setTimeout(()=>{
+      document.getElementById('success-msg').style.display='block';
+      document.getElementById('contact-form').reset();
+    },600);
+  }
+
+  function submitPreInscription(e){
+    e.preventDefault();
+    setTimeout(()=>{
+      document.getElementById('pi-success').style.display='block';
+      document.getElementById('preinscription-form').reset();
+    },600);
+  }
+
+  const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.1});
+  document.querySelectorAll('.animate-fade').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
