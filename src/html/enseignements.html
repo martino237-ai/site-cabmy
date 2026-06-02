@@ -4,26 +4,38 @@
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Enseignements – CABMY</title>
   <link rel="stylesheet" href="../../output.css">
-  <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root{--blue:#1a3a6b;--blue-mid:#2952a3;--blue-light:#e8eef8;--gold:#c9a84c;--gold-light:#f5e9c8;--dark:#0f1f3d;}
     *{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:'DM Sans',sans-serif;color:var(--dark);}
     h1,h2,h3,h4{font-family:'Playfair Display',serif;}
-    .nav-link{position:relative;}.nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:var(--gold);transition:width .3s;}.nav-link:hover::after{width:100%;}
+    .nav-link{position:relative;color:var(--dark);font-weight:500;transition:color .3s;}.nav-link::after{content:'';position:absolute;bottom:-8px;left:0;width:0;height:2px;background:var(--gold);transition:width .3s;}.nav-link:hover{color:var(--gold)}.nav-link:hover::after{width:100%;}
     .gold-line{width:60px;height:3px;background:var(--gold);}
-    .btn-primary{background:var(--gold);color:var(--dark);font-weight:600;transition:all .3s;}.btn-primary:hover{background:#b8922e;}
+    .btn-primary{background:var(--gold);color:var(--dark);font-weight:600;transition:all .3s;box-shadow:0 4px 15px rgba(201,168,76,.2);}.btn-primary:hover{background:#b8922e;transform:translateY(-2px);box-shadow:0 6px 20px rgba(201,168,76,.35);}
     .lang-active{background:var(--gold);color:var(--dark);}
     .mobile-menu{display:none;}.mobile-menu.open{display:block;}
     .card-hover{transition:transform .3s,box-shadow .3s;}.card-hover:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(26,58,107,.12);}
-    .dropdown{position:relative;}.dropdown-menu{display:none;position:absolute;top:100%;left:0;background:#fff;min-width:220px;box-shadow:0 10px 40px rgba(0,0,0,.12);border-top:3px solid var(--gold);z-index:100;}.dropdown:hover .dropdown-menu{display:block;}.dropdown-menu a{display:block;padding:10px 20px;color:var(--blue);font-size:.9rem;transition:background .2s;}.dropdown-menu a:hover{background:var(--blue-light);color:var(--gold);}
+    .dropdown{position:relative;}.dropdown-menu{display:none;position:absolute;top:100%;left:0;background:#fff;min-width:220px;box-shadow:0 10px 40px rgba(0,0,0,.12);border-top:3px solid var(--gold);z-index:100;border-radius:0 0 12px 12px;}.dropdown:hover .dropdown-menu{display:block;}.dropdown-menu a{display:block;padding:10px 20px;color:var(--blue);font-size:.9rem;transition:background .2s;}.dropdown-menu a:hover{background:var(--blue-light);color:var(--gold);}
     .tab-btn{transition:all .3s;}.tab-btn.active{background:var(--blue);color:#fff;}
+    .tab-btn .tab-label{margin-left:.5rem;display:inline-block;transition:opacity .2s,color .2s}
+    .tab-btn.active .tab-label{opacity:1;color:#fff}
     .tab-content{display:none;}.tab-content.active{display:block;}
-    .page-hero{background:linear-gradient(135deg,var(--dark) 0%,var(--blue) 100%);}
+    .page-hero{position:relative;background:linear-gradient(135deg,#0a1428 0%,#1a3a6b 30%,#2952a3 60%,#c9a84c 100%);overflow:hidden;py-32;}
+    .hero-bg-decorative{position:absolute;top:0;left:0;right:0;bottom:0;opacity:.1;z-index:0;}
+    .hero-content{position:relative;z-index:2;}
+    .book-stack{position:absolute;bottom:0;right:0;width:400px;height:300px;opacity:.15;z-index:1;}
+    .book-item{position:absolute;background:rgba(255,255,255,.3);border-radius:8px;box-shadow:0 20px 40px rgba(0,0,0,.3);backdrop-filter:blur(10px);}
+    .book-1{width:180px;height:240px;right:20px;bottom:40px;transform:rotate(5deg);background:linear-gradient(135deg,#e8eef8,#c9a84c);border-left:6px solid #c9a84c;}
+    .book-2{width:160px;height:220px;right:160px;bottom:80px;transform:rotate(-8deg);background:linear-gradient(135deg,#1a3a6b,#2952a3);border-left:6px solid #fff;}
+    .book-3{width:170px;height:230px;right:320px;bottom:20px;transform:rotate(4deg);background:linear-gradient(135deg,#2952a3,#e8eef8);border-left:6px solid #c9a84c;}
+    .book-shine{position:absolute;top:0;left:0;right:0;height:50%;background:linear-gradient(180deg,rgba(255,255,255,.4) 0%,transparent 100%);border-radius:8px 8px 0 0;}
     .animate-fade{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s;}.animate-fade.visible{opacity:1;transform:translateY(0);}
     .soir-section{background:linear-gradient(135deg,var(--dark) 0%,#1e3060 100%);}
     .matiere-tag{background:var(--blue-light);color:var(--blue);padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:500;}
+    .navbar-premium{background:linear-gradient(135deg,#ffffff 0%,#f8fafc 100%);box-shadow:0 4px 20px rgba(26,58,107,.08);border-bottom:1px solid rgba(201,168,76,.2);}
+    .navbar-logo{transition:transform .3s;}.navbar-logo:hover{transform:scale(1.05);}
+    @media(max-width:768px){.book-stack{width:250px;height:200px;}.book-1{width:120px;height:160px;}.book-2{width:110px;height:150px;}.book-3{width:115px;height:155px;}}
   </style>
 </head>
 <body>
@@ -40,57 +52,99 @@
 </div>
 
 <!-- NAVBAR -->
-<nav class="bg-white shadow-sm sticky top-0 z-50">
-  <div class="max-w-7xl mx-auto px-4 flex justify-between items-center py-3">
-    <a href="../../index.html" class="flex items-center gap-3">
-      <img src="../../images/logo/WhatsApp Image 2025-09-23 at 19.42.18.jpeg" alt="Logo CABMY" class="w-12 h-12 rounded-full object-cover" />
+<nav class="navbar-premium sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 flex justify-between items-center py-4">
+    <!-- LOGO -->
+    <a href="../../index.html" class="flex items-center gap-3 navbar-logo">
+      <div class="relative">
+        <img src="../../images/logo/WhatsApp Image 2025-09-23 at 19.42.18.jpeg" alt="Logo CABMY" class="w-14 h-14 rounded-full object-cover shadow-md border-2" style="border-color:var(--gold)" />
+        <div style="position:absolute;bottom:-2px;right:-2px;width:20px;height:20px;background:var(--gold);border-radius:50%;border:3px solid white;display:flex;align-items:center;justify-content:center;font-size:.8rem;">✨</div>
+      </div>
       <div>
-        <div class="font-bold text-sm leading-tight" style="color:var(--blue);font-family:'Playfair Display',serif">CABMY</div>
-        <div class="text-xs text-gray-500 leading-tight" data-fr="Collège Adventiste Bilingue Marathana" data-en="Marathana Bilingual Adventist College">Collège Adventiste Bilingue Marathana</div>
+        <div class="font-bold text-lg leading-tight" style="color:var(--blue);font-family:'Playfair Display',serif;letter-spacing:.5px;">CABMY</div>
+        <div class="text-xs text-gray-500 leading-tight font-medium" data-fr="Excellence Académique" data-en="Academic Excellence">Excellence Académique</div>
       </div>
     </a>
-    <div class="hidden lg:flex items-center gap-6 text-sm font-medium">
-      <a href="../../index.html" class="nav-link text-gray-600 hover:text-blue-800" data-fr="Accueil" data-en="Home">Accueil</a>
-      <a href="apropos.html" class="nav-link text-gray-600 hover:text-blue-800" data-fr="À propos" data-en="About">À propos</a>
-      <a href="enseignements.html" class="nav-link font-semibold" style="color:var(--blue)" data-fr="Enseignements" data-en="Academics">Enseignements</a>
-      <a href="vie-scolaire.html" class="nav-link text-gray-600 hover:text-blue-800" data-fr="Vie scolaire" data-en="School Life">Vie scolaire</a>
+    
+    <!-- MENU DESKTOP -->
+    <div class="hidden lg:flex items-center gap-8 text-sm font-medium">
+      <a href="../../index.html" class="nav-link" data-fr="Accueil" data-en="Home">Accueil</a>
+      <a href="apropos.html" class="nav-link" data-fr="À propos" data-en="About">À propos</a>
+      <a href="enseignements.html" class="nav-link active" style="color:var(--gold)" data-fr="Enseignements" data-en="Academics">Enseignements</a>
+      <a href="vie-scolaire.html" class="nav-link" data-fr="Vie scolaire" data-en="School Life">Vie scolaire</a>
       <div class="dropdown">
-        <a href="admissions.html" class="nav-link text-gray-600 hover:text-blue-800 flex items-center gap-1" data-fr="Admissions" data-en="Admissions">Admissions <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></a>
+        <a href="admissions.html" class="nav-link flex items-center gap-1" data-fr="Admissions" data-en="Admissions">Admissions <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></a>
         <div class="dropdown-menu">
-          <a href="admissions.html#conditions" data-fr="Conditions d'admission" data-en="Admission Conditions">Conditions d'admission</a>
-          <a href="admissions.html#frais" data-fr="Frais de scolarité" data-en="School Fees">Frais de scolarité</a>
-          <a href="admissions.html#calendrier" data-fr="Calendrier" data-en="Calendar">Calendrier</a>
-          <a href="admissions.html#tenues" data-fr="Tenues scolaires" data-en="School Uniforms">Tenues scolaires</a>
+          <a href="admissions.html#conditions" data-fr="Conditions d'admission" data-en="Admission Conditions">📋 Conditions d'admission</a>
+          <a href="admissions.html#frais" data-fr="Frais de scolarité" data-en="School Fees">💰 Frais de scolarité</a>
+          <a href="admissions.html#calendrier" data-fr="Calendrier" data-en="Calendar">📅 Calendrier</a>
+          <a href="admissions.html#tenues" data-fr="Tenues scolaires" data-en="School Uniforms">👔 Tenues scolaires</a>
         </div>
       </div>
-      <a href="actualites.html" class="nav-link text-gray-600 hover:text-blue-800" data-fr="Actualités" data-en="News">Actualités</a>
-      <a href="contact.html" class="btn-primary px-4 py-2 rounded-lg text-sm" data-fr="Contact" data-en="Contact">Contact</a>
+      <a href="actualites.html" class="nav-link" data-fr="Actualités" data-en="News">Actualités</a>
+      <a href="contact.html" class="btn-primary px-6 py-2.5 rounded-lg text-sm" data-fr="Contact" data-en="Contact">Contact</a>
     </div>
-    <button onclick="toggleMobile()" class="lg:hidden p-2 text-gray-600">
+    
+    <!-- BOUTON MOBILE -->
+    <button onclick="toggleMobile()" class="lg:hidden p-2 text-gray-600 hover:text-blue-800 transition-colors">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
   </div>
-  <div id="mobile-menu" class="mobile-menu lg:hidden bg-white border-t px-4 pb-4">
-    <div class="flex flex-col gap-3 pt-3 text-sm font-medium">
-      <a href="../../index.html" class="text-gray-700" data-fr="Accueil" data-en="Home">Accueil</a>
-      <a href="apropos.html" class="text-gray-700" data-fr="À propos" data-en="About">À propos</a>
-      <a href="enseignements.html" style="color:var(--blue)" data-fr="Enseignements" data-en="Academics">Enseignements</a>
-      <a href="vie-scolaire.html" class="text-gray-700" data-fr="Vie scolaire" data-en="School Life">Vie scolaire</a>
-      <a href="admissions.html" class="text-gray-700" data-fr="Admissions" data-en="Admissions">Admissions</a>
-      <a href="actualites.html" class="text-gray-700" data-fr="Actualités" data-en="News">Actualités</a>
-      <a href="contact.html" class="btn-primary px-4 py-2 rounded-lg text-center">Contact</a>
+  
+  <!-- MENU MOBILE -->
+  <div id="mobile-menu" class="mobile-menu lg:hidden bg-gradient-to-b from-white to-gray-50 border-t border-gray-100 px-4 pb-4 shadow-md">
+    <div class="flex flex-col gap-2 pt-4 text-sm font-medium">
+      <a href="../../index.html" class="px-4 py-2.5 text-gray-700 hover:text-gold rounded-lg transition-colors" style="color:var(--dark)" data-fr="Accueil" data-en="Home">🏠 Accueil</a>
+      <a href="apropos.html" class="px-4 py-2.5 text-gray-700 hover:text-gold rounded-lg transition-colors" style="color:var(--dark)" data-fr="À propos" data-en="About">ℹ️ À propos</a>
+      <a href="enseignements.html" class="px-4 py-2.5 rounded-lg transition-colors" style="background:var(--gold-light);color:var(--blue)" data-fr="Enseignements" data-en="Academics">📚 Enseignements</a>
+      <a href="vie-scolaire.html" class="px-4 py-2.5 text-gray-700 hover:text-gold rounded-lg transition-colors" style="color:var(--dark)" data-fr="Vie scolaire" data-en="School Life">🎓 Vie scolaire</a>
+      <a href="admissions.html" class="px-4 py-2.5 text-gray-700 hover:text-gold rounded-lg transition-colors" style="color:var(--dark)" data-fr="Admissions" data-en="Admissions">✅ Admissions</a>
+      <a href="actualites.html" class="px-4 py-2.5 text-gray-700 hover:text-gold rounded-lg transition-colors" style="color:var(--dark)" data-fr="Actualités" data-en="News">📰 Actualités</a>
+      <a href="contact.html" class="btn-primary px-4 py-2.5 rounded-lg text-center mt-2 w-full" data-fr="Contact" data-en="Contact">📞 Contact</a>
     </div>
   </div>
 </nav>
 
 <!-- HERO -->
-<section class="page-hero py-20 text-white">
-  <div class="max-w-7xl mx-auto px-4">
-    <div class="gold-line mb-4"></div>
-    <h1 class="text-5xl font-bold mb-4" data-fr="Nos Enseignements" data-en="Our Academics">Nos Enseignements</h1>
-    <p class="text-white/60 text-lg max-w-2xl" data-fr="Trois sections complémentaires pour accompagner chaque apprenant vers l'excellence." data-en="Three complementary sections to guide every learner towards excellence.">Trois sections complémentaires pour accompagner chaque apprenant vers l'excellence.</p>
-    <div class="mt-4 text-sm text-white/40">
-      <a href="../../index.html" class="hover:text-white" data-fr="Accueil" data-en="Home">Accueil</a> <span class="mx-2">›</span>
+<section class="page-hero py-32 text-white relative">
+  <!-- Éléments décoratis en arrière-plan -->
+  <div class="book-stack">
+    <div class="book-item book-1">
+      <div class="book-shine"></div>
+      <div style="padding:20px;color:#1a3a6b;font-weight:700;font-size:.9rem;text-align:center;">📚</div>
+    </div>
+    <div class="book-item book-2">
+      <div class="book-shine"></div>
+      <div style="padding:20px;color:#fff;font-weight:700;font-size:.9rem;text-align:center;">🎓</div>
+    </div>
+    <div class="book-item book-3">
+      <div class="book-shine"></div>
+      <div style="padding:20px;color:#1a3a6b;font-weight:700;font-size:.9rem;text-align:center;">✨</div>
+    </div>
+  </div>
+  
+  <!-- Contenu principal -->
+  <div class="max-w-7xl mx-auto px-4 hero-content">
+    <div class="mb-6 inline-block">
+      <div class="gold-line mb-4"></div>
+      <span class="text-xs font-bold tracking-widest uppercase text-gold" style="color:var(--gold)">Excellence Académique</span>
+    </div>
+    
+    <h1 class="text-6xl lg:text-7xl font-bold mb-6 leading-tight" data-fr="Nos Enseignements" data-en="Our Academics">Nos Enseignements</h1>
+    
+    <p class="text-lg lg:text-xl text-white/80 max-w-3xl mb-8 leading-relaxed" data-fr="Trois sections complémentaires pour accompagner chaque apprenant vers l'excellence. Qualité pédagogique, encadrement personnalisé et préparation à la réussite." data-en="Three complementary sections to guide every learner towards excellence. Educational quality, personalized supervision and preparation for success.">Trois sections complémentaires pour accompagner chaque apprenant vers l'excellence. Qualité pédagogique, encadrement personnalisé et préparation à la réussite.</p>
+    
+    <div class="flex gap-4 mb-8">
+      <a href="#franco" onclick="showTab('franco')" class="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-dark transition-all hover:shadow-lg" style="background:var(--gold);transform:translateY(0);transition:transform .3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <span>🇫🇷 Section Francophone</span>
+      </a>
+      <a href="#anglo" onclick="showTab('anglo')" class="inline-flex items-center px-6 py-3 rounded-lg font-semibold border-2 border-white/30 hover:border-white transition-all" style="transform:translateY(0);transition:transform .3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+        <span>🇬🇧 Section Anglophone</span>
+      </a>
+    </div>
+    
+    <div class="mt-6 text-sm text-white/60">
+      <a href="../../index.html" class="hover:text-white hover:underline" data-fr="Accueil" data-en="Home">Accueil</a> <span class="mx-2">›</span>
       <span data-fr="Enseignements" data-en="Academics">Enseignements</span>
     </div>
   </div>
@@ -99,9 +153,9 @@
 <!-- TABS -->
 <section class="bg-white border-b sticky top-[73px] z-40">
   <div class="max-w-7xl mx-auto px-4 flex gap-0 overflow-x-auto">
-    <button onclick="showTab('franco')" id="tab-franco" class="tab-btn active px-6 py-4 text-sm font-semibold whitespace-nowrap border-b-2 border-transparent" data-fr="🇫🇷 Section Francophone" data-en="🇫🇷 French Section">🇫🇷 Section Francophone</button>
-    <button onclick="showTab('anglo')" id="tab-anglo" class="tab-btn px-6 py-4 text-sm font-semibold whitespace-nowrap border-b-2 border-transparent text-gray-500" data-fr="🇬🇧 Section Anglophone" data-en="🇬🇧 English Section">🇬🇧 Section Anglophone</button>
-    <button onclick="showTab('soir')" id="tab-soir" class="tab-btn px-6 py-4 text-sm font-semibold whitespace-nowrap border-b-2 border-transparent text-gray-500" data-fr="🌙 Cours du Soir" data-en="🌙 Evening Classes">🌙 Cours du Soir</button>
+    <button onclick="showTab('franco')" id="tab-franco" class="tab-btn active px-6 py-4 text-sm font-bold whitespace-nowrap border-b-2 border-transparent" data-fr="🇫🇷 Section Francophone" data-en="🇫🇷 French Section"><span class="tab-flag">🇫🇷</span><span class="tab-label">Section Francophone</span></button>
+    <button onclick="showTab('anglo')" id="tab-anglo" class="tab-btn px-6 py-4 text-sm font-bold whitespace-nowrap border-b-2 border-transparent text-gray-500" data-fr="🇬🇧 Section Anglophone" data-en="🇬🇧 English Section"><span class="tab-flag">🇬🇧</span><span class="tab-label">Section Anglophone</span></button>
+    <button onclick="showTab('soir')" id="tab-soir" class="tab-btn px-6 py-4 text-sm font-bold whitespace-nowrap border-b-2 border-transparent text-gray-500" data-fr="🌙 Cours du Soir" data-en="🌙 Evening Classes"><span class="tab-flag">🌙</span><span class="tab-label">Cours du Soir</span></button>
   </div>
 </section>
 
@@ -116,15 +170,20 @@
           <p class="text-gray-500 leading-relaxed mb-6" data-fr="Classes ouvertes (prospectus 2024-2025): Enseignement francophone: 1er et 2nd cycle – toutes les séries. Enseignement anglophone: Form 1 à Upper Sixth (Arts & Sciences). Sciences et technologies du tertiaire (STT): 2nde STT/G – 1ère : ACC, CG, SES; Terminale : ACC, CG, SES." data-en="Open classes (2024-2025 brochure): French teaching: 1st and 2nd cycle – all series. English teaching: Form 1 to Upper Sixth (Arts & Sciences). Tertiary sciences and technologies (STT): 2nde STT/G – 1ère : ACC, CG, SES; Terminale : ACC, CG, SES.">
             Classes ouvertes (prospectus 2024-2025): 6e, 5e, 4e All, 4e Esp, 3e All, 3e Esp, 2nde A4 All, 2nde A4 Esp, 2nde C, 1ere A4 All, 1ere A4 Esp, PC, PD, Tle A4 All, Tle A4 Esp, Tle C, Tle D.
           </p>
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid lg:grid-cols-3 gap-4">
             <div class="p-4 rounded-xl" style="background:var(--blue-light)">
               <div class="font-bold mb-1" style="color:var(--blue)" data-fr="Collège (4 ans)" data-en="College (4 years)">Collège (4 ans)</div>
               <div class="text-sm text-gray-500">6ème · 5ème · 4ème · 3ème</div>
               <div class="text-xs mt-2 font-semibold" style="color:var(--gold)">→ BEPC</div>
             </div>
+            <div class="p-4 rounded-xl" style="background:var(--gold-light)">
+              <div class="font-bold mb-1" style="color:var(--blue)" data-fr="Probatoire (1ère)" data-en="Probatoire (1st Year)">Probatoire (1ère)</div>
+              <div class="text-sm text-gray-500" data-fr="Classe de 1ère" data-en="First Year Class">Classe de 1ère</div>
+              <div class="text-xs mt-2 font-semibold" style="color:var(--gold)">→ Probatoire</div>
+            </div>
             <div class="p-4 rounded-xl" style="background:var(--blue-light)">
-              <div class="font-bold mb-1" style="color:var(--blue)" data-fr="Lycée (3 ans)" data-en="High School (3 years)">Lycée (3 ans)</div>
-              <div class="text-sm text-gray-500">2nde · 1ère · Terminale</div>
+              <div class="font-bold mb-1" style="color:var(--blue)" data-fr="Baccalauréat (2 ans)" data-en="Baccalaureate (2 years)">Baccalauréat (2 ans)</div>
+              <div class="text-sm text-gray-500">2nde · Terminale</div>
               <div class="text-xs mt-2 font-semibold" style="color:var(--gold)">→ Baccalauréat</div>
             </div>
           </div>
@@ -156,7 +215,7 @@
 
       <!-- Matières par niveau -->
       <h3 class="text-2xl font-bold mb-8" style="color:var(--blue)" data-fr="Matières par niveau" data-en="Subjects by Level">Matières par niveau</h3>
-      <div class="grid lg:grid-cols-2 gap-6">
+      <div class="grid lg:grid-cols-3 gap-6">
         <div class="rounded-2xl border border-gray-100 p-6 card-hover">
           <div class="flex justify-between items-center mb-4">
             <h4 class="font-bold" style="color:var(--blue)" data-fr="Collège (6ème – 3ème)" data-en="Middle School (6th – 3rd)">Collège (6ème – 3ème)</h4>
@@ -167,6 +226,18 @@
             <span class="matiere-tag">SVT</span><span class="matiere-tag">Physique-Chimie</span><span class="matiere-tag">Histoire-Géo</span>
             <span class="matiere-tag">EPS</span><span class="matiere-tag">Éducation Civique</span><span class="matiere-tag">Informatique</span>
             <span class="matiere-tag">Dessin</span><span class="matiere-tag">Culture religieuse</span>
+          </div>
+        </div>
+        <div class="rounded-2xl border border-gray-100 p-6 card-hover">
+          <div class="flex justify-between items-center mb-4">
+            <h4 class="font-bold" style="color:var(--blue)" data-fr="Probatoire (1ère)" data-en="Probatoire (1st Year)">Probatoire (1ère)</h4>
+            <span class="text-xs px-3 py-1 rounded-full" style="background:var(--gold-light);color:#7a5c00">→ Probatoire</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="matiere-tag">Français</span><span class="matiere-tag">Mathématiques</span><span class="matiere-tag">Anglais</span>
+            <span class="matiere-tag">Philosophie</span><span class="matiere-tag">Physique</span><span class="matiere-tag">Chimie</span>
+            <span class="matiere-tag">SVT</span><span class="matiere-tag">Histoire-Géo</span><span class="matiere-tag">Informatique</span>
+            <span class="matiere-tag">EPS</span><span class="matiere-tag">Culture religieuse</span>
           </div>
         </div>
         <div class="rounded-2xl border border-gray-100 p-6 card-hover">
@@ -182,6 +253,23 @@
           </div>
         </div>
       </div>
+
+      <!-- PROBATOIRE (1ère)
+      <div class="mt-10">
+        <h3 class="text-2xl font-bold mb-4" style="color:var(--blue)">Probatoire (1ère) — Cours</h3>
+        <div class="rounded-2xl border border-gray-100 p-6 card-hover">
+          <div class="flex justify-between items-center mb-4">
+            <h4 class="font-bold" style="color:var(--blue)">Probatoire (1ère)</h4>
+            <span class="text-xs px-3 py-1 rounded-full" style="background:var(--gold-light);color:#7a5c00">→ Orientation & Préparation</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="matiere-tag">Mathématiques</span><span class="matiere-tag">Physique</span><span class="matiere-tag">Chimie</span>
+            <span class="matiere-tag">Sciences de la Vie</span><span class="matiere-tag">Français</span><span class="matiere-tag">Anglais</span>
+            <span class="matiere-tag">Histoire-Géo</span><span class="matiere-tag">Philosophie</span><span class="matiere-tag">Informatique</span>
+          </div>
+        </div>
+      </div> -->
+
     </div>
   </section>
 </div>
@@ -312,7 +400,7 @@
         <p class="text-white/60 mb-6 text-sm" data-fr="Contactez-nous ou visitez le secrétariat pour obtenir plus d'informations et vous inscrire. Places limitées." data-en="Contact us or visit the secretariat for more information and to enrol. Limited places.">Contactez-nous ou visitez le secrétariat pour obtenir plus d'informations et vous inscrire. Places limitées.</p>
         <div class="flex flex-wrap gap-4 justify-center">
           <a href="contact.html" class="btn-primary px-6 py-3 rounded-lg inline-block" data-fr="S'inscrire maintenant" data-en="Enrol Now">S'inscrire maintenant</a>
-          <a href="tel:+237 675 84 05 71" class="border-2 border-white/30 text-white px-6 py-3 rounded-lg inline-block hover:bg-white/10" data-fr="Appeler le secrétariat" data-en="Call the Secretariat">Appeler le secrétariat</a>
+          <a href=\"tel:+237243850268\" class=\"border-2 border-white/30 text-white px-6 py-3 rounded-lg inline-block hover:bg-white/10\" data-fr=\"Appeler le secrétariat\" data-en=\"Call the Secretariat\">Appeler le secrétariat</a>
         </div>
       </div>
     </div>
@@ -324,7 +412,7 @@
   <div class="max-w-7xl mx-auto px-4 grid lg:grid-cols-4 gap-8">
     <div><div class="font-bold text-white mb-3" style="font-family:'Playfair Display',serif">CABMY</div><p class="text-white/40 text-sm">Collège Adventiste Bilingue Marathana de Yaoundé.</p></div>
     <div><div class="font-bold text-white mb-3">Navigation</div><div class="flex flex-col gap-2 text-sm text-white/50"><a href="index.html" class="hover:text-white">Accueil</a><a href="apropos.html" class="hover:text-white">À propos</a><a href="admissions.html" class="hover:text-white">Admissions</a><a href="contact.html" class="hover:text-white">Contact</a></div></div>
-    <div><div class="font-bold text-white mb-3">Contact</div><div class="flex flex-col gap-2 text-sm text-white/50"><div>📍 Nyom, Yaoundé</div><div>📞 +237 600 000 000</div><div>✉ contact@cabmy.cm</div></div></div>
+    <div><div class="font-bold text-white mb-3">Contact</div><div class="flex flex-col gap-2 text-sm text-white/50"><div>📍 Nyom II, Petit Marché · Yaoundé</div><div>📞 243 850 268 · 675 84 05 71</div><div>✉ contact@cabmy.cm</div></div></div>
     <div><div class="font-bold text-white mb-3">Sections</div><div class="flex flex-col gap-2 text-sm text-white/50"><a href="#" onclick="showTab('franco')" class="hover:text-white">Section Francophone</a><a href="#" onclick="showTab('anglo')" class="hover:text-white">Section Anglophone</a><a href="#" onclick="showTab('soir')" class="hover:text-white">Cours du Soir</a></div></div>
   </div>
   <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-white/10 text-center text-xs text-white/30">© 2024 CABMY – Tous droits réservés</div>

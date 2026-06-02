@@ -96,7 +96,7 @@
 }
 
 .scale-125 {
-  @apply scale-125;
+  transform: scale(1.25);
 }
 
 /* Mobile menu */
@@ -113,9 +113,9 @@
   @apply relative;
 }
 
-.dropdown-menu {
-  @apply hidden absolute top-full left-0 bg-white min-w-[230px] shadow-2xl border-t-4 border-[var(--gold)] z-100 rounded-b-3xl;
-}
+  .dropdown-menu {
+    @apply hidden absolute top-full left-0 bg-white min-w-[230px] shadow-2xl border-t-4 border-[var(--gold)] z-50 rounded-b-3xl;
+  }
 
 .dropdown:hover .dropdown-menu {
   @apply block;
@@ -130,13 +130,15 @@
 }
 
 /* Lang toggle */
-.lang-active {
-  @apply bg-[var(--gold)] !important text-[var(--dark)] !important;
-}
+  .lang-active {
+    @apply bg-[var(--gold)] text-[var(--dark)];
+    background-color: var(--gold) !important;
+    color: var(--dark) !important;
+  }
 
 /* Form inputs */
 .form-input {
-  @apply w-full px-4 py-3 border-2 border-gray-200 rounded-2.5 font-sans text-base transition-all duration-300 outline-none bg-white text-[var(--dark)];
+  @apply w-full px-4 py-3 border-2 border-gray-200 rounded-[10px] font-sans text-base transition-all duration-300 outline-none bg-white text-[var(--dark)];
 }
 
 .form-input:focus {
@@ -148,7 +150,7 @@
 }
 
 textarea.form-input {
-  @apply resize-vertical min-h-[140px];
+  @apply resize-y min-h-[140px];
 }
 
 /* Tables */
