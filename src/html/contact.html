@@ -3,33 +3,11 @@
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Contact – CABMY</title>
+  <link rel="icon" type="image/jpeg" href="../../images/logo/WhatsApp Image 2025-09-23 at 19.42.18.jpeg">
   <link rel="stylesheet" href="../../output.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root{--blue:#1a3a6b;--blue-mid:#2952a3;--blue-light:#e8eef8;--gold:#c9a84c;--gold-light:#f5e9c8;--dark:#0f1f3d;}
-    *{box-sizing:border-box;margin:0;padding:0;}
-    body{font-family:'DM Sans',sans-serif;color:var(--dark);}
-    h1,h2,h3,h4{font-family:'Playfair Display',serif;}
-    .nav-link{position:relative;}.nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:var(--gold);transition:width .3s;}.nav-link:hover::after{width:100%;}
-    .gold-line{width:60px;height:3px;background:var(--gold);}
-    .btn-primary{background:var(--gold);color:var(--dark);font-weight:600;transition:all .3s;}.btn-primary:hover{background:#b8922e;transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,.4);}
-    .lang-active{background:var(--gold);color:var(--dark);}
-    .mobile-menu{display:none;}.mobile-menu.open{display:block;}
-    .card-hover{transition:transform .3s,box-shadow .3s;}.card-hover:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(26,58,107,.12);}
-    .dropdown{position:relative;}.dropdown-menu{display:none;position:absolute;top:100%;left:0;background:#fff;min-width:220px;box-shadow:0 10px 40px rgba(0,0,0,.12);border-top:3px solid var(--gold);z-index:100;}.dropdown:hover .dropdown-menu{display:block;}.dropdown-menu a{display:block;padding:10px 20px;color:var(--blue);font-size:.9rem;transition:background .2s;}.dropdown-menu a:hover{background:var(--blue-light);color:var(--gold);}
-    .page-hero{background:linear-gradient(135deg,var(--dark) 0%,var(--blue) 100%);}
-    .animate-fade{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s;}.animate-fade.visible{opacity:1;transform:translateY(0);}
-    .form-input{width:100%;padding:12px 16px;border:2px solid #e5e7eb;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.95rem;transition:border-color .3s;outline:none;background:#fff;}
-    .form-input:focus{border-color:var(--blue);}
-    .form-input::placeholder{color:#9ca3af;}
-    textarea.form-input{resize:vertical;min-height:140px;}
-    .contact-card{border-top:4px solid var(--blue);transition:border-color .3s;}.contact-card:hover{border-color:var(--gold);}
-    .map-container{background:var(--blue-light);border-radius:16px;overflow:hidden;position:relative;}
-    .success-msg{display:none;background:#d1fae5;color:#065f46;padding:16px;border-radius:10px;margin-top:12px;}
-    label{display:block;font-size:.875rem;font-weight:600;margin-bottom:6px;color:var(--dark);}
-    .whatsapp-btn{background:#25D366;color:#fff;transition:all .3s;}.whatsapp-btn:hover{background:#128C7E;transform:translateY(-2px);}
-    .required{color:#ef4444;margin-left:2px;}
-  </style>
+  <link rel="stylesheet" href="./../css/contact.css">
+  <link rel="stylesheet" href="../css/global.css">
 </head>
 <body>
 
@@ -45,42 +23,51 @@
 </div>
 
 <!-- NAVBAR -->
-<nav class="bg-white shadow-sm sticky top-0 z-50">
-  <div class="max-w-7xl mx-auto px-4 flex justify-between items-center py-3">
-    <a href="../../index.html" class="flex items-center gap-3">
-      <img src="../../images/logo/WhatsApp Image 2025-09-23 at 19.42.18.jpeg" alt="Logo CABMY" class="w-12 h-12 rounded-full object-cover" />
-      <div>
-        <div class="font-bold text-sm leading-tight" style="color:var(--blue);font-family:'Playfair Display',serif">CABMY</div>
-        <div class="text-xs text-gray-500 leading-tight" data-fr="Collège Adventiste Bilingue Marathana" data-en="Marathana Bilingual Adventist College">Collège Adventiste Bilingue Marathana</div>
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <div class="nav-logo">
+        <img src="../../images/logo/WhatsApp Image 2025-09-23 at 19.42.18.jpeg" alt="Logo CABMY" />
+      </div>
+      <div class="brand-text">
+        <div class="brand-name">CABMY</div>
+        <div class="brand-sub" data-fr="Collège Adventiste Bilingue Marathana De Yaoundé" data-en="Marathana Bilingual Adventist College of Yaoundé">Collège Adventiste Bilingue Marathana de Yaoundé</div>
       </div>
     </a>
-    <div class="hidden lg:flex items-center gap-6 text-sm font-medium">
-      <a href="index.html" class="nav-link text-gray-600" data-fr="Accueil" data-en="Home">Accueil</a>
-      <a href="apropos.html" class="nav-link text-gray-600" data-fr="À propos" data-en="About">À propos</a>
-      <a href="enseignements.html" class="nav-link text-gray-600" data-fr="Enseignements" data-en="Academics">Enseignements</a>
-      <a href="vie-scolaire.html" class="nav-link text-gray-600" data-fr="Vie scolaire" data-en="School Life">Vie scolaire</a>
+    <div class="nav-links">
+      <a href="../../index.html" class="nav-link" data-fr="Accueil" data-en="Home">Accueil</a>
+      <a href="apropos.html" class="nav-link" data-fr="À propos" data-en="About">À propos</a>
+      <a href="enseignements.html" class="nav-link" data-fr="Enseignements" data-en="Academics">Enseignements</a>
+      <a href="vie-scolaire.html" class="nav-link" data-fr="Vie scolaire" data-en="School Life">Vie scolaire</a>
       <div class="dropdown">
-        <a href="admissions.html" class="nav-link text-gray-600 flex items-center gap-1" data-fr="Admissions" data-en="Admissions">Admissions <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></a>
-        <div class="dropdown-menu">
+        <a href="admissions.html" class="nav-link dropdown-trigger flex items-center gap-1" data-fr="Admissions" data-en="Admissions">
+          Admissions
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </a>
+        <div class="dropdown-panel">
           <a href="admissions.html#conditions">Conditions d'admission</a>
           <a href="admissions.html#frais">Frais de scolarité</a>
           <a href="admissions.html#calendrier">Calendrier</a>
           <a href="admissions.html#tenues">Tenues scolaires</a>
         </div>
       </div>
-      <a href="actualites.html" class="nav-link text-gray-600" data-fr="Actualités" data-en="News">Actualités</a>
-      <a href="contact.html" class="btn-primary px-4 py-2 rounded-lg text-sm" style="color:var(--dark)" data-fr="Contact" data-en="Contact">Contact</a>
+      <a href="actualites.html" class="nav-link" data-fr="Actualités" data-en="News">Actualités</a>
+      <a href="contact.html" class="nav-link active" data-fr="Contact" data-en="Contact">Contact</a>
     </div>
-    <button onclick="toggleMobile()" class="lg:hidden p-2 text-gray-600">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    <button class="hamburger" id="hamburger" onclick="toggleMobile()" aria-label="Menu">
+      <span></span><span></span><span></span>
     </button>
   </div>
-  <div id="mobile-menu" class="mobile-menu lg:hidden bg-white border-t px-4 pb-4">
+  <div id="mobile-menu" class="mobile-menu">
+    <button class="mobile-close" onclick="toggleMobile()">✕</button>
     <div class="flex flex-col gap-3 pt-3 text-sm font-medium">
-      <a href="../../index.html" class="text-gray-700">Accueil</a><a href="apropos.html" class="text-gray-700">À propos</a>
-      <a href="enseignements.html" class="text-gray-700">Enseignements</a><a href="vie-scolaire.html" class="text-gray-700">Vie scolaire</a>
-      <a href="admissions.html" class="text-gray-700">Admissions</a><a href="actualites.html" class="text-gray-700">Actualités</a>
-      <a href="contact.html" class="btn-primary px-4 py-2 rounded-lg text-center">Contact</a>
+      <a href="../../index.html" class="mobile-link">Accueil</a>
+      <a href="apropos.html" class="mobile-link">À propos</a>
+      <a href="enseignements.html" class="mobile-link">Enseignements</a>
+      <a href="vie-scolaire.html" class="mobile-link">Vie scolaire</a>
+      <a href="admissions.html" class="mobile-link">Admissions</a>
+      <a href="actualites.html" class="mobile-link">Actualités</a>
+      <a href="contact.html" class="mobile-cta">Contact</a>
     </div>
   </div>
 </nav>
@@ -89,7 +76,10 @@
 <section class="page-hero py-20 text-white">
   <div class="max-w-7xl mx-auto px-4">
     <div class="gold-line mb-4"></div>
-    <h1 class="text-5xl font-bold mb-4" data-fr="Contactez-nous" data-en="Contact Us">Contactez-nous</h1>
+    <div class="page-heading-with-logo">
+      
+      <h1 class="text-5xl font-bold mb-4" data-fr="Contactez-nous" data-en="Contact Us">Contactez-nous</h1>
+    </div>
     <p class="text-white/60 text-lg max-w-2xl" data-fr="Notre équipe est à votre écoute. Écrivez-nous, appelez-nous ou rendez-nous visite au secrétariat." data-en="Our team is here to listen. Write to us, call us or visit us at the secretariat.">Notre équipe est à votre écoute. Écrivez-nous, appelez-nous ou rendez-nous visite au secrétariat.</p>
     <div class="mt-4 text-sm text-white/40">
       <a href="../../index.html" class="hover:text-white">Accueil</a> <span class="mx-2">›</span>

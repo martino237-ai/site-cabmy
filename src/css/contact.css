@@ -21,3 +21,27 @@
     label{display:block;font-size:.875rem;font-weight:600;margin-bottom:6px;color:var(--dark);}
     .whatsapp-btn{background:#25D366;color:#fff;transition:all .3s;}.whatsapp-btn:hover{background:#128C7E;transform:translateY(-2px);}
     .required{color:#ef4444;margin-left:2px;}
+
+:root{--blue:#1a3a6b;--blue-mid:#2952a3;--blue-light:#e8eef8;--gold:#c9a84c;--gold-light:#f5e9c8;--dark:#0f1f3d;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'DM Sans',sans-serif;color:var(--dark);}
+    h1,h2,h3,h4{font-family:'Playfair Display',serif;}
+    .nav-link{position:relative;}.nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:var(--gold);transition:width .3s;}.nav-link:hover::after{width:100%;}
+    .gold-line{width:60px;height:3px;background:var(--gold);}
+    .btn-primary{background:var(--gold);color:var(--dark);font-weight:600;transition:all .3s;}.btn-primary:hover{background:#b8922e;transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,.4);}
+    .lang-active{background:var(--gold);color:var(--dark);}
+    .mobile-menu{display:none;}.mobile-menu.open{display:block;}
+    .card-hover{transition:transform .3s,box-shadow .3s;}.card-hover:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(26,58,107,.12);}
+    .dropdown{position:relative;}.dropdown-menu{display:none;position:absolute;top:100%;left:0;background:#fff;min-width:220px;box-shadow:0 10px 40px rgba(0,0,0,.12);border-top:3px solid var(--gold);z-index:100;}.dropdown:hover .dropdown-menu{display:block;}.dropdown-menu a{display:block;padding:10px 20px;color:var(--blue);font-size:.9rem;transition:background .2s;}.dropdown-menu a:hover{background:var(--blue-light);color:var(--gold);}
+    .page-hero{background:linear-gradient(135deg,var(--dark) 0%,var(--blue) 100%);}
+    .animate-fade{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s;}.animate-fade.visible{opacity:1;transform:translateY(0);}
+    .form-input{width:100%;padding:12px 16px;border:2px solid #e5e7eb;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:.95rem;transition:border-color .3s;outline:none;background:#fff;}
+    .form-input:focus{border-color:var(--blue);}
+    .form-input::placeholder{color:#9ca3af;}
+    textarea.form-input{resize:vertical;min-height:140px;}
+    .contact-card{border-top:4px solid var(--blue);transition:border-color .3s;}.contact-card:hover{border-color:var(--gold);}
+    .map-container{background:var(--blue-light);border-radius:16px;overflow:hidden;position:relative;}
+    .success-msg{display:none;background:#d1fae5;color:#065f46;padding:16px;border-radius:10px;margin-top:12px;}
+    label{display:block;font-size:.875rem;font-weight:600;margin-bottom:6px;color:var(--dark);}
+    .whatsapp-btn{background:#25D366;color:#fff;transition:all .3s;}.whatsapp-btn:hover{background:#128C7E;transform:translateY(-2px);}
+    .required{color:#ef4444;margin-left:2px;}

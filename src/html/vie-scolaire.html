@@ -3,29 +3,43 @@
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Vie Scolaire – CABMY</title>
+  <link rel="icon" type="image/jpeg" href="../../images/logo/WhatsApp Image 2025-09-23 at 19.42.18.jpeg">
   <link rel="stylesheet" href="../../output.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    :root{--blue:#1a3a6b;--blue-mid:#2952a3;--blue-light:#e8eef8;--gold:#c9a84c;--gold-light:#f5e9c8;--dark:#0f1f3d;}
+    :root{--blue:#1a3a6b;--blue-mid:#2952a3;--blue-light:#e8eef8;--gold:#c9a84c;--gold-light:#f5e9c8;--dark:#0f1f3d;--gray:#677084;}
     *{box-sizing:border-box;margin:0;padding:0;}
-    body{font-family:'DM Sans',sans-serif;color:var(--dark);}
+    body{font-family:'DM Sans',sans-serif;color:var(--dark);background:#f7f5ef;}
     h1,h2,h3,h4{font-family:'Playfair Display',serif;}
     .nav-link{position:relative;}.nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:var(--gold);transition:width .3s;}.nav-link:hover::after{width:100%;}
-    .gold-line{width:60px;height:3px;background:var(--gold);}
+    .gold-line{width:60px;height:3px;background:var(--gold);border-radius:999px;}
     .btn-primary{background:var(--gold);color:var(--dark);font-weight:600;transition:all .3s;}.btn-primary:hover{background:#b8922e;}
+    .btn-outline{border:1px solid rgba(26,58,107,.18);color:var(--dark);background:#fff;transition:all .3s;}.btn-outline:hover{background:rgba(26,58,107,.05);}
     .lang-active{background:var(--gold);color:var(--dark);}
     .mobile-menu{display:none;}.mobile-menu.open{display:block;}
     .card-hover{transition:transform .3s,box-shadow .3s;}.card-hover:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(26,58,107,.12);}
-    .dropdown{position:relative;}.dropdown-menu{display:none;position:absolute;top:100%;left:0;background:#fff;min-width:220px;box-shadow:0 10px 40px rgba(0,0,0,.12);border-top:3px solid var(--gold);z-index:100;}.dropdown:hover .dropdown-menu{display:block;}.dropdown-menu a{display:block;padding:10px 20px;color:var(--blue);font-size:.9rem;transition:background .2s;}.dropdown-menu a:hover{background:var(--blue-light);color:var(--gold);}
-    .page-hero{background:linear-gradient(135deg,var(--dark) 0%,var(--blue) 100%);}
-    .animate-fade{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s;}.animate-fade.visible{opacity:1;transform:translateY(0);}
-    .rule-item{border-left:4px solid var(--blue-light);padding-left:16px;transition:border-color .3s;}.rule-item:hover{border-color:var(--gold);}
-    .activity-card{position:relative;overflow:hidden;border-radius:16px;}
-    .activity-card .overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,31,61,.9) 0%,transparent 60%);opacity:0;transition:opacity .3s;}.activity-card:hover .overlay{opacity:1;}
-    .discipline-step{counter-increment:steps;}
-    .discipline-step::before{content:counter(steps);width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0;}
+    .dropdown{position:relative;}.dropdown-panel{display:none;position:absolute;top:calc(100% + 8px);left:0;background:#fff;min-width:230px;box-shadow:0 22px 50px rgba(15,31,61,.12);border-top:3px solid var(--gold);z-index:100;border-radius:16px;overflow:hidden;}.dropdown:hover .dropdown-panel{display:block;}.dropdown-panel a{display:block;padding:13px 18px;color:var(--blue);font-size:.95rem;transition:background .2s;}.dropdown-panel a:hover{background:var(--blue-light);color:var(--gold);}
+    .page-hero{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--dark) 0%,var(--blue) 100%);background-size:cover;}
+    .page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at top right, rgba(255,255,255,.12), transparent 22%),radial-gradient(circle at bottom left, rgba(201,168,76,.16), transparent 25%);}
+    .page-hero .hero-content{position:relative;z-index:1;}
+    .hero-pill{display:inline-flex;align-items:center;gap:.75rem;padding:.9rem 1.15rem;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);font-size:.95rem;}
+    .hero-pill span{display:inline-flex;align-items:center;justify-content:center;width:2.2rem;height:2.2rem;border-radius:999px;background:rgba(255,255,255,.16);}
+    .hero-stat{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:24px;padding:1.35rem;}
+    .hero-stat-value{font-size:2rem;font-weight:700;color:#fff;}
+    .hero-stat-label{color:rgba(255,255,255,.76);margin-top:.5rem;font-size:.95rem;line-height:1.4;}
+    .section-heading{display:flex;flex-direction:column;align-items:center;gap:.85rem;text-align:center;}
+    .section-heading h2{font-size:2.8rem;}
+    .section-card{background:#fff;border-radius:24px;padding:2rem;box-shadow:0 24px 58px rgba(18,43,92,.08);}
+    .rule-item{border-left:4px solid var(--blue-light);padding:1rem 1rem 1rem 1rem;transition:border-color .3s;background:#fff;border-radius:16px;}.rule-item:hover{border-color:var(--gold);}
+    .activity-card{position:relative;overflow:hidden;border-radius:16px;background:#fff;border:1px solid rgba(15,31,61,.08);}
+    .activity-card .overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,31,61,.92) 0%,transparent 60%);opacity:0;transition:opacity .3s;border-radius:16px;}.activity-card:hover .overlay{opacity:1;}
+    .discipline-step{counter-increment:steps;}.discipline-step::before{content:counter(steps);width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0;}
     ol.steps-list{counter-reset:steps;}
+    .download-panel{border-radius:24px;background:linear-gradient(135deg,rgba(201,168,76,.12),rgba(255,255,255,.95));border:1px solid rgba(201,168,76,.28);padding:1.5rem;}
+    .download-panel a,.download-panel button{min-width:170px;}
+    @media(max-width:768px){.hero-stats{grid-template-columns:1fr;} .hero-grid{grid-template-columns:1fr;} .page-hero{padding-bottom:3.5rem;}}
   </style>
+  <link rel="stylesheet" href="../css/global.css">
 </head>
 <body>
 
@@ -41,69 +55,102 @@
 </div>
 
 <!-- NAVBAR -->
-<nav class="bg-white shadow-sm sticky top-0 z-50">
-  <div class="max-w-7xl mx-auto px-4 flex justify-between items-center py-3">
-    <a href="index.html" class="flex items-center gap-3">
-      <div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg" style="background:var(--blue)"><span style="font-family:'Playfair Display',serif">CA</span></div>
-      <div>
-        <div class="font-bold text-sm leading-tight" style="color:var(--blue);font-family:'Playfair Display',serif">CABMY</div>
-        <div class="text-xs text-gray-500 leading-tight" data-fr="Collège Adventiste Bilingue Marathana" data-en="Marathana Bilingual Adventist College">Collège Adventiste Bilingue Marathana</div>
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <div class="nav-logo">
+        <span class="text-white font-bold text-lg" style="font-family:'Playfair Display',serif">CA</span>
+      </div>
+      <div class="brand-text">
+        <div class="brand-name">CABMY</div>
+        <div class="brand-sub" data-fr="Collège Adventiste Bilingue Marathana De Yaoundé" data-en="Marathana Bilingual Adventist College of Yaoundé">Collège Adventiste Bilingue Marathana de Yaoundé</div>
       </div>
     </a>
-    <div class="hidden lg:flex items-center gap-6 text-sm font-medium">
-      <a href="index.html" class="nav-link text-gray-600" data-fr="Accueil" data-en="Home">Accueil</a>
-      <a href="apropos.html" class="nav-link text-gray-600" data-fr="À propos" data-en="About">À propos</a>
-      <a href="enseignements.html" class="nav-link text-gray-600" data-fr="Enseignements" data-en="Academics">Enseignements</a>
-      <a href="vie-scolaire.html" class="nav-link font-semibold" style="color:var(--blue)" data-fr="Vie scolaire" data-en="School Life">Vie scolaire</a>
+    <div class="nav-links">
+      <a href="../../index.html" class="nav-link" data-fr="Accueil" data-en="Home">Accueil</a>
+      <a href="apropos.html" class="nav-link" data-fr="À propos" data-en="About">À propos</a>
+      <a href="enseignements.html" class="nav-link" data-fr="Enseignements" data-en="Academics">Enseignements</a>
+      <a href="vie-scolaire.html" class="nav-link active" data-fr="Vie scolaire" data-en="School Life">Vie scolaire</a>
       <div class="dropdown">
-        <a href="admissions.html" class="nav-link text-gray-600 flex items-center gap-1" data-fr="Admissions" data-en="Admissions">Admissions <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></a>
-        <div class="dropdown-menu">
+        <a href="admissions.html" class="nav-link dropdown-trigger flex items-center gap-1" data-fr="Admissions" data-en="Admissions">
+          Admissions
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </a>
+        <div class="dropdown-panel">
           <a href="admissions.html#conditions" data-fr="Conditions d'admission" data-en="Admission Conditions">Conditions d'admission</a>
           <a href="admissions.html#frais" data-fr="Frais de scolarité" data-en="School Fees">Frais de scolarité</a>
           <a href="admissions.html#calendrier" data-fr="Calendrier" data-en="Calendar">Calendrier</a>
           <a href="admissions.html#tenues" data-fr="Tenues scolaires" data-en="School Uniforms">Tenues scolaires</a>
         </div>
       </div>
-      <a href="actualites.html" class="nav-link text-gray-600" data-fr="Actualités" data-en="News">Actualités</a>
-      <a href="contact.html" class="btn-primary px-4 py-2 rounded-lg text-sm">Contact</a>
+      <a href="actualites.html" class="nav-link" data-fr="Actualités" data-en="News">Actualités</a>
+      <a href="contact.html" class="nav-cta" data-fr="Contact" data-en="Contact">Contact</a>
     </div>
-    <button onclick="toggleMobile()" class="lg:hidden p-2 text-gray-600">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    <button class="hamburger" id="hamburger" onclick="toggleMobile()" aria-label="Menu">
+      <span></span><span></span><span></span>
     </button>
   </div>
-  <div id="mobile-menu" class="mobile-menu lg:hidden bg-white border-t px-4 pb-4">
+  <div id="mobile-menu" class="mobile-menu">
+    <button class="mobile-close" onclick="toggleMobile()">✕</button>
     <div class="flex flex-col gap-3 pt-3 text-sm font-medium">
-      <a href="index.html" class="text-gray-700">Accueil</a>
-      <a href="apropos.html" class="text-gray-700">À propos</a>
-      <a href="enseignements.html" class="text-gray-700">Enseignements</a>
-      <a href="vie-scolaire.html" style="color:var(--blue)">Vie scolaire</a>
-      <a href="admissions.html" class="text-gray-700">Admissions</a>
-      <a href="actualites.html" class="text-gray-700">Actualités</a>
-      <a href="contact.html" class="btn-primary px-4 py-2 rounded-lg text-center">Contact</a>
+      <a href="../../index.html" class="mobile-link">Accueil</a>
+      <a href="apropos.html" class="mobile-link">À propos</a>
+      <a href="enseignements.html" class="mobile-link">Enseignements</a>
+      <a href="vie-scolaire.html" class="mobile-link active">Vie scolaire</a>
+      <a href="admissions.html" class="mobile-link">Admissions</a>
+      <a href="actualites.html" class="mobile-link">Actualités</a>
+      <a href="contact.html" class="mobile-cta">Contact</a>
     </div>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="page-hero py-20 text-white">
-  <div class="max-w-7xl mx-auto px-4">
-    <div class="gold-line mb-4"></div>
-    <h1 class="text-5xl font-bold mb-4" data-fr="Vie Scolaire" data-en="School Life">Vie Scolaire</h1>
-    <p class="text-white/60 text-lg max-w-2xl" data-fr="Au CABMY, la vie scolaire va bien au-delà des cours : discipline, spiritualité, activités et épanouissement personnel." data-en="At CABMY, school life goes far beyond lessons: discipline, spirituality, activities and personal development.">Au CABMY, la vie scolaire va bien au-delà des cours : discipline, spiritualité, activités et épanouissement personnel.</p>
-    <div class="mt-4 text-sm text-white/40">
-      <a href="index.html" class="hover:text-white">Accueil</a> <span class="mx-2">›</span>
-      <span data-fr="Vie scolaire" data-en="School Life">Vie scolaire</span>
+  <div class="max-w-7xl mx-auto px-4 hero-content">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <span class="hero-pill"><span>★</span><span data-fr="Vie scolaire organisée" data-en="Organised school life">Vie scolaire organisée</span></span>
+        <div class="page-heading-with-logo">
+          
+          <h1 class="mt-8 text-5xl lg:text-6xl font-bold leading-tight" data-fr="Une vie scolaire structurée, bienveillante et épanouissante" data-en="A structured, caring and fulfilling school life">Une vie scolaire structurée, bienveillante et épanouissante</h1>
+        </div>
+        <p class="mt-6 max-w-2xl text-white/80 text-lg leading-relaxed" data-fr="Au CABMY, la vie scolaire repose sur la discipline, le respect, la spiritualité et les activités enrichissantes pour chaque élève." data-en="At CABMY, school life is built on discipline, respect, spirituality and enriching activities for every student.">Au CABMY, la vie scolaire repose sur la discipline, le respect, la spiritualité et les activités enrichissantes pour chaque élève.</p>
+        <div class="mt-8 flex flex-col sm:flex-row gap-4">
+          <a href="#reglement" class="btn-primary px-8 py-3 rounded-lg" data-fr="Découvrir le règlement" data-en="Discover the rules">Découvrir le règlement</a>
+          <a href="#guide" class="btn-outline px-8 py-3 rounded-lg" data-fr="Télécharger le guide" data-en="Download the guide">Télécharger le guide</a>
+        </div>
+        <div class="mt-10 grid grid-cols-2 sm:grid-cols-3 gap-4">
+          <div class="hero-stat"><div class="hero-stat-value">7h30</div><div class="hero-stat-label" data-fr="Début des cours" data-en="Classes begin">Début des cours</div></div>
+          <div class="hero-stat"><div class="hero-stat-value">96%</div><div class="hero-stat-label" data-fr="Taux de réussite" data-en="Success rate">Taux de réussite</div></div>
+          <div class="hero-stat"><div class="hero-stat-value">4</div><div class="hero-stat-label" data-fr="Valeurs fondamentales" data-en="Core values">Valeurs fondamentales</div></div>
+        </div>
+      </div>
+      <div class="grid gap-6">
+        <div class="section-card animate-fade">
+          <div class="gold-line mb-4"></div>
+          <div class="text-xl font-semibold mb-4" data-fr="Une vie scolaire au service de la réussite" data-en="A school life that supports success">Une vie scolaire au service de la réussite</div>
+          <p class="text-gray-600 leading-relaxed" data-fr="Notre établissement accompagne chaque élève au quotidien avec des règles claires, une pastorale active, des activités variées et un suivi attentif de chaque famille." data-en="Our school supports every student daily with clear rules, active pastoral care, varied activities and close family support.">Notre établissement accompagne chaque élève au quotidien avec des règles claires, une pastorale active, des activités variées et un suivi attentif de chaque famille.</p>
+        </div>
+        <div class="section-card animate-fade">
+          <div class="text-lg font-semibold mb-4" data-fr="Ce qui rend la vie scolaire unique" data-en="What makes school life unique">Ce qui rend la vie scolaire unique</div>
+          <ul class="space-y-3 text-gray-600">
+            <li>✔ Discipline respectueuse et environnement sécurisé.</li>
+            <li>✔ Accompagnement spirituel et prière régulière.</li>
+            <li>✔ Activités sportives, culturelles et créatives.</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- RÈGLEMENT INTÉRIEUR -->
-<section class="py-24 bg-white">
+<section id="reglement" class="py-24 bg-[#f7f5ed]">
   <div class="max-w-7xl mx-auto px-4">
-    <div class="text-center mb-16 animate-fade">
-      <div class="gold-line mx-auto mb-4"></div>
-      <h2 class="text-4xl font-bold mb-4" style="color:var(--blue)" data-fr="Règlement intérieur" data-en="School Rules">Règlement intérieur</h2>
-      <p class="text-gray-500 max-w-xl mx-auto" data-fr="La discipline est le fondement de l'excellence. Nos règles visent à créer un environnement propice à l'apprentissage et au respect mutuel." data-en="Discipline is the foundation of excellence. Our rules aim to create an environment conducive to learning and mutual respect.">La discipline est le fondement de l'excellence. Nos règles visent à créer un environnement propice à l'apprentissage et au respect mutuel.</p>
+    <div class="section-heading text-center mb-16 animate-fade">
+      <div class="gold-line"></div>
+      <h2 class="font-bold" data-fr="Règlement intérieur" data-en="School Rules">Règlement intérieur</h2>
+      <p class="text-gray-500 max-w-2xl mx-auto" data-fr="La discipline est le fondement de l'excellence. Nos règles visent à créer un environnement propice à l'apprentissage et au respect mutuel." data-en="Discipline is the foundation of excellence. Our rules aim to create an environment conducive to learning and mutual respect.">La discipline est le fondement de l'excellence. Nos règles visent à créer un environnement propice à l'apprentissage et au respect mutuel.</p>
     </div>
     <div class="grid lg:grid-cols-2 gap-10">
       <!-- Ponctualité -->
@@ -158,12 +205,68 @@
       </div>
     </div>
     <!-- Download -->
-    <div class="mt-10 p-5 rounded-2xl flex flex-col sm:flex-row gap-4 items-center justify-between animate-fade" style="background:var(--gold-light)">
+    <div id="guide" class="mt-10 p-5 rounded-2xl download-panel flex flex-col sm:flex-row gap-4 items-center justify-between animate-fade">
       <div>
-        <div class="font-bold" style="color:var(--dark)" data-fr="📄 Règlement intérieur complet" data-en="📄 Full School Rules">📄 Règlement intérieur complet</div>
-        <div class="text-sm text-gray-600" data-fr="Téléchargez le document officiel du règlement intérieur du CABMY." data-en="Download the official CABMY school rules document.">Téléchargez le document officiel du règlement intérieur du CABMY.</div>
+        <div class="font-bold" style="color:var(--dark)" data-fr="📄 Guide parents-enfants" data-en="📄 Parent-Child Guide">📄 Guide parents-enfants</div>
+        <div class="text-sm text-gray-600" data-fr="Téléchargez ou imprimez le guide officiel pour les parents et les élèves." data-en="Download or print the official guide for parents and students.">Téléchargez ou imprimez le guide officiel pour les parents et les élèves.</div>
       </div>
-      <a href="#" class="btn-primary px-6 py-2 rounded-lg text-sm whitespace-nowrap" data-fr="Télécharger (PDF)" data-en="Download (PDF)">Télécharger (PDF)</a>
+      <div class="flex flex-col sm:flex-row gap-3">
+        <a href="../pdf/guide-parents-enfants.pdf" target="_blank" class="btn-primary px-6 py-2 rounded-lg text-sm whitespace-nowrap" data-fr="Télécharger le guide" data-en="Download guide">Télécharger le guide</a>
+        <button onclick="window.print()" class="btn-outline px-6 py-2 rounded-lg text-sm whitespace-nowrap" data-fr="Imprimer le guide" data-en="Print guide">Imprimer le guide</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="text-center mb-16 animate-fade">
+      <div class="text-sm uppercase tracking-[0.25em] text-gold mb-2" data-fr="Titre II : Des savoirs des élèves" data-en="Title II: Students' Knowledge">Titre II : Des savoirs des élèves</div>
+      <h2 class="text-4xl font-bold mb-4" style="color:var(--blue)" data-fr="Demande de documents scolaires antérieurs" data-en="Requesting Prior School Documents">Demande de documents scolaires antérieurs</h2>
+      <p class="text-gray-500 max-w-2xl mx-auto" data-fr="Les parents et élèves peuvent demander les documents officiels de l'établissement selon les modalités suivantes." data-en="Parents and students can request the school's official documents under the following terms.">Les parents et élèves peuvent demander les documents officiels de l'établissement selon les modalités suivantes.</p>
+    </div>
+    <div class="overflow-x-auto animate-fade">
+      <table class="min-w-full border border-gray-200 text-sm text-left">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="px-4 py-3 font-semibold text-gray-700">N°</th>
+            <th class="px-4 py-3 font-semibold text-gray-700" data-fr="Nature du document" data-en="Document Type">Nature du document</th>
+            <th class="px-4 py-3 font-semibold text-gray-700" data-fr="Coût" data-en="Cost">Coût</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-t border-gray-200">
+            <td class="px-4 py-3">1</td>
+            <td class="px-4 py-3" data-fr="Certificat de scolarité" data-en="School certificate">Certificat de scolarité</td>
+            <td class="px-4 py-3">1 000 FCFA</td>
+          </tr>
+          <tr class="border-t border-gray-200 bg-gray-50">
+            <td class="px-4 py-3">2</td>
+            <td class="px-4 py-3" data-fr="Bulletin ou transcript" data-en="Report card or transcript">Bulletin ou transcript</td>
+            <td class="px-4 py-3">2 000 FCFA</td>
+          </tr>
+          <tr class="border-t border-gray-200">
+            <td class="px-4 py-3">3</td>
+            <td class="px-4 py-3" data-fr="Carte d’identité scolaire" data-en="School ID card">Carte d’identité scolaire</td>
+            <td class="px-4 py-3">3 000 FCFA</td>
+          </tr>
+          <tr class="border-t border-gray-200 bg-gray-50">
+            <td class="px-4 py-3">4</td>
+            <td class="px-4 py-3" data-fr="Récépissé d’examen" data-en="Exam receipt">Récépissé d’examen</td>
+            <td class="px-4 py-3">1 000 FCFA</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mt-12 animate-fade">
+      <h3 class="text-2xl font-bold mb-4" style="color:var(--blue)" data-fr="Sanctions disciplinaires" data-en="Disciplinary sanctions">Sanctions disciplinaires</h3>
+      <p class="text-gray-600 mb-4" data-fr="Dura lex, sed lex : la loi est dure, mais c'est la loi. Le règlement intérieur est applicable à tous les élèves et parents du CABMY." data-en="Dura lex, sed lex: the law is harsh, but it is the law. The internal regulations apply to all CABMY students and parents.">Dura lex, sed lex : la loi est dure, mais c'est la loi. Le règlement intérieur est applicable à tous les élèves et parents du CABMY.</p>
+      <div class="space-y-3 text-gray-600">
+        <div class="rule-item" data-fr="Les exclusions temporaires sont prises par l'administration. Toute autre exclusion relève du conseil de discipline." data-en="Temporary exclusions are decided by the administration. Any other exclusion is handled by the disciplinary council.">Les exclusions temporaires sont prises par l'administration. Toute autre exclusion relève du conseil de discipline.</div>
+        <div class="rule-item" data-fr="En cas de faute majeure, l'élève peut être suspendu des cours jusqu'à la tenue du conseil de discipline." data-en="In the event of a major offense, the student may be suspended from classes until the disciplinary council meets.">En cas de faute majeure, l'élève peut être suspendu des cours jusqu'à la tenue du conseil de discipline.</div>
+        <div class="rule-item" data-fr="Les obligations des élèves comprennent le respect des textes en vigueur et du règlement intérieur, conformément à la loi N°98/004 du 4 avril 1998." data-en="Students' obligations include respect for current regulations and the internal rules, in accordance with law N°98/004 of April 4, 1998.">Les obligations des élèves comprennent le respect des textes en vigueur et du règlement intérieur, conformément à la loi N°98/004 du 4 avril 1998.</div>
+        <div class="rule-item" data-fr="Les circulaires 05/06/MINESEC/CAB, 34/09/C/MINESEC/IGS et 10/1/562/MINEDUC/ESG/SAP encadrent la prévention de la violence, l'usage du téléphone et les situations de grossesse." data-en="Circulars 05/06/MINESEC/CAB, 34/09/C/MINESEC/IGS and 10/1/562/MINEDUC/ESG/SAP govern violence prevention, phone usage and pregnancy situations.">Les circulaires 05/06/MINESEC/CAB, 34/09/C/MINESEC/IGS et 10/1/562/MINEDUC/ESG/SAP encadrent la prévention de la violence, l'usage du téléphone et les situations de grossesse.</div>
+      </div>
     </div>
   </div>
 </section>

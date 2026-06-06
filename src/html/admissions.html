@@ -1,327 +1,778 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admissions – CABMY</title>
-  <link rel="stylesheet" href="../../output.css">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root{--blue:#1a3a6b;--blue-mid:#2952a3;--blue-light:#e8eef8;--gold:#c9a84c;--gold-light:#f5e9c8;--dark:#0f1f3d;}
-    *{box-sizing:border-box;margin:0;padding:0;}
-    body{font-family:'DM Sans',sans-serif;color:var(--dark);}
-    h1,h2,h3,h4{font-family:'Playfair Display',serif;}
-    .nav-link{position:relative;}.nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;background:var(--gold);transition:width .3s;}.nav-link:hover::after{width:100%;}
-    .gold-line{width:60px;height:3px;background:var(--gold);}
-    .btn-primary{background:var(--gold);color:var(--dark);font-weight:600;transition:all .3s;}.btn-primary:hover{background:#b8922e;}
-    .btn-outline{border:2px solid var(--gold);color:var(--gold);font-weight:600;transition:all .3s;}.btn-outline:hover{background:var(--gold);color:var(--dark);}
-    .lang-active{background:var(--gold);color:var(--dark);}
-    .mobile-menu{display:none;}.mobile-menu.open{display:block;}
-    .card-hover{transition:transform .3s,box-shadow .3s;}.card-hover:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(26,58,107,.12);}
-    .dropdown{position:relative;}.dropdown-menu{display:none;position:absolute;top:100%;left:0;background:#fff;min-width:220px;box-shadow:0 10px 40px rgba(0,0,0,.12);border-top:3px solid var(--gold);z-index:100;}.dropdown:hover .dropdown-menu{display:block;}.dropdown-menu a{display:block;padding:10px 20px;color:var(--blue);font-size:.9rem;transition:background .2s;}.dropdown-menu a:hover{background:var(--blue-light);color:var(--gold);}
-    .page-hero{background:linear-gradient(135deg,var(--dark) 0%,var(--blue) 100%);}
-    .animate-fade{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s;}.animate-fade.visible{opacity:1;transform:translateY(0);}
-    table{width:100%;border-collapse:collapse;}
-    th{background:var(--blue);color:#fff;padding:12px 16px;text-align:left;font-family:'DM Sans',sans-serif;font-size:.9rem;}
-    td{padding:12px 16px;border-bottom:1px solid #f0f4ff;font-size:.9rem;}
-    tr:hover td{background:var(--blue-light);}
-    .amount{font-weight:700;color:var(--blue);}
-    .sidebar-nav a{display:block;padding:10px 16px;border-radius:8px;font-size:.9rem;transition:all .2s;color:var(--dark);}
-    .sidebar-nav a:hover,.sidebar-nav a.active{background:var(--blue-light);color:var(--blue);font-weight:600;}
-    .sidebar-nav a.active{border-left:3px solid var(--gold);}
-    .step-num{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--blue);color:#fff;font-weight:700;font-size:.9rem;flex-shrink:0;}
-  </style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admissions 2026-2027 – CABMY Yaoundé</title>
+  <link rel="icon" type="image/jpeg" href="../../images/logo/WhatsApp Image 2025-09-23 at 19.42.18.jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./../css/admissions.css"/>
 </head>
 <body>
-
-<!-- TOP BAR -->
-<div class="bg-[#0f1f3d] text-white text-xs py-2 px-4 flex justify-between items-center">
-  <span class="opacity-70">📍 Nyom II, Petit Marché · Yaoundé</span>
-  <div class="flex gap-3 items-center">
-    <a href="tel:+237243850268" class="opacity-70 hover:opacity-100">📞 243 850 268 · 675 84 05 71</a>
-    <span class="opacity-30">|</span>
-    <button onclick="setLang('fr')" id="btn-fr" class="px-2 py-0.5 rounded text-xs font-semibold lang-active">FR</button>
-    <button onclick="setLang('en')" id="btn-en" class="px-2 py-0.5 rounded text-xs font-semibold hover:bg-white/10">EN</button>
+ 
+<!-- TOPBAR -->
+<div class="topbar">
+  <span>📍 Nyom II, Petit Marché · Yaoundé</span>
+  <div class="topbar-right">
+    <a href="tel:+237243850268">📞 243 850 268 · 675 84 05 71</a>
+    <span style="opacity:.2">|</span>
+    <button onclick="setLang('fr')" id="btn-fr" class="lang-btn lang-active">FR</button>
+    <button onclick="setLang('en')" id="btn-en" class="lang-btn">EN</button>
   </div>
 </div>
-
+ 
 <!-- NAVBAR -->
-<nav class="bg-white shadow-sm sticky top-0 z-50">
-  <div class="max-w-7xl mx-auto px-4 flex justify-between items-center py-3">
-    <a href="../../index.html" class="flex items-center gap-3">
-      <img src="../../images/logo/WhatsApp Image 2025-09-23 at 19.42.18.jpeg" alt="Logo CABMY" class="w-12 h-12 rounded-full object-cover" />
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <div class="nav-logo">
+        <img src="../../images/logo/WhatsApp Image 2025-09-23 at 19.42.18.jpeg" alt="Logo CABMY"
+             onerror="this.style.display='none'"/>
+      </div>
       <div>
-        <div class="font-bold text-sm" style="color:var(--blue);font-family:'Playfair Display',serif">CABMY</div>
-        <div class="text-xs text-gray-500" data-fr="Collège Adventiste Bilingue Marathana" data-en="Marathana Bilingual Adventist College">Collège Adventiste Bilingue Marathana</div>
+        <div class="brand-name">CABMY</div>
+        <div class="brand-sub" data-fr="Collège Adventiste Bilingue Marathana De Yaoundé" data-en="Marathana Bilingual Adventist College of Yaoundé">Collège Adventiste Bilingue Marathana De Yaoundé</div>
       </div>
     </a>
-    <div class="hidden lg:flex items-center gap-6 text-sm font-medium">
-      <a href="../../index.html" class="nav-link text-gray-600" data-fr="Accueil" data-en="Home">Accueil</a>
-      <a href="apropos.html" class="nav-link text-gray-600" data-fr="À propos" data-en="About">À propos</a>
-      <a href="enseignements.html" class="nav-link text-gray-600" data-fr="Enseignements" data-en="Academics">Enseignements</a>
-      <a href="vie-scolaire.html" class="nav-link text-gray-600" data-fr="Vie scolaire" data-en="School Life">Vie scolaire</a>
+ 
+    <div class="nav-links">
+      <a href="../../index.html" class="nav-link" data-fr="Accueil" data-en="Home">Accueil</a>
+      <a href="apropos.html"     class="nav-link" data-fr="À propos" data-en="About">À propos</a>
+      <a href="enseignements.html" class="nav-link" data-fr="Enseignements" data-en="Academics">Enseignements</a>
+      <a href="vie-scolaire.html"  class="nav-link" data-fr="Vie scolaire" data-en="School Life">Vie scolaire</a>
       <div class="dropdown">
-        <a href="admissions.html" class="nav-link font-semibold flex items-center gap-1" style="color:var(--blue)" data-fr="Admissions" data-en="Admissions">Admissions <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></a>
-        <div class="dropdown-menu">
-          <a href="#conditions" data-fr="Conditions d'admission" data-en="Admission Conditions">Conditions d'admission</a>
-          <a href="#frais" data-fr="Frais de scolarité" data-en="School Fees">Frais de scolarité</a>
-          <a href="#calendrier" data-fr="Calendrier" data-en="Calendar">Calendrier</a>
-          <a href="#tenues" data-fr="Tenues scolaires" data-en="School Uniforms">Tenues scolaires</a>
+        <a href="admissions.html" class="nav-link dropdown-trigger active">
+          <span data-fr="Admissions" data-en="Admissions">Admissions</span>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </a>
+        <div class="dropdown-panel">
+          <a href="#conditions"  data-fr="✓ Conditions d'admission" data-en="✓ Conditions">✓ Conditions d'admission</a>
+          <a href="#calendrier"  data-fr="📅 Calendrier 2026-2027"  data-en="📅 Calendar 2026-2027">📅 Calendrier 2026-2027</a>
+          <a href="#frais"       data-fr="💰 Frais de scolarité"     data-en="💰 School Fees">💰 Frais de scolarité</a>
+          <a href="#tenues"      data-fr="👔 Tenues scolaires"       data-en="👔 Uniforms">👔 Tenues scolaires</a>
         </div>
       </div>
-      <a href="actualites.html" class="nav-link text-gray-600" data-fr="Actualités" data-en="News">Actualités</a>
-      <a href="contact.html" class="btn-primary px-4 py-2 rounded-lg text-sm">Contact</a>
+      <a href="actualites.html" class="nav-link" data-fr="Actualités" data-en="News">Actualités</a>
+      <a href="contact.html"    class="nav-cta"  data-fr="Contact"    data-en="Contact">Contact</a>
     </div>
-    <button onclick="toggleMobile()" class="lg:hidden p-2 text-gray-600">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+ 
+    <button class="hamburger" id="hamburger" onclick="toggleMobile()">
+      <span></span><span></span><span></span>
     </button>
   </div>
-  <div id="mobile-menu" class="mobile-menu lg:hidden bg-white border-t px-4 pb-4">
-    <div class="flex flex-col gap-3 pt-3 text-sm font-medium">
-      <a href="../../index.html" class="text-gray-700">Accueil</a><a href="apropos.html" class="text-gray-700">À propos</a>
-      <a href="enseignements.html" class="text-gray-700">Enseignements</a><a href="admissions.html" style="color:var(--blue)">Admissions</a>
-      <a href="actualites.html" class="text-gray-700">Actualités</a><a href="contact.html" class="btn-primary px-4 py-2 rounded-lg text-center">Contact</a>
-    </div>
-  </div>
 </nav>
-
+ 
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mobile-close" onclick="toggleMobile()">✕</button>
+  <a href="../../index.html" class="mobile-link" data-fr="Accueil" data-en="Home">Accueil</a>
+  <a href="apropos.html"     class="mobile-link" data-fr="À propos" data-en="About">À propos</a>
+  <a href="enseignements.html" class="mobile-link" data-fr="Enseignements" data-en="Academics">Enseignements</a>
+  <a href="vie-scolaire.html"  class="mobile-link" data-fr="Vie scolaire" data-en="School Life">Vie scolaire</a>
+  <a href="admissions.html"    class="mobile-link active" data-fr="Admissions" data-en="Admissions">Admissions</a>
+  <a href="actualites.html"    class="mobile-link" data-fr="Actualités" data-en="News">Actualités</a>
+  <a href="contact.html"       class="mobile-cta" data-fr="Nous contacter" data-en="Contact us">Nous contacter</a>
+</div>
+ 
 <!-- HERO -->
-<section class="page-hero py-20 text-white">
-  <div class="max-w-7xl mx-auto px-4">
-    <div class="gold-line mb-4"></div>
-    <h1 class="text-5xl font-bold mb-4" data-fr="Admissions" data-en="Admissions">Admissions</h1>
-    <p class="text-white/60 text-lg max-w-2xl" data-fr="Toutes les informations pour inscrire votre enfant au CABMY : conditions, frais, calendrier et tenues." data-en="All the information to enrol your child at CABMY: conditions, fees, calendar and uniforms.">Toutes les informations pour inscrire votre enfant au CABMY : conditions, frais, calendrier et tenues.</p>
-    <div class="mt-4 text-sm text-white/40">
-      <a href="../../index.html" class="hover:text-white">Accueil</a> <span class="mx-2">›</span> <span data-fr="Admissions" data-en="Admissions">Admissions</span>
+<section class="page-hero">
+  <div class="hero-inner">
+    <div class="hero-pill" data-fr="Rentrée scolaire 2026–2027" data-en="Academic Year 2026–2027">Rentrée scolaire 2026–2027</div>
+    <div class="page-heading-with-logo">
+    
+      <h1 data-fr="<em>Admissions</em> CABMY" data-en="CABMY <em>Admissions</em>"><em>Admissions</em> CABMY</h1>
+    </div>
+    <p class="hero-sub" data-fr="Toutes les informations pour inscrire votre enfant au CABMY : conditions, frais 2026-2027, calendrier et tenues." data-en="All the information to enrol your child at CABMY: conditions, 2026-2027 fees, calendar and uniforms.">Toutes les informations pour inscrire votre enfant au CABMY : conditions, frais 2026-2027, calendrier et tenues.</p>
+    <div class="breadcrumb">
+      <a href="../../index.html" data-fr="Accueil" data-en="Home">Accueil</a>
+      <span style="opacity:.3">›</span>
+      <span data-fr="Admissions" data-en="Admissions">Admissions</span>
+    </div>
+ 
+    <!-- TÉLÉCHARGEMENT PROSPECTUS -->
+    <div class="download-banner">
+      <div class="download-icon">📄</div>
+      <div class="download-text">
+        <strong data-fr="Prospectus CABMY 2026-2027" data-en="CABMY Brochure 2026-2027">Prospectus CABMY 2026-2027</strong>
+        <span data-fr="Toutes les infos officielles en un seul document PDF" data-en="All official information in one PDF document">Toutes les infos officielles en un seul document PDF</span>
+      </div>
+      <a href="./../../prospectus Fr 2024-2025-1.pdf" download class="download-btn">
+        ⬇ <span data-fr="Télécharger" data-en="Download">Télécharger</span>
+      </a>
     </div>
   </div>
 </section>
-
-<!-- LAYOUT -->
-<div class="max-w-7xl mx-auto px-4 py-16 flex gap-10 items-start">
-  <!-- SIDEBAR -->
-  <aside class="hidden lg:block w-60 flex-shrink-0 sticky top-28">
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sidebar-nav">
-      <div class="text-xs font-bold tracking-widest text-gray-400 mb-3 px-2" data-fr="RUBRIQUES" data-en="SECTIONS">RUBRIQUES</div>
-      <a href="#conditions" class="active" data-fr="✓ Conditions d'admission" data-en="✓ Conditions">✓ Conditions d'admission</a>
-      <a href="#calendrier" data-fr="📅 Calendrier" data-en="📅 Calendar">📅 Calendrier</a>
-      <a href="#frais" data-fr="💰 Frais de scolarité" data-en="💰 School Fees">💰 Frais de scolarité</a>
-      <a href="#examens" data-fr="🎓 Frais d'examens" data-en="🎓 Exam Fees">🎓 Frais d'examens</a>
-      <a href="#tenues" data-fr="👔 Tenues scolaires" data-en="👔 Uniforms">👔 Tenues scolaires</a>
-      <div class="mt-4 pt-4 border-t border-gray-100">
-        <a href="contact.html" class="btn-primary w-full text-center px-4 py-2 rounded-lg text-sm block" data-fr="Pré-inscription" data-en="Pre-register">Pré-inscription</a>
+ 
+<!-- PAGE LAYOUT -->
+<div class="page-layout">
+ 
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-header" data-fr="RUBRIQUES" data-en="SECTIONS">RUBRIQUES</div>
+      <nav class="sidebar-nav" id="sidebar-nav">
+        <a href="#conditions" class="active" id="snav-conditions">
+          <span class="nav-icon">✓</span>
+          <span data-fr="Conditions d'admission" data-en="Admission Conditions">Conditions d'admission</span>
+        </a>
+        <a href="#calendrier" id="snav-calendrier">
+          <span class="nav-icon">📅</span>
+          <span data-fr="Calendrier 2026-2027" data-en="Calendar 2026-2027">Calendrier 2026-2027</span>
+        </a>
+        <a href="#frais" id="snav-frais">
+          <span class="nav-icon">💰</span>
+          <span data-fr="Frais de scolarité" data-en="School Fees">Frais de scolarité</span>
+        </a>
+        <a href="#tenues" id="snav-tenues">
+          <span class="nav-icon">👔</span>
+          <span data-fr="Tenues scolaires" data-en="School Uniforms">Tenues scolaires</span>
+        </a>
+      </nav>
+      <div class="sidebar-cta">
+        <a href="contact.html" class="btn-primary" style="width:100%;" data-fr="✏️ Pré-inscription" data-en="✏️ Pre-register">✏️ Pré-inscription</a>
+        <div style="margin-top:10px;">
+          <a href="../../pdf/prospectus-cabmy-2026-2027.pdf" download class="btn-outline-blue" style="width:100%;font-size:.8rem;">
+            ⬇ <span data-fr="Télécharger le prospectus" data-en="Download brochure">Télécharger le prospectus</span>
+          </a>
+        </div>
       </div>
     </div>
   </aside>
-
-  <!-- MAIN CONTENT -->
-  <div class="flex-1 space-y-16">
-
-    <!-- CONDITIONS -->
-    <section id="conditions" class="animate-fade">
-      <div class="gold-line mb-4"></div>
-      <h2 class="text-3xl font-bold mb-6" style="color:var(--blue)" data-fr="Conditions d'admission" data-en="Admission Conditions">Conditions d'admission</h2>
-      <p class="text-gray-500 mb-8" data-fr="L'admission au CABMY est ouverte à tout élève remplissant les conditions ci-dessous. Le processus comprend le dépôt d'un dossier, un entretien et parfois un test de niveau." data-en="Admission to CABMY is open to any student meeting the conditions below. The process includes submitting an application, an interview and sometimes a placement test.">L'admission au CABMY est ouverte à tout élève remplissant les conditions ci-dessous. Le processus comprend le dépôt d'un dossier, un entretien et parfois un test de niveau.</p>
-      
-      <div class="grid lg:grid-cols-2 gap-6 mb-8">
-        <div class="rounded-2xl border border-gray-100 p-6 card-hover">
-          <h3 class="font-bold text-lg mb-4" style="color:var(--blue)" data-fr="📋 Pièces du dossier" data-en="📋 Required Documents">📋 Pièces du dossier</h3>
-          <div class="space-y-3 text-sm text-gray-600">
-            <div class="flex gap-3"><span style="color:var(--gold)">✓</span><span data-fr="Extrait d'acte de naissance (original + copie)" data-en="Birth certificate (original + copy)">Extrait d'acte de naissance (original + copie)</span></div>
-            <div class="flex gap-3"><span style="color:var(--gold)">✓</span><span data-fr="Certificat de scolarité de l'année précédente" data-en="School certificate from previous year">Certificat de scolarité de l'année précédente</span></div>
-            <div class="flex gap-3"><span style="color:var(--gold)">✓</span><span data-fr="Bulletins scolaires des 2 dernières années" data-en="School reports from the last 2 years">Bulletins scolaires des 2 dernières années</span></div>
-            <div class="flex gap-3"><span style="color:var(--gold)">✓</span><span data-fr="4 photos d'identité récentes" data-en="4 recent passport-size photos">4 photos d'identité récentes</span></div>
-            <div class="flex gap-3"><span style="color:var(--gold)">✓</span><span data-fr="Photocopie CNI parent/tuteur" data-en="Photocopy of parent/guardian ID">Photocopie CNI parent/tuteur</span></div>
-            <div class="flex gap-3"><span style="color:var(--gold)">✓</span><span data-fr="Formulaire d'inscription rempli" data-en="Completed application form">Formulaire d'inscription rempli</span></div>
+ 
+  <!-- ── MAIN ── -->
+  <div class="main-content">
+ 
+    <!-- ══════════════════════════════════════
+         CONDITIONS D'ADMISSION
+    ══════════════════════════════════════ -->
+    <section id="conditions" class="fade-up">
+      <div class="section-kicker" data-fr="Dossier & Procédure" data-en="Application & Process">Dossier & Procédure</div>
+      <h2 class="section-title" data-fr="Conditions d'admission" data-en="Admission Conditions">Conditions d'admission</h2>
+      <p class="section-desc" data-fr="L'admission au CABMY est ouverte à tout élève remplissant les conditions ci-dessous. Le processus comprend le dépôt d'un dossier, un entretien et parfois un test de niveau." data-en="Admission to CABMY is open to any student meeting the conditions below.">L'admission au CABMY est ouverte à tout élève remplissant les conditions ci-dessous. Le processus comprend le dépôt d'un dossier, un entretien et parfois un test de niveau.</p>
+ 
+      <div class="two-col" style="margin-top:24px;">
+        <div class="card fade-up fade-up-d1">
+          <div class="card-title">📋 <span data-fr="Pièces du dossier" data-en="Required Documents">Pièces du dossier</span></div>
+          <div>
+            <div class="check-item"><span class="check-icon">✓</span><span data-fr="Extrait d'acte de naissance (original + copie)" data-en="Birth certificate (original + copy)">Extrait d'acte de naissance (original + copie)</span></div>
+            <div class="check-item"><span class="check-icon">✓</span><span data-fr="Certificat de scolarité de l'année précédente" data-en="School certificate from previous year">Certificat de scolarité de l'année précédente</span></div>
+            <div class="check-item"><span class="check-icon">✓</span><span data-fr="Bulletins scolaires des 2 dernières années" data-en="School reports from the last 2 years">Bulletins scolaires des 2 dernières années</span></div>
+            <div class="check-item"><span class="check-icon">✓</span><span data-fr="4 photos d'identité récentes" data-en="4 recent passport-size photos">4 photos d'identité récentes</span></div>
+            <div class="check-item"><span class="check-icon">✓</span><span data-fr="Photocopie CNI parent/tuteur" data-en="Photocopy of parent/guardian ID">Photocopie CNI parent/tuteur</span></div>
+            <div class="check-item"><span class="check-icon">✓</span><span data-fr="Formulaire d'inscription rempli" data-en="Completed application form">Formulaire d'inscription rempli</span></div>
+            <div class="check-item"><span class="check-icon">✓</span><span data-fr="Copie ou photocopie légalisée du diplôme (si applicable)" data-en="Certified copy of diploma (if applicable)">Copie ou photocopie légalisée du diplôme (si applicable)</span></div>
+            <div class="check-item"><span class="check-icon">✓</span><span data-fr="Dossier médical pour maladie ou handicap (si applicable)" data-en="Medical record for illness or disability (if applicable)">Dossier médical pour maladie ou handicap (si applicable)</span></div>
           </div>
         </div>
-        <div class="rounded-2xl border border-gray-100 p-6 card-hover">
-          <h3 class="font-bold text-lg mb-4" style="color:var(--blue)" data-fr="📝 Processus d'admission" data-en="📝 Admission Process">📝 Processus d'admission</h3>
-          <div class="space-y-4">
-            <div class="flex gap-4 items-start"><div class="step-num">1</div><div class="text-sm"><div class="font-semibold mb-1" data-fr="Dépôt du dossier" data-en="Submit Application">Dépôt du dossier</div><div class="text-gray-500" data-fr="Au secrétariat, du lundi au vendredi" data-en="At the secretariat, Monday to Friday">Au secrétariat, du lundi au vendredi</div></div></div>
-            <div class="flex gap-4 items-start"><div class="step-num">2</div><div class="text-sm"><div class="font-semibold mb-1" data-fr="Entretien / Test" data-en="Interview / Test">Entretien / Test</div><div class="text-gray-500" data-fr="Test de niveau si nécessaire" data-en="Placement test if necessary">Test de niveau si nécessaire</div></div></div>
-            <div class="flex gap-4 items-start"><div class="step-num">3</div><div class="text-sm"><div class="font-semibold mb-1" data-fr="Notification d'admission" data-en="Admission Notification">Notification d'admission</div><div class="text-gray-500" data-fr="Résultat communiqué sous 48h" data-en="Result communicated within 48h">Résultat communiqué sous 48h</div></div></div>
-            <div class="flex gap-4 items-start"><div class="step-num" style="background:var(--gold)">4</div><div class="text-sm"><div class="font-semibold mb-1" data-fr="Paiement & finalisation" data-en="Payment & Finalisation">Paiement & finalisation</div><div class="text-gray-500" data-fr="Règlement des frais d'inscription" data-en="Payment of registration fees">Règlement des frais d'inscription</div></div></div>
+ 
+        <div class="card fade-up fade-up-d2">
+          <div class="card-title">📝 <span data-fr="Processus d'admission" data-en="Admission Process">Processus d'admission</span></div>
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body">
+                <div class="step-title" data-fr="Dépôt du dossier" data-en="Submit Application">Dépôt du dossier</div>
+                <div class="step-desc" data-fr="Au secrétariat, du lundi au vendredi · à partir du 1er juillet 2026" data-en="At the secretariat, Monday to Friday · from 1 July 2026">Au secrétariat, du lundi au vendredi · à partir du 1er juillet 2026</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-body">
+                <div class="step-title" data-fr="Entretien / Test de niveau" data-en="Interview / Placement Test">Entretien / Test de niveau</div>
+                <div class="step-desc" data-fr="Test de niveau si nécessaire · Résultat sous 48h" data-en="Placement test if necessary · Result within 48h">Test de niveau si nécessaire · Résultat sous 48h</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-body">
+                <div class="step-title" data-fr="Notification d'admission" data-en="Admission Notification">Notification d'admission</div>
+                <div class="step-desc" data-fr="Résultat communiqué sous 48h après le test" data-en="Result communicated within 48h after the test">Résultat communiqué sous 48h après le test</div>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num gold">4</div>
+              <div class="step-body">
+                <div class="step-title" data-fr="Paiement & finalisation" data-en="Payment & Finalisation">Paiement & finalisation</div>
+                <div class="step-desc" data-fr="Règlement de la 1ère tranche à la caisse contre reçu. Place réservée définitivement." data-en="Payment of 1st instalment at the cashier. Place definitively reserved.">Règlement de la 1ère tranche à la caisse contre reçu. Place réservée définitivement.</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="p-4 rounded-xl flex gap-3" style="background:var(--gold-light)">
-        <span class="text-xl">⬇️</span>
+ 
+      <div class="info-box" style="margin-top:20px;">
+        <span style="font-size:1.2rem;flex-shrink:0;">📌</span>
         <div>
-          <div class="font-semibold text-sm mb-1" style="color:var(--dark)" data-fr="Télécharger le formulaire d'inscription" data-en="Download the application form">Télécharger le formulaire d'inscription</div>
-          <a href="formulaire-inscription.html" class="text-sm underline" style="color:var(--blue)" data-fr="Formulaire d'inscription CABMY (PDF)" data-en="CABMY Application Form (PDF)">Formulaire d'inscription CABMY (PDF)</a>
+          <strong data-fr="Concours d'entrée en 6e et Form 1" data-en="Entrance Test for 6th and Form 1">Concours d'entrée en 6e et Form 1</strong> —
+          <span data-fr="Frais de concours : 5 000 FCFA payables à la caisse du CABMY. Dates : 23 juin – 14 juillet 2026. Les anciens élèves devront s'assurer d'avoir payé la totalité des frais de l'année précédente avant leur admission au concours." data-en="Entry fee: 5,000 FCFA payable at the CABMY cashier. Dates: 23 June – 14 July 2026.">Frais de concours : <strong>5 000 FCFA</strong> payables à la caisse du CABMY. Dates : <strong>23 juin – 14 juillet 2026</strong>. Les anciens élèves devront s'assurer d'avoir payé la totalité des frais de l'année précédente avant leur admission au concours.</span>
         </div>
       </div>
-    </section>
-
-    <!-- CALENDRIER -->
-    <section id="calendrier" class="animate-fade">
-      <div class="gold-line mb-4"></div>
-      <h2 class="text-3xl font-bold mb-6" style="color:var(--blue)" data-fr="Calendrier des admissions" data-en="Admissions Calendar">Calendrier des admissions</h2>
-      <div class="grid lg:grid-cols-3 gap-5">
-        <div class="rounded-2xl p-6 text-white" style="background:var(--blue)">
-          <div class="text-sm font-bold tracking-widest mb-2 opacity-70" data-fr="PHASE 1" data-en="PHASE 1">PHASE 1</div>
-          <h3 class="text-xl font-bold mb-2" data-fr="Pré-inscriptions" data-en="Pre-registrations">Pré-inscriptions</h3>
-          <div class="text-white/70 text-sm mb-3" data-fr="Mars – Juin" data-en="March – June">Mars – Juin</div>
-          <p class="text-white/60 text-sm" data-fr="Dépôt des dossiers de candidature au secrétariat de l'établissement." data-en="Submission of application files at the school secretariat.">Dépôt des dossiers de candidature au secrétariat de l'établissement.</p>
-        </div>
-        <div class="rounded-2xl p-6 text-white" style="background:var(--gold)">
-          <div class="text-sm font-bold tracking-widest mb-2" style="color:var(--dark);opacity:.7" data-fr="PHASE 2" data-en="PHASE 2">PHASE 2</div>
-          <h3 class="text-xl font-bold mb-2" style="color:var(--dark)" data-fr="Tests & entretiens" data-en="Tests & Interviews">Tests & entretiens</h3>
-          <div class="text-sm mb-3" style="color:rgba(0,0,0,.6)" data-fr="Juin – Juillet" data-en="June – July">Juin – Juillet</div>
-          <p class="text-sm" style="color:rgba(0,0,0,.6)" data-fr="Tests de niveau et entretiens pour les candidats retenus." data-en="Placement tests and interviews for shortlisted candidates.">Tests de niveau et entretiens pour les candidats retenus.</p>
-        </div>
-        <div class="rounded-2xl p-6 border-2 border-gray-100">
-          <div class="text-sm font-bold tracking-widest mb-2 text-gray-400" data-fr="PHASE 3" data-en="PHASE 3">PHASE 3</div>
-          <h3 class="text-xl font-bold mb-2" style="color:var(--blue)" data-fr="Rentrée scolaire" data-en="School Opening">Rentrée scolaire</h3>
-          <div class="text-sm text-gray-500 mb-3" data-fr="Septembre" data-en="September">Septembre</div>
-          <p class="text-sm text-gray-500" data-fr="Accueil des nouveaux élèves et début des cours pour l'année scolaire." data-en="Welcome of new students and start of classes for the school year.">Accueil des nouveaux élèves et début des cours pour l'année scolaire.</p>
-        </div>
+ 
+      <div class="info-box blue" style="margin-top:12px;">
+        <span style="font-size:1.2rem;flex-shrink:0;">⚠️</span>
+        <div data-fr="Attention : Les élèves nouvellement admis au CABMY devront s'inscrire en payant au moins la 1ère tranche d'écolage au plus tard deux semaines après leur admission. Tout retard sera considéré comme démission et aucun frais ne sera remboursé." data-en="Warning: Newly admitted students must enrol by paying at least the 1st instalment no later than two weeks after admission. Any delay will be considered as withdrawal and no fees will be refunded.">Attention : Les élèves nouvellement admis au CABMY devront s'inscrire en payant au moins la <strong>1ère tranche</strong> d'écolage au plus tard deux semaines après leur admission. Tout retard sera considéré comme démission et aucun frais ne sera remboursé.</div>
       </div>
     </section>
-
-    <!-- FRAIS -->
-    <section id="frais" class="animate-fade">
-      <div class="gold-line mb-4"></div>
-      <h2 class="text-3xl font-bold mb-2" style="color:var(--blue)" data-fr="Frais de scolarité" data-en="School Fees">Frais de scolarité</h2>
-      <p class="text-gray-500 mb-6 text-sm" data-fr="Frais réels 2024-2025 (source: prospectus CABMY). Paiements à la caisse du collège contre reçu." data-en="Official 2024-2025 fees (source: CABMY brochure). Payments must be made at the school cashier against receipt.">Frais réels 2024-2025 (source: prospectus CABMY). Paiements à la caisse du collège contre reçu.</p>
-      <div class="overflow-x-auto rounded-2xl border border-gray-100 shadow-sm mb-4">
-        <table>
-          <thead>
-            <tr>
-              <th data-fr="Niveau / Classe" data-en="Level / Class">Niveau / Classe</th>
-              <th data-fr="Anciens (Total)" data-en="Former Students (Total)">Anciens (Total)</th>
-              <th data-fr="Nouveaux (Total)" data-en="New Students (Total)">Nouveaux (Total)</th>
-              <th data-fr="Échéances" data-en="Installments">Échéances</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>6e, 5e, 4e</td><td class="amount">159 500 FCFA</td><td class="amount">164 500 FCFA</td><td>4 tranches jusqu'au 06/01/2025</td></tr>
-            <tr><td>2ndes</td><td class="amount">169 500 FCFA</td><td class="amount">174 500 FCFA</td><td>4 tranches jusqu'au 06/01/2025</td></tr>
-            <tr><td>3e</td><td class="amount">174 500 FCFA</td><td class="amount">179 500 FCFA</td><td>3 tranches jusqu'au 29/11/2024</td></tr>
-            <tr><td>1eres, Tles</td><td class="amount">179 500 FCFA</td><td class="amount">184 500 FCFA</td><td>3 tranches jusqu'au 29/11/2024</td></tr>
-            <tr><td>F1, F2, F3, F4</td><td class="amount">173 000 FCFA</td><td class="amount">178 000 FCFA</td><td>4 tranches jusqu'au 06/01/2025</td></tr>
-            <tr><td>Lower 6 Arts</td><td class="amount">193 000 FCFA</td><td class="amount">198 000 FCFA</td><td>4 tranches jusqu'au 06/01/2025</td></tr>
-            <tr><td>Lower 6 Sc</td><td class="amount">206 000 FCFA</td><td class="amount">211 000 FCFA</td><td>4 tranches jusqu'au 06/01/2025</td></tr>
-            <tr><td>Form 5 Arts</td><td class="amount">193 000 FCFA</td><td class="amount">198 000 FCFA</td><td>3 tranches jusqu'au 29/11/2024</td></tr>
-            <tr><td>Form 5 Sc</td><td class="amount">196 000 FCFA</td><td class="amount">201 000 FCFA</td><td>3 tranches (dates prospectus Form 5)</td></tr>
-            <tr><td>Upper 6 Arts</td><td class="amount">203 000 FCFA</td><td class="amount">208 000 FCFA</td><td>3 tranches jusqu'au 29/11/2024</td></tr>
-            <tr><td>Upper 6 Sc</td><td class="amount">208 000 FCFA</td><td class="amount">213 000 FCFA</td><td>3 tranches jusqu'au 29/11/2024</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="p-4 rounded-xl text-sm" style="background:var(--blue-light);color:var(--blue)">
-        💡 <span data-fr="Concours 6e/Form1: 5 000 FCFA. Reduction de 20% sur l'ecolage du 3e enfant (si plus de deux enfants). Frais d'examen non inclus." data-en="Entrance test for 6th/Form1: 5,000 FCFA. 20% discount on the third child's tuition (for families with more than two children). Exam fees are not included.">Concours 6e/Form1: 5 000 FCFA. Reduction de 20% sur l'ecolage du 3e enfant (si plus de deux enfants). Frais d'examen non inclus.</span>
-      </div>
-    </section>
-
-    <!-- FRAIS EXAMENS -->
-    <section id="examens" class="animate-fade">
-      <div class="gold-line mb-4"></div>
-      <h2 class="text-3xl font-bold mb-6" style="color:var(--blue)" data-fr="Frais d'examens officiels" data-en="Official Exam Fees">Frais d'examens officiels</h2>
-      <div class="overflow-x-auto rounded-2xl border border-gray-100 shadow-sm">
-        <table>
-          <thead>
-            <tr>
-              <th data-fr="Examen" data-en="Exam">Examen</th>
-              <th data-fr="Niveau" data-en="Level">Niveau</th>
-              <th data-fr="Frais officiels (État)" data-en="Official Fees (State)">Frais officiels (État)</th>
-              <th data-fr="Frais internes CABMY" data-en="CABMY Internal Fees">Frais internes CABMY</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td class="font-semibold">BEPC</td><td>3eme</td><td class="amount">Selon bareme Etat</td><td class="amount">Non inclus dans ecolage</td></tr>
-            <tr><td class="font-semibold">Probatoire</td><td>1ere</td><td class="amount">Selon bareme Etat</td><td class="amount">Non inclus dans ecolage</td></tr>
-            <tr><td class="font-semibold">Baccalaureat</td><td>Terminale</td><td class="amount">Selon bareme Etat</td><td class="amount">Non inclus dans ecolage</td></tr>
-            <tr><td class="font-semibold">GCE O/L</td><td>Form 5</td><td class="amount">Selon bareme GCE Board</td><td class="amount">Non inclus dans ecolage</td></tr>
-            <tr><td class="font-semibold">GCE A/L</td><td>Upper Sixth</td><td class="amount">Selon bareme GCE Board</td><td class="amount">Non inclus dans ecolage</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="text-xs text-gray-400 mt-3" data-fr="* Le prospectus precise que les frais d'examens sont distincts de l'ecolage et a regler selon les communiques officiels." data-en="* The brochure states that exam fees are separate from tuition and must be paid according to official notices.">* Le prospectus precise que les frais d'examens sont distincts de l'ecolage et a regler selon les communiques officiels.</p>
-    </section>
-
-    <!-- TENUES -->
-    <section id="tenues" class="animate-fade">
-      <div class="gold-line mb-4"></div>
-      <h2 class="text-3xl font-bold mb-6" style="color:var(--blue)" data-fr="Tenues scolaires" data-en="School Uniforms">Tenues scolaires</h2>
-      <p class="text-gray-500 mb-8 text-sm" data-fr="Le port de la tenue scolaire est obligatoire pour tous les élèves. Elle témoigne de l'appartenance à la communauté CABMY et favorise l'égalité entre les élèves." data-en="Wearing the school uniform is compulsory for all students. It reflects belonging to the CABMY community and promotes equality among students.">Le port de la tenue scolaire est obligatoire pour tous les élèves. Elle témoigne de l'appartenance à la communauté CABMY et favorise l'égalité entre les élèves.</p>
-      <div class="grid lg:grid-cols-2 gap-8">
-        <div class="rounded-2xl border border-gray-100 p-6 card-hover">
-          <div class="flex items-center gap-3 mb-5">
-            <span class="text-2xl">👦</span>
-            <h3 class="text-xl font-bold" style="color:var(--blue)" data-fr="Garçons" data-en="Boys">Garçons</h3>
-          </div>
-          <div class="space-y-3 text-sm text-gray-600">
-            <div class="flex gap-3"><span style="color:var(--gold)">•</span><span data-fr="Chemisette bleu ciel (tenue de classe: 7 500 FCFA)" data-en="Sky-blue shirt (class uniform: 7,500 FCFA)">Chemisette bleu ciel (tenue de classe: 7 500 FCFA)</span></div>
-            <div class="flex gap-3"><span style="color:var(--gold)">•</span><span data-fr="Pantalon bleu marine (fournisseurs agrees CABMY)" data-en="Navy blue trousers (CABMY approved suppliers)">Pantalon bleu marine (fournisseurs agrees CABMY)</span></div>
-            <div class="flex gap-3"><span style="color:var(--gold)">•</span><span data-fr="Ceinture noire ou bleu marine" data-en="Black or navy belt">Ceinture noire ou bleu marine</span></div>
-            <div class="flex gap-3"><span style="color:var(--gold)">•</span><span data-fr="Chaussures noires fermées (pas de sandales)" data-en="Closed black shoes (no sandals)">Chaussures noires fermées (pas de sandales)</span></div>
-            <div class="flex gap-3"><span style="color:var(--gold)">•</span><span data-fr="Chaussettes blanches ou bleues" data-en="White or blue socks">Chaussettes blanches ou bleues</span></div>
-            <div class="flex gap-3 mt-3 pt-3 border-t border-gray-100"><span style="color:var(--blue)">🏃</span><strong data-fr="Tenue sport: 5 000 FCFA (vert 6e/5e/F1/F2, jaune 4e/3e/F3/F4/F5, blanc 2nd cycle)" data-en="Sports kit: 5,000 FCFA (green 6e/5e/F1/F2, yellow 4e/3e/F3/F4/F5, white upper cycle)">Tenue sport: 5 000 FCFA (vert 6e/5e/F1/F2, jaune 4e/3e/F3/F4/F5, blanc 2nd cycle)</strong></div>
+ 
+    <!-- ══════════════════════════════════════
+         CALENDRIER 2026-2027
+    ══════════════════════════════════════ -->
+    <section id="calendrier" class="fade-up">
+      <div class="section-kicker" data-fr="Année scolaire 2026–2027" data-en="Academic Year 2026–2027">Année scolaire 2026–2027</div>
+      <h2 class="section-title" data-fr="Calendrier des admissions" data-en="Admissions Calendar">Calendrier des admissions</h2>
+      <p class="section-desc" data-fr="Rentrée scolaire : Lundi 07 Septembre 2026 à 7h00. Inscriptions et réinscriptions dès le 1er juillet 2026." data-en="School opening: Monday 07 September 2026 at 7:00AM.">Rentrée scolaire : Lundi <strong>07 Septembre 2026</strong> à 7h00. Inscriptions et réinscriptions dès le <strong>1er juillet 2026</strong>.</p>
+ 
+      <div class="timeline" style="margin-top:32px;">
+        <div class="timeline-item fade-up fade-up-d1">
+          <div class="timeline-dot blue">📝</div>
+          <div class="timeline-content">
+            <div class="timeline-phase" data-fr="PHASE 1" data-en="PHASE 1">PHASE 1</div>
+            <div class="timeline-title" data-fr="Concours d'entrée 6e / Form 1" data-en="Entrance Test 6th / Form 1">Concours d'entrée 6e / Form 1</div>
+            <div class="timeline-date">📅 23 juin – 14 juillet 2026</div>
+            <div class="timeline-desc" data-fr="Par voie de concours ou test pour les classes de 6e et Form 1. Frais de concours : 5 000 FCFA payables à la caisse du CABMY. Résultats affichés au plus tard fin juillet." data-en="By entrance test for 6th and Form 1 classes. Test fee: 5,000 FCFA. Results posted by end of July.">Par voie de concours ou test pour les classes de 6e et Form 1. Frais de concours : <strong>5 000 FCFA</strong> payables à la caisse du CABMY.</div>
           </div>
         </div>
-        <div class="rounded-2xl border border-gray-100 p-6 card-hover">
-          <div class="flex items-center gap-3 mb-5">
-            <span class="text-2xl">👧</span>
-            <h3 class="text-xl font-bold" style="color:var(--blue)" data-fr="Filles" data-en="Girls">Filles</h3>
+ 
+        <div class="timeline-item fade-up fade-up-d1">
+          <div class="timeline-dot gold">🗓️</div>
+          <div class="timeline-content">
+            <div class="timeline-phase" data-fr="PHASE 2" data-en="PHASE 2">PHASE 2</div>
+            <div class="timeline-title" data-fr="Inscriptions & Réinscriptions" data-en="Registrations & Re-registrations">Inscriptions & Réinscriptions</div>
+            <div class="timeline-date">📅 1er juillet 2026 → 16 Août 2026 </div>
+            <div class="timeline-desc" data-fr="Les anciens élèves sont invités à réserver leur place à partir du 16 Août 2026 à 14h00. Les places qui ne leur seront pas réservées le même jour leur seront retirées." data-en="Former students are invited to reserve their place from 16 August 2026 at 2:00PM.">Dépôt des dossiers au secrétariat. Les anciens élèves sont invités à réserver leur place à partir du <strong>16 Août 2026 à 14h00</strong>. Les places non réservées ce jour seront retirées.</div>
           </div>
-          <div class="space-y-3 text-sm text-gray-600">
-            <div class="flex gap-3"><span style="color:var(--gold)">•</span><span data-fr="Robe bleu ciel avec cordon bleu marine (7 500 FCFA)" data-en="Sky-blue dress with navy belt (7,500 FCFA)">Robe bleu ciel avec cordon bleu marine (7 500 FCFA)</span></div>
-            <div class="flex gap-3"><span style="color:var(--gold)">•</span><span data-fr="Confection obligatoire par fournisseurs agrees CABMY" data-en="Uniforms must be made by CABMY approved suppliers">Confection obligatoire par fournisseurs agrees CABMY</span></div>
-            <div class="flex gap-3"><span style="color:var(--gold)">•</span><span data-fr="Chaussures noires fermées" data-en="Closed black shoes">Chaussures noires fermées</span></div>
-            <div class="flex gap-3"><span style="color:var(--gold)">•</span><span data-fr="Chaussettes blanches ou collants bleus" data-en="White socks or blue tights">Chaussettes blanches ou collants bleus</span></div>
-            <div class="flex gap-3"><span style="color:var(--gold)">•</span><span data-fr="Bijoux discrets uniquement (pas d'extravagances)" data-en="Discrete jewellery only">Bijoux discrets uniquement</span></div>
-            <div class="flex gap-3 mt-3 pt-3 border-t border-gray-100"><span style="color:var(--blue)">🏃</span><strong data-fr="Tenue sport officielle: 5 000 FCFA selon couleur de niveau" data-en="Official sports kit: 5,000 FCFA depending on class color">Tenue sport officielle: 5 000 FCFA selon couleur de niveau</strong></div>
+        </div>
+ 
+        <div class="timeline-item fade-up fade-up-d2">
+          <div class="timeline-dot amber">📚</div>
+          <div class="timeline-content">
+            <div class="timeline-phase" data-fr="PHASE 3" data-en="PHASE 3">PHASE 3</div>
+            <div class="timeline-title" data-fr="Début des cours" data-en="Start of Classes">Début des cours</div>
+            <div class="timeline-date">📅 16 Août 2026 </div>
+            <div class="timeline-desc" data-fr="Les élèves débutent à partir du 16 Août 2026 se dérouleront tous les jours ouvrables, de 8h00 à 14h. Les anciens débutent à 8h00, les nouveaux à 14h." data-en="Classes begin on 16 August 2026. Former students at 8:00AM, new students at 2:00PM.">Les cours débutent le <strong>16 Août 2026</strong>. Les anciens élèves débutent à <strong>8h00</strong>, les nouveaux à <strong>14h00</strong>.</div>
+          </div>
+        </div>
+ 
+        <div class="timeline-item fade-up fade-up-d3">
+          <div class="timeline-dot green">🎓</div>
+          <div class="timeline-content">
+            <div class="timeline-phase" data-fr="RENTRÉE OFFICIELLE" data-en="OFFICIAL OPENING">RENTRÉE OFFICIELLE</div>
+            <div class="timeline-title" data-fr="Rentrée scolaire 2026-2027" data-en="School Opening 2026-2027">Rentrée scolaire 2026-2027</div>
+            <div class="timeline-date">📅 Lundi 07 Septembre 2026 à 7h00</div>
+            <div class="timeline-desc" data-fr="Accueil officiel de tous les élèves pour le début de l'année scolaire 2026-2027." data-en="Official welcome of all students for the start of the 2026-2027 school year.">Accueil officiel de tous les élèves pour le début de l'année scolaire 2026-2027.</div>
           </div>
         </div>
       </div>
-      <div class="mt-6 p-4 rounded-xl" style="background:var(--blue-light)">
-        <div class="text-sm font-semibold mb-1" style="color:var(--blue)" data-fr="⚠️ Important" data-en="⚠️ Important">⚠️ Important</div>
-        <div class="text-sm text-gray-600" data-fr="Tout élève qui ne respecte pas le code vestimentaire peut être renvoyé chez lui pour se changer. Les parents sont tenus de veiller au respect de cette règle dès la rentrée." data-en="Any student not complying with the dress code may be sent home to change. Parents are responsible for ensuring compliance from the start of term.">Tout élève qui ne respecte pas le code vestimentaire peut être renvoyé chez lui pour se changer. Les parents sont tenus de veiller au respect de cette règle dès la rentrée.</div>
+    </section>
+ 
+ 
+    <!-- ══════════════════════════════════════
+         FRAIS DE SCOLARITÉ — CARDS PAR SECTION
+    ══════════════════════════════════════ -->
+    <section id="frais" class="fade-up">
+      <div class="section-kicker">Prospectus 2026-2027</div>
+      <h2 class="section-title">Frais de scolarité</h2>
+      <p class="section-desc" style="margin-bottom:8px;">Frais officiels 2026-2027 · Paiements à la caisse contre reçu · <strong>Frais d'examens non inclus.</strong></p>
+ 
+      <!-- Légende -->
+      <div style="display:flex;gap:20px;flex-wrap:wrap;margin:16px 0 32px;padding:14px 18px;background:#fff;border-radius:12px;border:1px solid var(--border);">
+        <div style="display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--text-2);">
+          <span style="width:10px;height:10px;border-radius:50%;background:var(--blue);display:inline-block;flex-shrink:0;"></span>Anciens élèves
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--text-2);">
+          <span style="width:10px;height:10px;border-radius:50%;background:var(--gold);display:inline-block;flex-shrink:0;"></span>Nouveaux élèves
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--text-2);">
+          <span style="width:10px;height:10px;border-radius:3px;background:#10b981;display:inline-block;flex-shrink:0;"></span>Montant par tranche estimé
+        </div>
+      </div>
+ 
+      <!-- ═══════════════════ FRANCOPHONE ═══════════════════ -->
+      <div class="fees-section-header">
+        <div class="fees-section-flag">🇫🇷</div>
+        <div>
+          <div class="fees-section-title">Section Francophone</div>
+          <div class="fees-section-sub">Enseignement général · 6e → Terminale</div>
+        </div>
+      </div>
+ 
+      <!-- 1er Cycle -->
+      <div class="fees-group-label">📚 1er Cycle — Classes intermédiaires</div>
+      <div class="fee-cards-grid">
+ 
+        <div class="fee-card">
+          <div class="fee-card-head">
+            <div class="fee-card-level">6e · 5e · 4e</div>
+            <div class="fee-card-exam-badge">Cycle général</div>
+          </div>
+          <div class="fee-card-prices">
+            <div class="fee-price-row"><span class="fee-price-label">Anciens</span><span class="fee-price-value blue">178 000 F</span></div>
+            <div class="fee-price-row"><span class="fee-price-label">Nouveaux</span><span class="fee-price-value gold">183 000 F</span></div>
+          </div>
+          <div class="fee-tranches">
+            <div class="fee-tranches-title">📅 4 tranches</div>
+            <div class="tranche-row"><div class="tranche-badge t1">1</div><div class="tranche-info"><span class="tranche-date">04 oct. 2026</span><span class="tranche-montant">~44 500 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t2">2</div><div class="tranche-info"><span class="tranche-date">04 nov. 2026</span><span class="tranche-montant">~44 500 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t3">3</div><div class="tranche-info"><span class="tranche-date">06 déc. 2026</span><span class="tranche-montant">~44 500 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t4">4</div><div class="tranche-info"><span class="tranche-date">06 jan. 2027</span><span class="tranche-montant">~44 500 F</span></div></div>
+          </div>
+          <div class="fee-card-footer">Limite : 06/01/2027</div>
+        </div>
+ 
+        <div class="fee-card">
+          <div class="fee-card-head">
+            <div class="fee-card-level">2ndes</div>
+            <div class="fee-card-exam-badge" style="background:rgba(41,82,163,.1);color:var(--blue-mid);">2ème Cycle</div>
+          </div>
+          <div class="fee-card-prices">
+            <div class="fee-price-row"><span class="fee-price-label">Anciens</span><span class="fee-price-value blue">178 000 F</span></div>
+            <div class="fee-price-row"><span class="fee-price-label">Nouveaux</span><span class="fee-price-value gold">183 000 F</span></div>
+          </div>
+          <div class="fee-tranches">
+            <div class="fee-tranches-title">📅 4 tranches</div>
+            <div class="tranche-row"><div class="tranche-badge t1">1</div><div class="tranche-info"><span class="tranche-date">04 oct. 2026</span><span class="tranche-montant">~44 500 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t2">2</div><div class="tranche-info"><span class="tranche-date">04 nov. 2026</span><span class="tranche-montant">~44 500 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t3">3</div><div class="tranche-info"><span class="tranche-date">06 déc. 2026</span><span class="tranche-montant">~44 500 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t4">4</div><div class="tranche-info"><span class="tranche-date">06 jan. 2027</span><span class="tranche-montant">~44 500 F</span></div></div>
+          </div>
+          <div class="fee-card-footer">Limite : 06/01/2027</div>
+        </div>
+ 
+      </div>
+ 
+      <!-- Classes d'examens franco -->
+      <div class="fees-group-label" style="margin-top:28px;">🎓 Classes d'examens — Françophone</div>
+      <div class="fee-cards-grid">
+ 
+        <div class="fee-card fee-card-exam">
+          <div class="fee-card-head">
+            <div class="fee-card-level">3e</div>
+            <div class="fee-card-exam-badge exam">🎓 BEPC</div>
+          </div>
+          <div class="fee-card-prices">
+            <div class="fee-price-row"><span class="fee-price-label">Anciens</span><span class="fee-price-value blue">183 000 F</span></div>
+            <div class="fee-price-row"><span class="fee-price-label">Nouveaux</span><span class="fee-price-value gold">188 000 F</span></div>
+          </div>
+          <div class="fee-tranches">
+            <div class="fee-tranches-title">📅 3 tranches</div>
+            <div class="tranche-row"><div class="tranche-badge t1">1</div><div class="tranche-info"><span class="tranche-date">30 sept. 2026</span><span class="tranche-montant">~61 000 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t2">2</div><div class="tranche-info"><span class="tranche-date">30 oct. 2026</span><span class="tranche-montant">~61 000 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t3">3</div><div class="tranche-info"><span class="tranche-date">29 nov. 2026</span><span class="tranche-montant">~61 000 F</span></div></div>
+          </div>
+          <div class="fee-card-footer warning">⚠️ Limite : 29/11/2026</div>
+        </div>
+ 
+        <div class="fee-card fee-card-exam">
+          <div class="fee-card-head">
+            <div class="fee-card-level">1ères</div>
+            <div class="fee-card-exam-badge exam">🎓 Probatoire</div>
+          </div>
+          <div class="fee-card-prices">
+            <div class="fee-price-row"><span class="fee-price-label">Anciens</span><span class="fee-price-value blue">188 000 F</span></div>
+            <div class="fee-price-row"><span class="fee-price-label">Nouveaux</span><span class="fee-price-value gold">193 000 F</span></div>
+          </div>
+          <div class="fee-tranches">
+            <div class="fee-tranches-title">📅 3 tranches</div>
+            <div class="tranche-row"><div class="tranche-badge t1">1</div><div class="tranche-info"><span class="tranche-date">30 sept. 2026</span><span class="tranche-montant">~63 000 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t2">2</div><div class="tranche-info"><span class="tranche-date">30 oct. 2026</span><span class="tranche-montant">~63 000 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t3">3</div><div class="tranche-info"><span class="tranche-date">29 nov. 2026</span><span class="tranche-montant">~62 000 F</span></div></div>
+          </div>
+          <div class="fee-card-footer warning">⚠️ Limite : 29/11/2026</div>
+        </div>
+ 
+        <div class="fee-card fee-card-exam">
+          <div class="fee-card-head">
+            <div class="fee-card-level">Terminales</div>
+            <div class="fee-card-exam-badge exam">🎓 Baccalauréat</div>
+          </div>
+          <div class="fee-card-prices">
+            <div class="fee-price-row"><span class="fee-price-label">Anciens</span><span class="fee-price-value blue">188 000 F</span></div>
+            <div class="fee-price-row"><span class="fee-price-label">Nouveaux</span><span class="fee-price-value gold">193 000 F</span></div>
+          </div>
+          <div class="fee-tranches">
+            <div class="fee-tranches-title">📅 3 tranches</div>
+            <div class="tranche-row"><div class="tranche-badge t1">1</div><div class="tranche-info"><span class="tranche-date">30 sept. 2026</span><span class="tranche-montant">~63 000 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t2">2</div><div class="tranche-info"><span class="tranche-date">30 oct. 2026</span><span class="tranche-montant">~63 000 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t3">3</div><div class="tranche-info"><span class="tranche-date">29 nov. 2026</span><span class="tranche-montant">~62 000 F</span></div></div>
+          </div>
+          <div class="fee-card-footer warning">⚠️ Limite : 29/11/2026</div>
+        </div>
+ 
+      </div>
+ 
+      <!-- ═══════════════════ ANGLOPHONE ═══════════════════ -->
+      <div class="fees-section-header" style="margin-top:52px;">
+        <div class="fees-section-flag">🇬🇧</div>
+        <div>
+          <div class="fees-section-title">Section Anglophone</div>
+          <div class="fees-section-sub">Bilingual Teaching · Form 1 → Upper Sixth</div>
+        </div>
+      </div>
+ 
+      <!-- Secondary F1-F4 -->
+      <div class="fees-group-label">📚 Secondary — Form 1 to Form 4</div>
+      <div class="fee-cards-grid">
+ 
+        <div class="fee-card">
+          <div class="fee-card-head">
+            <div class="fee-card-level">F1 · F2 · F3 · F4</div>
+            <div class="fee-card-exam-badge" style="background:rgba(16,185,129,.12);color:#065f46;">Secondary</div>
+          </div>
+          <div class="fee-card-prices">
+            <div class="fee-price-row"><span class="fee-price-label">Former</span><span class="fee-price-value blue">181 500 F</span></div>
+            <div class="fee-price-row"><span class="fee-price-label">New</span><span class="fee-price-value gold">186 500 F</span></div>
+          </div>
+          <div class="fee-tranches">
+            <div class="fee-tranches-title">📅 4 instalments</div>
+            <div class="tranche-row"><div class="tranche-badge t1">1</div><div class="tranche-info"><span class="tranche-date">04 Oct 2026</span><span class="tranche-montant">~45 375 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t2">2</div><div class="tranche-info"><span class="tranche-date">04 Nov 2026</span><span class="tranche-montant">~45 375 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t3">3</div><div class="tranche-info"><span class="tranche-date">06 Dec 2026</span><span class="tranche-montant">~45 375 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t4">4</div><div class="tranche-info"><span class="tranche-date">06 Jan 2027</span><span class="tranche-montant">~45 375 F</span></div></div>
+          </div>
+          <div class="fee-card-footer">Deadline: 06/01/2027</div>
+        </div>
+ 
+      </div>
+ 
+      <!-- GCE O/L -->
+      <div class="fees-group-label" style="margin-top:28px;">🎓 GCE O/L — Form 5</div>
+      <div class="fee-cards-grid">
+ 
+        <div class="fee-card fee-card-exam">
+          <div class="fee-card-head">
+            <div class="fee-card-level">Form 5 Arts</div>
+            <div class="fee-card-exam-badge exam">🎓 GCE O/L</div>
+          </div>
+          <div class="fee-card-prices">
+            <div class="fee-price-row"><span class="fee-price-label">Former</span><span class="fee-price-value blue">201 500 F</span></div>
+            <div class="fee-price-row"><span class="fee-price-label">New</span><span class="fee-price-value gold">206 500 F</span></div>
+          </div>
+          <div class="fee-tranches">
+            <div class="fee-tranches-title">📅 4 instalments</div>
+            <div class="tranche-row"><div class="tranche-badge t1">1</div><div class="tranche-info"><span class="tranche-date">04 Oct 2026</span><span class="tranche-montant">~50 375 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t2">2</div><div class="tranche-info"><span class="tranche-date">04 Nov 2026</span><span class="tranche-montant">~50 375 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t3">3</div><div class="tranche-info"><span class="tranche-date">06 Dec 2026</span><span class="tranche-montant">~50 375 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t4">4</div><div class="tranche-info"><span class="tranche-date">06 Jan 2027</span><span class="tranche-montant">~50 375 F</span></div></div>
+          </div>
+          <div class="fee-card-footer warning">⚠️ Deadline: 06/01/2027</div>
+        </div>
+ 
+        <div class="fee-card fee-card-exam">
+          <div class="fee-card-head">
+            <div class="fee-card-level">Form 5 Sc</div>
+            <div class="fee-card-exam-badge exam">🎓 GCE O/L</div>
+          </div>
+          <div class="fee-card-prices">
+            <div class="fee-price-row"><span class="fee-price-label">Former</span><span class="fee-price-value blue">204 500 F</span></div>
+            <div class="fee-price-row"><span class="fee-price-label">New</span><span class="fee-price-value gold">209 500 F</span></div>
+          </div>
+          <div class="fee-tranches">
+            <div class="fee-tranches-title">📅 3 instalments</div>
+            <div class="tranche-row"><div class="tranche-badge t1">1</div><div class="tranche-info"><span class="tranche-date">30 Sep 2026</span><span class="tranche-montant">~68 167 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t2">2</div><div class="tranche-info"><span class="tranche-date">30 Oct 2026</span><span class="tranche-montant">~68 167 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t3">3</div><div class="tranche-info"><span class="tranche-date">29 Nov 2026</span><span class="tranche-montant">~68 166 F</span></div></div>
+          </div>
+          <div class="fee-card-footer warning">⚠️ Deadline: 29/11/2026</div>
+        </div>
+ 
+      </div>
+ 
+      <!-- GCE A/L -->
+      <div class="fees-group-label" style="margin-top:28px;">🎓 GCE A/L — Sixth Form</div>
+      <div class="fee-cards-grid">
+ 
+        <div class="fee-card fee-card-exam">
+          <div class="fee-card-head">
+            <div class="fee-card-level">Lower 6 Arts</div>
+            <div class="fee-card-exam-badge exam">🎓 GCE A/L</div>
+          </div>
+          <div class="fee-card-prices">
+            <div class="fee-price-row"><span class="fee-price-label">Former</span><span class="fee-price-value blue">201 500 F</span></div>
+            <div class="fee-price-row"><span class="fee-price-label">New</span><span class="fee-price-value gold">206 500 F</span></div>
+          </div>
+          <div class="fee-tranches">
+            <div class="fee-tranches-title">📅 4 instalments</div>
+            <div class="tranche-row"><div class="tranche-badge t1">1</div><div class="tranche-info"><span class="tranche-date">04 Oct 2026</span><span class="tranche-montant">~50 375 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t2">2</div><div class="tranche-info"><span class="tranche-date">04 Nov 2026</span><span class="tranche-montant">~50 375 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t3">3</div><div class="tranche-info"><span class="tranche-date">06 Dec 2026</span><span class="tranche-montant">~50 375 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t4">4</div><div class="tranche-info"><span class="tranche-date">06 Jan 2027</span><span class="tranche-montant">~50 375 F</span></div></div>
+          </div>
+          <div class="fee-card-footer warning">⚠️ Deadline: 06/01/2027</div>
+        </div>
+ 
+        <div class="fee-card fee-card-exam">
+          <div class="fee-card-head">
+            <div class="fee-card-level">Lower 6 Sc</div>
+            <div class="fee-card-exam-badge exam">🎓 GCE A/L</div>
+          </div>
+          <div class="fee-card-prices">
+            <div class="fee-price-row"><span class="fee-price-label">Former</span><span class="fee-price-value blue">209 500 F</span></div>
+            <div class="fee-price-row"><span class="fee-price-label">New</span><span class="fee-price-value gold">214 500 F</span></div>
+          </div>
+          <div class="fee-tranches">
+            <div class="fee-tranches-title">📅 4 instalments</div>
+            <div class="tranche-row"><div class="tranche-badge t1">1</div><div class="tranche-info"><span class="tranche-date">04 Oct 2026</span><span class="tranche-montant">~52 375 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t2">2</div><div class="tranche-info"><span class="tranche-date">04 Nov 2026</span><span class="tranche-montant">~52 375 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t3">3</div><div class="tranche-info"><span class="tranche-date">06 Dec 2026</span><span class="tranche-montant">~52 375 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t4">4</div><div class="tranche-info"><span class="tranche-date">06 Jan 2027</span><span class="tranche-montant">~52 375 F</span></div></div>
+          </div>
+          <div class="fee-card-footer warning">⚠️ Deadline: 06/01/2027</div>
+        </div>
+ 
+        <div class="fee-card fee-card-exam">
+          <div class="fee-card-head">
+            <div class="fee-card-level">Upper 6 Arts</div>
+            <div class="fee-card-exam-badge exam">🎓 GCE A/L</div>
+          </div>
+          <div class="fee-card-prices">
+            <div class="fee-price-row"><span class="fee-price-label">Former</span><span class="fee-price-value blue">206 500 F</span></div>
+            <div class="fee-price-row"><span class="fee-price-label">New</span><span class="fee-price-value gold">211 500 F</span></div>
+          </div>
+          <div class="fee-tranches">
+            <div class="fee-tranches-title">📅 3 instalments</div>
+            <div class="tranche-row"><div class="tranche-badge t1">1</div><div class="tranche-info"><span class="tranche-date">30 Sep 2026</span><span class="tranche-montant">~68 833 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t2">2</div><div class="tranche-info"><span class="tranche-date">30 Oct 2026</span><span class="tranche-montant">~68 833 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t3">3</div><div class="tranche-info"><span class="tranche-date">29 Nov 2026</span><span class="tranche-montant">~68 834 F</span></div></div>
+          </div>
+          <div class="fee-card-footer warning">⚠️ Deadline: 29/11/2026</div>
+        </div>
+ 
+        <div class="fee-card fee-card-exam">
+          <div class="fee-card-head">
+            <div class="fee-card-level">Upper 6 Sc</div>
+            <div class="fee-card-exam-badge exam">🎓 GCE A/L</div>
+          </div>
+          <div class="fee-card-prices">
+            <div class="fee-price-row"><span class="fee-price-label">Former</span><span class="fee-price-value blue">216 500 F</span></div>
+            <div class="fee-price-row"><span class="fee-price-label">New</span><span class="fee-price-value gold">221 500 F</span></div>
+          </div>
+          <div class="fee-tranches">
+            <div class="fee-tranches-title">📅 3 instalments</div>
+            <div class="tranche-row"><div class="tranche-badge t1">1</div><div class="tranche-info"><span class="tranche-date">30 Sep 2026</span><span class="tranche-montant">~72 167 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t2">2</div><div class="tranche-info"><span class="tranche-date">30 Oct 2026</span><span class="tranche-montant">~72 167 F</span></div></div>
+            <div class="tranche-row"><div class="tranche-badge t3">3</div><div class="tranche-info"><span class="tranche-date">29 Nov 2026</span><span class="tranche-montant">~72 166 F</span></div></div>
+          </div>
+          <div class="fee-card-footer warning">⚠️ Deadline: 29/11/2026</div>
+        </div>
+ 
+      </div>
+ 
+      <!-- Note globale -->
+      <div class="info-box" style="margin-top:28px;">
+        <span style="font-size:1.2rem;flex-shrink:0;">💡</span>
+        <div style="line-height:1.75;font-size:.875rem;">
+          <strong>Bon à savoir :</strong> Tout parent ayant inscrit plus de deux enfants a droit à une <strong style="color:var(--blue);">réduction de 10%</strong> sur l'écolage du 3e enfant. · Les paiements se font exclusivement à la caisse du CABMY contre reçu. · Aucun frais n'est remboursable après inscription. · <strong>Les frais d'examens (BEPC, Probatoire, Bac, GCE) ne sont pas inclus</strong> et sont à régler selon les communiqués officiels.
+        </div>
       </div>
     </section>
-
-    <!-- CTA -->
-    <section class="rounded-2xl p-10 text-center text-white animate-fade" style="background:linear-gradient(135deg,var(--blue),var(--blue-mid))">
-      <h2 class="text-3xl font-bold mb-4" data-fr="Prêt à rejoindre le CABMY ?" data-en="Ready to join CABMY?">Prêt à rejoindre le CABMY ?</h2>
-      <p class="text-white/70 mb-6" data-fr="Contactez notre secrétariat ou remplissez le formulaire de pré-inscription en ligne." data-en="Contact our secretariat or fill in the online pre-registration form.">Contactez notre secrétariat ou remplissez le formulaire de pré-inscription en ligne.</p>
-      <div class="flex flex-wrap gap-4 justify-center">
-        <a href="contact.html" class="btn-primary px-8 py-3 rounded-lg inline-block" data-fr="Pré-inscription en ligne" data-en="Online Pre-registration">Pré-inscription en ligne</a>
-        <a href="tel:+237243850268" class="border-2 border-white/30 text-white px-8 py-3 rounded-lg inline-block hover:bg-white/10" data-fr="Appeler le secrétariat" data-en="Call the Secretariat">Appeler le secrétariat</a>
+ 
+ 
+    <!-- ══════════════════════════════════════
+         TENUES SCOLAIRES
+    ══════════════════════════════════════ -->
+    <section id="tenues" class="fade-up">
+      <div class="section-kicker" data-fr="Tenue obligatoire" data-en="Compulsory Uniform">Tenue obligatoire</div>
+      <h2 class="section-title" data-fr="Tenues scolaires" data-en="School Uniforms">Tenues scolaires</h2>
+      <p class="section-desc" data-fr="Le port de la tenue scolaire est obligatoire pour tous les élèves. Les tenues sont confectionnées et livrées par les fournisseurs agréés par le CABMY." data-en="Wearing the school uniform is compulsory for all students. Uniforms are made and supplied by CABMY-approved suppliers.">Le port de la tenue scolaire est obligatoire. Les tenues sont confectionnées et livrées par les <strong>fournisseurs agréés par le CABMY</strong>.</p>
+ 
+      <!-- Prix tenues -->
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin:16px 0 24px;">
+        <div class="info-box" style="flex:1;min-width:180px;">
+          <span style="font-size:1.3rem;">👕</span>
+          <div>
+            <strong style="display:block;font-size:.95rem;color:var(--dark);" data-fr="Tenue de classe" data-en="Class Uniform">Tenue de classe</strong>
+            <span style="font-size:1.3rem;font-weight:700;color:var(--blue);">7 500 F</span>
+          </div>
+        </div>
+        <div class="info-box" style="flex:1;min-width:180px;background:var(--blue-light);border-color:rgba(26,58,107,.15);">
+          <span style="font-size:1.3rem;">🏃</span>
+          <div>
+            <strong style="display:block;font-size:.95rem;color:var(--dark);" data-fr="Tenue de sport" data-en="Sports Kit">Tenue de sport</strong>
+            <span style="font-size:1.3rem;font-weight:700;color:var(--blue);">5 000 F</span>
+          </div>
+        </div>
+      </div>
+ 
+      <div class="uniform-grid">
+        <!-- Garçons -->
+        <div class="uniform-card card fade-up fade-up-d1">
+          <div class="uniform-header">
+            <div class="uniform-avatar">👦</div>
+            <div>
+              <div class="uniform-title" data-fr="Garçons" data-en="Boys">Garçons</div>
+              <div style="font-size:.75rem;color:var(--muted);" data-fr="Pull-over: 6 500 F" data-en="Pull-over: 6,500 F">Pull-over : 6 500 F</div>
+            </div>
+          </div>
+          <div class="uniform-body">
+            <div class="uniform-item"><span class="u-dot">•</span><span data-fr="Chemise bleu ciel et pantalon bleu marine" data-en="Sky-blue shirt and navy blue trousers">Chemise bleu ciel et pantalon bleu marine</span></div>
+            <div class="uniform-item"><span class="u-dot">•</span><span data-fr="Ceinture noire ou bleu marine" data-en="Black or navy belt">Ceinture noire ou bleu marine</span></div>
+            <div class="uniform-item"><span class="u-dot">•</span><span data-fr="Chaussures noires fermées (pas de sandales)" data-en="Closed black shoes (no sandals)">Chaussures noires fermées (pas de sandales)</span></div>
+            <div class="uniform-item"><span class="u-dot">•</span><span data-fr="Chaussettes blanches ou bleues" data-en="White or blue socks">Chaussettes blanches ou bleues</span></div>
+            <div class="uniform-item"><span class="u-dot">🏃</span><span data-fr="Tenue sport selon couleur de niveau (voir tableau ci-dessous)" data-en="Sports kit according to class colour (see chart below)">Tenue sport selon couleur de niveau</span></div>
+          </div>
+        </div>
+ 
+        <!-- Filles -->
+        <div class="uniform-card card fade-up fade-up-d2">
+          <div class="uniform-header">
+            <div class="uniform-avatar">👧</div>
+            <div>
+              <div class="uniform-title" data-fr="Filles" data-en="Girls">Filles</div>
+              <div style="font-size:.75rem;color:var(--muted);" data-fr="Pull-over: 6 500 F" data-en="Pull-over: 6,500 F">Pull-over : 6 500 F</div>
+            </div>
+          </div>
+          <div class="uniform-body">
+            <div class="uniform-item"><span class="u-dot">•</span><span data-fr="Robe bleu ciel avec cordon bleu marine" data-en="Sky-blue dress with navy cord">Robe bleu ciel avec cordon bleu marine</span></div>
+            <div class="uniform-item"><span class="u-dot">•</span><span data-fr="Confection obligatoire par fournisseurs agréés CABMY" data-en="Must be made by CABMY-approved suppliers">Confection obligatoire par fournisseurs agréés CABMY</span></div>
+            <div class="uniform-item"><span class="u-dot">•</span><span data-fr="Chaussures noires fermées" data-en="Closed black shoes">Chaussures noires fermées</span></div>
+            <div class="uniform-item"><span class="u-dot">•</span><span data-fr="Chaussettes blanches ou collants bleus" data-en="White socks or blue tights">Chaussettes blanches ou collants bleus</span></div>
+            <div class="uniform-item"><span class="u-dot">•</span><span data-fr="Bijoux discrets uniquement" data-en="Discrete jewellery only">Bijoux discrets uniquement</span></div>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Couleurs sport -->
+      <div class="card fade-up" style="margin-top:20px;">
+        <div class="card-title">🏃 <span data-fr="Couleurs de la tenue de sport par niveau" data-en="Sports Kit Colours by Level">Couleurs de la tenue de sport par niveau</span></div>
+        <div class="color-grid">
+          <div class="color-chip" style="background:#d1fae5;color:#065f46;">
+            <div style="font-weight:700;" data-fr="🟢 Vert" data-en="🟢 Green">🟢 Vert</div>
+            <div style="font-size:.75rem;margin-top:4px;" data-fr="6e, 5e / F1, F2" data-en="6th, 5th / F1, F2">6e, 5e / F1, F2</div>
+          </div>
+          <div class="color-chip" style="background:#fef3c7;color:#92400e;">
+            <div style="font-weight:700;" data-fr="🟡 Jaune" data-en="🟡 Yellow">🟡 Jaune</div>
+            <div style="font-size:.75rem;margin-top:4px;" data-fr="4e, 3e / F3, F4, F5" data-en="4th, 3rd / F3, F4, F5">4e, 3e / F3, F4, F5</div>
+          </div>
+          <div class="color-chip" style="background:#fee2e2;color:#991b1b;">
+            <div style="font-weight:700;" data-fr="🔴 Rouge" data-en="🔴 Red">🔴 Rouge</div>
+            <div style="font-size:.75rem;margin-top:4px;" data-fr="1er cycle — Termine" data-en="1st Cycle — End">1ères<br/><span style="font-size:.7rem;opacity:.7;">(à confirmer)</span></div>
+          </div>
+          <div class="color-chip" style="background:#e0e7ff;color:#3730a3;">
+            <div style="font-weight:700;" data-fr="🟣 Violet" data-en="🟣 Purple">🟣 Violet</div>
+            <div style="font-size:.75rem;margin-top:4px;" data-fr="4e, 3e — anglophone" data-en="4th, 3rd — anglophone">4e/3e – Anglo</div>
+          </div>
+          <div class="color-chip" style="background:#fff;color:#374151;border:1px solid var(--border);">
+            <div style="font-weight:700;" data-fr="⚪ Blanc" data-en="⚪ White">⚪ Blanc</div>
+            <div style="font-size:.75rem;margin-top:4px;" data-fr="2nd cycle / Terminales" data-en="2nd Cycle / Finals">2nd cycle / Tles – U6</div>
+          </div>
+          <div class="color-chip" style="background:#1e1b4b;color:#c7d2fe;">
+            <div style="font-weight:700;">🔵 <span data-fr="Bleu marine" data-en="Navy">Bleu marine</span></div>
+            <div style="font-size:.75rem;margin-top:4px;" data-fr="Couleur pantalon/jupe sport" data-en="Sports trousers/skirt colour">Pantalon/jupe sport</div>
+          </div>
+        </div>
+      </div>
+ 
+      <div class="info-box" style="margin-top:16px;background:#fef2f2;border-color:rgba(185,28,28,.2);">
+        <span style="font-size:1.1rem;flex-shrink:0;">⚠️</span>
+        <div style="color:#7f1d1d;" data-fr="Important : Tout élève qui ne respecte pas le code vestimentaire peut être renvoyé chez lui pour se changer. Les parents sont tenus de veiller au respect de cette règle dès la rentrée." data-en="Important: Any student not complying with the dress code may be sent home to change. Parents are responsible for ensuring compliance from the start of term."><strong data-fr="Important :" data-en="Important:">Important :</strong> Tout élève qui ne respecte pas le code vestimentaire peut être renvoyé chez lui pour se changer. Les parents sont tenus de veiller au respect de cette règle dès la rentrée.</div>
       </div>
     </section>
-  </div>
-</div>
-
+ 
+    <!-- ══════════════════════════════════════
+         CTA
+    ══════════════════════════════════════ -->
+    <div class="cta-section fade-up">
+      <h2 data-fr="Prêt à rejoindre le CABMY ?" data-en="Ready to join CABMY?">Prêt à rejoindre le <em>CABMY</em> ?</h2>
+      <p data-fr="Contactez notre secrétariat ou remplissez le formulaire de pré-inscription en ligne. Places limitées." data-en="Contact our secretariat or fill in the online pre-registration form. Limited places.">Contactez notre secrétariat ou remplissez le formulaire de pré-inscription en ligne. Places limitées.</p>
+      <div class="cta-buttons">
+        <a href="contact.html" class="btn-primary" style="padding:13px 28px;" data-fr="✏️ Pré-inscription en ligne" data-en="✏️ Online Pre-registration">✏️ Pré-inscription en ligne</a>
+        <a href="../../pdf/prospectus-cabmy-2026-2027.pdf" download class="btn-white-outline" data-fr="⬇ Télécharger le prospectus" data-en="⬇ Download the brochure">⬇ Télécharger le prospectus</a>
+        <a href="tel:+237243850268" class="btn-white-outline" data-fr="📞 Appeler le secrétariat" data-en="📞 Call the Secretariat">📞 Appeler le secrétariat</a>
+      </div>
+    </div>
+ 
+  </div><!-- /main-content -->
+</div><!-- /page-layout -->
+ 
 <!-- FOOTER -->
-<footer class="py-12" style="background:var(--dark)">
-  <div class="max-w-7xl mx-auto px-4 grid lg:grid-cols-4 gap-8">
-    <div><div class="font-bold text-white mb-3" style="font-family:'Playfair Display',serif">CABMY</div><p class="text-white/40 text-sm">Collège Adventiste Bilingue Marathana de Yaoundé.</p></div>
-    <div><div class="font-bold text-white mb-3">Navigation</div><div class="flex flex-col gap-2 text-sm text-white/50"><a href="index.html" class="hover:text-white">Accueil</a><a href="apropos.html" class="hover:text-white">À propos</a><a href="enseignements.html" class="hover:text-white">Enseignements</a><a href="contact.html" class="hover:text-white">Contact</a></div></div>
-    <div><div class="font-bold text-white mb-3">Admissions</div><div class="flex flex-col gap-2 text-sm text-white/50"><a href="#conditions" class="hover:text-white">Conditions</a><a href="#frais" class="hover:text-white">Frais</a><a href="#calendrier" class="hover:text-white">Calendrier</a><a href="#tenues" class="hover:text-white">Tenues</a></div></div>
-    <div><div class="font-bold text-white mb-3">Contact</div><div class="flex flex-col gap-2 text-sm text-white/50"><div>📍 Nyom II, Petit Marché · Yaoundé</div><div>📞 243 850 268 · 675 84 05 71</div><div>✉ contact@cabmy.cm</div></div></div>
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">CABMY</div>
+      <p class="footer-desc">Collège Adventiste Bilingue Marathana de Yaoundé — une éducation d'excellence au service de chaque apprenant.</p>
+    </div>
+    <div>
+      <div class="footer-col-title" data-fr="Navigation" data-en="Navigation">Navigation</div>
+      <a href="../../index.html" class="footer-link" data-fr="Accueil" data-en="Home">Accueil</a>
+      <a href="apropos.html"     class="footer-link" data-fr="À propos" data-en="About">À propos</a>
+      <a href="enseignements.html" class="footer-link" data-fr="Enseignements" data-en="Academics">Enseignements</a>
+      <a href="actualites.html"    class="footer-link" data-fr="Actualités" data-en="News">Actualités</a>
+    </div>
+    <div>
+      <div class="footer-col-title" data-fr="Admissions" data-en="Admissions">Admissions</div>
+      <a href="#conditions" class="footer-link" data-fr="Conditions" data-en="Conditions">Conditions</a>
+      <a href="#calendrier"  class="footer-link" data-fr="Calendrier" data-en="Calendar">Calendrier</a>
+      <a href="#frais"       class="footer-link" data-fr="Frais 2026-2027" data-en="Fees 2026-2027">Frais 2026-2027</a>
+      <a href="#tenues"      class="footer-link" data-fr="Tenues" data-en="Uniforms">Tenues</a>
+      <a href="../../pdf/prospectus-cabmy-2026-2027.pdf" download class="footer-link" style="color:var(--gold);" data-fr="⬇ Prospectus PDF" data-en="⬇ Brochure PDF">⬇ Prospectus PDF</a>
+    </div>
+    <div>
+      <div class="footer-col-title" data-fr="Contact" data-en="Contact">Contact</div>
+      <div class="footer-info">📍 Nyom II, Petit Marché · Yaoundé</div>
+      <div class="footer-info">📞 243 850 268 · 675 84 05 71</div>
+      <div class="footer-info">✉ cabmy.2011@gmail.com</div>
+      <div class="footer-info" style="margin-top:8px;color:rgba(255,255,255,.25);font-size:.72rem;">Immat. : SLC2GSBD11869116</div>
+    </div>
   </div>
-  <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-white/10 text-center text-xs text-white/30">© 2024 CABMY – Tous droits réservés</div>
+  <div class="footer-copy">© 2026 CABMY – Collège Adventiste Bilingue Marathana de Yaoundé – Tous droits réservés</div>
 </footer>
-
+ 
 <script>
-  let currentLang=localStorage.getItem('cabmy-lang')||'fr';
-  function setLang(lang){currentLang=lang;localStorage.setItem('cabmy-lang',lang);document.querySelectorAll('[data-fr]').forEach(el=>{el.textContent=el.getAttribute('data-'+lang)||el.textContent;});document.getElementById('btn-fr').classList.toggle('lang-active',lang==='fr');document.getElementById('btn-en').classList.toggle('lang-active',lang==='en');document.documentElement.lang=lang;}
-  setLang(currentLang);
-  function toggleMobile(){document.getElementById('mobile-menu').classList.toggle('open');}
-  const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.1});
-  document.querySelectorAll('.animate-fade').forEach(el=>observer.observe(el));
-  // Sidebar active on scroll
-  const sections=['conditions','calendrier','frais','examens','tenues'];
-  window.addEventListener('scroll',()=>{
-    sections.forEach(id=>{
-      const el=document.getElementById(id);
-      if(!el)return;
-      const rect=el.getBoundingClientRect();
-      const link=document.querySelector(`.sidebar-nav a[href="#${id}"]`);
-      if(link){link.classList.toggle('active',rect.top<200&&rect.bottom>0);}
-    });
+/* ── LANG ── */
+let currentLang = localStorage.getItem('cabmy-lang') || 'fr';
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('cabmy-lang', lang);
+  document.querySelectorAll('[data-fr]').forEach(el => {
+    const val = el.getAttribute('data-' + lang);
+    if (val) el.innerHTML = val;
   });
+  document.getElementById('btn-fr').classList.toggle('lang-active', lang === 'fr');
+  document.getElementById('btn-en').classList.toggle('lang-active', lang === 'en');
+  document.documentElement.lang = lang;
+}
+setLang(currentLang);
+ 
+/* ── MOBILE MENU ── */
+function toggleMobile() {
+  const m = document.getElementById('mobile-menu');
+  const h = document.getElementById('hamburger');
+  m.classList.toggle('open');
+  h.classList.toggle('open');
+  document.body.style.overflow = m.classList.contains('open') ? 'hidden' : '';
+}
+ 
+/* ── FEES TABS ── */
+function showFeeTab(tab, btn) {
+  document.querySelectorAll('.fee-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.fees-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('fee-' + tab).classList.add('active');
+}
+ 
+/* ── SCROLL ANIMATIONS ── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: .08 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+ 
+/* ── SIDEBAR ACTIVE ON SCROLL ── */
+const sectionIds = ['conditions','calendrier','frais','tenues'];
+window.addEventListener('scroll', () => {
+  sectionIds.forEach(id => {
+    const el = document.getElementById(id);
+    const link = document.getElementById('snav-' + id);
+    if (!el || !link) return;
+    const rect = el.getBoundingClientRect();
+    link.classList.toggle('active', rect.top < 160 && rect.bottom > 0);
+  });
+});
+ 
+/* ── NAVBAR SCROLL ── */
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').style.boxShadow =
+    window.scrollY > 20 ? '0 4px 48px rgba(0,0,0,.4)' : '0 2px 32px rgba(0,0,0,.25)';
+});
 </script>
 </body>
 </html>
