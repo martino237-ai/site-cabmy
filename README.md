@@ -1,191 +1,178 @@
-# 📘 Guide d'utilisation – Site Web CABMY
-## Collège Adventiste Bilingue Marathana de Yaoundé
+# CABMY - Site web du Collège Adventiste Bilingue Marathana de Yaoundé
 
----
+## Présentation
 
-## 📂 Structure du site (fichiers)
+Ce projet est un site web statique pour le Collège Adventiste Bilingue Marathana de Yaoundé (CABMY).
+Il est construit avec des pages HTML, du CSS, du JavaScript et Tailwind CSS pour le style.
+Le site inclut une interface d'administration simple, des pages bilingues, un formulaire d'inscription imprimable et une section actualités.
+
+## Contenu du projet
+
+### Fichiers principaux à la racine
+- `index.html` : page d'accueil
+- `apropos.html` : page "À propos"
+- `enseignements.html` : page des filières et cours
+- `admissions.html` : page d'admission et frais
+- `vie-scolaire.html` : page vie scolaire et règlement
+- `actualites.html` : page d'actualités
+- `contact.html` : page de contact avec formulaire
+- `formulaire-inscription.html` : formulaire imprimable
+- `admin.html` : interface d'administration locale
+- `404.html` : page d'erreur 404
+- `style.css` : feuille de style globale
+- `cabmy.js` : script JavaScript principal
+- `input.css` : fichier d'entrée Tailwind CSS
+- `output.css` : fichier CSS généré pour le site
+- `package.json` : configuration npm et scripts
+- `postcss.config.js` : configuration PostCSS
+- `tailwind.config.js` : configuration Tailwind CSS
+
+### Dossier `src/`
+- `src/css/` : styles spécifiques aux pages
+- `src/js/` : scripts JavaScript pour chaque page
+- `src/html/` : versions ou sources HTML complémentaires
+- `src/input.css` : source CSS Tailwind additionnel
+
+## Technologies utilisées
+
+- HTML5
+- CSS3
+- JavaScript
+- Tailwind CSS
+- PostCSS
+- Autoprefixer
+
+## Installation et développement
+
+### Pré-requis
+- Node.js installé
+- npm disponible
+
+### Installation
+
+1. Ouvrir un terminal dans le dossier du projet
+2. Installer les dépendances :
+   ```bash
+   npm install
+   ```
+
+### Compilation Tailwind
+- Générer `output.css` depuis `input.css` :
+  ```bash
+  npm run build
+  ```
+- Lancer la compilation en mode surveillance :
+  ```bash
+  npm run watch
+  ```
+
+> Le projet utilise le fichier racine `input.css` comme point d'entrée Tailwind. Le CSS compilé est écrit dans `output.css`.
+
+## Structure des dossiers
 
 ```
-cabmy/
-├── index.html                  ← Page d'accueil principale
-├── apropos.html                ← À propos, historique, direction
-├── enseignements.html          ← Sections franco / anglo / cours du soir
-├── admissions.html             ← Conditions, frais, calendrier, tenues
-├── vie-scolaire.html           ← Règlement, activités, pastorale
-├── actualites.html             ← Liste des articles / actualités
-├── contact.html                ← Formulaire de contact + plan
-├── formulaire-inscription.html ← Formulaire d'inscription imprimable (PDF)
-├── admin.html                  ← Interface d'administration
-├── 404.html                    ← Page d'erreur 404
-├── style.css                   ← Feuille de style partagée
-├── cabmy.js                    ← Scripts partagés
-└── README.md                   ← Ce fichier
+site-cabmy/
+├── cabmy.js
+├── index.html
+├── input.css
+├── output.css
+├── package.json
+├── postcss.config.js
+├── style.css
+├── tailwind.config.js
+├── README.md
+├── images/
+│   └── logo/
+└── src/
+    ├── input.css
+    ├── css/
+    │   ├── actualites.css
+    │   ├── admin.css
+    │   ├── admissions.css
+    │   ├── apropos.css
+    │   ├── contact.css
+    │   ├── enseignements.css
+    │   ├── global.css
+    │   ├── index.css
+    │   └── vie-scolaire.css
+    ├── html/
+    │   ├── 404.html
+    │   ├── actualites.html
+    │   ├── admin.html
+    │   ├── admissions.html
+    │   ├── apropos.html
+    │   ├── contact.html
+    │   ├── enseignements.html
+    │   ├── formulaire-inscription.html
+    │   └── vie-scolaire.html
+    └── js/
+        ├── actualites.js
+        ├── admin.js
+        ├── admissions.js
+        ├── apropos.js
+        ├── contact.js
+        ├── enseignements.js
+        ├── global.js
+        └── index.js
 ```
 
----
+## Personnalisation du site
 
-## 🚀 Mise en ligne du site
+### Mise à jour du contenu
+- Modifier les pages HTML à la racine
+- Mettre à jour les textes, les images et les coordonnées de contact
+- Actualiser les frais, les calendriers et les informations scolaires
 
-### Option 1 : Hébergement simple (recommandé pour démarrer)
-1. Compresser tous les fichiers en .zip
-2. Uploader sur un hébergeur : **InfinityFree** (gratuit), **Hostinger**, **OVH**, ou **CamNet**
-3. Pointer le domaine vers le répertoire
+### Modifier le style
+- Utiliser `style.css` pour le style global
+- Utiliser `src/css/*.css` pour des styles spécifiques aux pages
+- Ajouter ou ajuster les classes Tailwind dans `input.css`
 
-### Option 2 : Hébergement professionnel
-- Domaine suggéré : `cabmy.cm` ou `cabmy.org`
-- Hébergeur recommandé au Cameroun : **Camtel**, **Orange CI**, **MTN**
+### Ajouter des images
+- Placer les images dans un dossier `images/` ou un dossier dédié
+- Mettre à jour les balises `<img>` dans les pages HTML
 
----
+## Administration locale
 
-## ✏️ Personnalisations à faire AVANT la mise en ligne
+L'interface `admin.html` permet de gérer du contenu à distance via Firebase Firestore et de le rendre disponible sur la page `actualites.html`.
 
-### 1. Numéro de téléphone
-Remplacer **tous les** `+237 600 000 000` par le vrai numéro.
-Fichiers concernés : `index.html`, `apropos.html`, `enseignements.html`, `admissions.html`, `vie-scolaire.html`, `actualites.html`, `contact.html`, `formulaire-inscription.html`
+Fonctionnalités principales :
+- ajout et modification des actualités
+- publication de photos ou de vidéos d'actualité
+- affichage dynamique des articles publiés sur la page publique
+- suppression des articles en ligne
 
-### 2. Email de contact
-Remplacer `contact@cabmy.cm` par le vrai email.
+> Le projet nécessite une configuration Firebase valide dans `src/html/admin.html` et `src/html/actualites.html` pour que l'enregistrement en ligne fonctionne correctement.
 
-### 3. Frais de scolarité
-Dans `admissions.html`, chercher `XX 000 FCFA` et remplir les vrais montants.
-Vous pouvez aussi le faire via l'interface admin : `admin.html` → section "Frais de scolarité".
+## Déploiement
 
-### 4. Photos
-Les emojis (🎓, ⛪, etc.) sont des placeholders. Pour ajouter de vraies photos :
-```html
-<!-- Remplacer ceci -->
-<div class="h-48 flex items-center justify-center text-4xl" style="...">🏅</div>
+Pour déployer le site sur un hébergement statique :
+1. Compiler `output.css` avec `npm run build`
+2. Copier les fichiers HTML, CSS, JS et images vers le serveur
+3. Vérifier les liens et le formulaire de contact
 
-<!-- Par ceci -->
-<img src="photos/bepc2024.jpg" alt="BEPC 2024" class="h-48 w-full object-cover">
-```
-Créer un dossier `photos/` dans le répertoire du site.
+### Hébergement recommandé
+- GitHub Pages
+- Netlify
+- Vercel
+- Hébergeurs classiques (OVH, Hostinger, CamNet)
 
-### 5. Logo officiel
-Remplacer l'initiale `CA` dans les cercles par votre logo :
-```html
-<!-- Remplacer -->
-<span style="font-family:'Playfair Display',serif">CA</span>
+## Conseils de maintenance
 
-<!-- Par -->
-<img src="logo.png" alt="CABMY" class="w-10 h-10 object-contain">
-```
+- Faire une sauvegarde régulière du projet
+- Mettre à jour le contenu des actualités chaque mois
+- Vérifier que les coordonnées de contact sont à jour
+- Remplacer le mot de passe ADMIN par une authentification plus sécurisée avant publication
 
-### 6. Plan Google Maps
-Dans `contact.html`, remplacer les coordonnées dans l'iframe Google Maps :
-```
-3.8480 → latitude exacte de l'école
-11.5126 → longitude exacte de l'école
-```
+## Notes importantes
 
----
+- Le site est statique : aucune logique serveur ou base de données n’est incluse
+- Le formulaire de contact devra être connecté à un service externe ou à un backend pour envoyer réellement des messages
+- La page `formulaire-inscription.html` est prévue pour impression et téléchargement PDF
 
-## 🔐 Interface d'administration (admin.html)
+## Bonnes pratiques
 
-### Connexion
-- **URL** : `votre-site.cm/admin.html`
-- **Identifiant** : `admin`
-- **Mot de passe** : `cabmy2024` ← **À CHANGER AVANT MISE EN LIGNE**
-
-### Fonctionnalités
-| Section | Ce que vous pouvez faire |
-|---------|--------------------------|
-| Tableau de bord | Vue d'ensemble des stats |
-| Actualités | Créer, modifier, supprimer des articles |
-| Frais de scolarité | Mettre à jour les montants |
-| Messages reçus | Voir les messages du formulaire de contact |
-| Pré-inscriptions | Voir + exporter les pré-inscriptions (CSV) |
-
-> ⚠️ **Note** : L'admin utilise le localStorage du navigateur. Pour une vraie base de données, il faudra un hébergement avec PHP/MySQL ou Firebase.
-
----
-
-## 🌐 Bilinguisme (FR/EN)
-
-Le site est entièrement bilingue. La langue est mémorisée dans le navigateur.
-
-Pour ajouter une traduction manquante :
-```html
-<!-- Ajouter les attributs data-fr et data-en -->
-<p data-fr="Texte en français" data-en="Text in English">Texte en français</p>
-```
-
----
-
-## 📰 Gestion des actualités
-
-### Via l'interface admin (recommandé)
-1. Aller sur `admin.html`
-2. Se connecter
-3. Cliquer "Nouvel article"
-4. Remplir titre, catégorie, résumé, contenu
-5. Publier
-
-### Catégories disponibles
-- 📊 Résultats
-- 🏫 Vie du collège
-- ⛪ Spiritualité
-- 🌙 Cours du soir
-
----
-
-## 🖨️ Formulaire d'inscription imprimable
-
-La page `formulaire-inscription.html` est optimisée pour l'impression :
-1. Ouvrir la page
-2. Cliquer "Imprimer / Télécharger PDF"
-3. Dans la boîte de dialogue, choisir "Enregistrer en PDF"
-
-Le formulaire peut aussi être rempli à l'écran puis imprimé.
-
----
-
-## 📱 Compatibilité
-
-| Navigateur | Compatible |
-|-----------|-----------|
-| Chrome / Edge | ✅ Parfait |
-| Firefox | ✅ Parfait |
-| Safari (iOS) | ✅ Bon |
-| Opera Mini | ⚠️ Basique |
-
-| Écran | Compatible |
-|-------|-----------|
-| Ordinateur (1200px+) | ✅ |
-| Tablette (768px+) | ✅ |
-| Mobile (320px+) | ✅ |
-
----
-
-## 🎨 Couleurs du site
-
-| Couleur | Code HEX | Usage |
-|---------|----------|-------|
-| Bleu principal | `#1a3a6b` | Titres, boutons, fond nav |
-| Bleu moyen | `#2952a3` | Dégradés |
-| Or/Gold | `#c9a84c` | Accents, boutons CTA |
-| Fond clair | `#e8eef8` | Sections alternées |
-| Fond sombre | `#0f1f3d` | Footer, hero |
-
----
-
-## 🔧 Maintenance recommandée
-
-| Tâche | Fréquence | Responsable |
-|-------|-----------|-------------|
-| Ajouter une actualité | 1-2x/mois | Assistante admin |
-| Mettre à jour les frais | Début d'année | Gestionnaire (EBA Marie) |
-| Vérifier les formulaires | Chaque semaine | Secrétariat |
-| Sauvegarder les fichiers | 1x/semaine | Webmaster |
-| Modifier le calendrier | Début d'année | Webmaster |
-
----
-
-## 📞 Support technique
-
-Pour toute question technique sur le site, contacter le webmaster en charge.
-
----
-
-*Document créé pour le Collège Adventiste Bilingue Marathana de Yaoundé (CABMY)*  
-*Devise : TRAVAIL – DISCIPLINE – SUCCÈS*
+- Garder `package.json` à jour
+- Tester les pages sur mobile et tablette
+- Vérifier l’accessibilité des contenus
+- Remplacer les placeholders de contact, tarifs et images avant publication

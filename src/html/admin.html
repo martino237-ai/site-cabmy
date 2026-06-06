@@ -202,6 +202,7 @@
               <thead>
                 <tr>
                   <th>Titre</th>
+                  <th>Média</th>
                   <th>Catégorie</th>
                   <th>Date</th>
                   <th>Statut</th>
@@ -360,6 +361,24 @@
           <label>Emoji / Icône illustrative</label>
           <input type="text" id="art-emoji" class="form-input" placeholder="Ex: 🏅 ou 🎓 ou ⛪">
         </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <div>
+            <label>Type de média</label>
+            <select id="art-media-type" class="form-input">
+              <option value="none">Aucun</option>
+              <option value="photo">Photo</option>
+              <option value="video">Vidéo</option>
+            </select>
+          </div>
+          <div>
+            <label>URL du média</label>
+            <input type="url" id="art-media-url" class="form-input" placeholder="https://..." />
+          </div>
+        </div>
+        <div>
+          <label>Description média</label>
+          <input type="text" id="art-media-alt" class="form-input" placeholder="Texte alternatif ou description" />
+        </div>
  
         <div style="display:flex;gap:12px;padding-top:8px;">
           <button type="submit" class="btn-primary">💾 Enregistrer</button>
@@ -398,26 +417,71 @@ function doLogout() {
   document.getElementById('login-pass').value = '';
 }
  
-/* ── DATA ─────────────────────────────────────── */
+/* ── FIREBASE ─────────────────────────────────── */
+const FIREBASE_CONFIG = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+let db = null;
+let firestoreEnabled = false;
+let currentArticles = [];
+
+function initFirebase() {
+  if (!FIREBASE_CONFIG.projectId || FIREBASE_CONFIG.projectId === 'YOUR_PROJECT_ID') return;
+  try {
+    firebase.initializeApp(FIREBASE_CONFIG);
+    db = firebase.firestore();
+    firestoreEnabled = true;
+  } catch (err) {
+    console.warn('Firebase initialisation échouée', err);
+  }
+}
+
+async function getArticles() {
+  if (!firestoreEnabled) return [];
+  const snapshot = await db.collection('articles').orderBy('dateSort', 'desc').get();
+  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+}
+
+async function saveArticleRemote(article, id) {
+  if (!firestoreEnabled) throw new Error('Firebase non configuré');
+  if (id) {
+    await db.collection('articles').doc(id).set(article, { merge: true });
+    return id;
+  }
+  const ref = await db.collection('articles').add(article);
+  return ref.id;
+}
+
+async function deleteArticleRemote(id) {
+  if (!firestoreEnabled) throw new Error('Firebase non configuré');
+  await db.collection('articles').doc(id).delete();
+}
+
 function getData(key, def = []) {
   try { return JSON.parse(localStorage.getItem('cabmy_' + key)) || def; } catch { return def; }
 }
 function setData(key, val) { localStorage.setItem('cabmy_' + key, JSON.stringify(val)); }
- 
+
 /* ── INIT ─────────────────────────────────────── */
-function initAdmin() {
+async function initAdmin() {
+  initFirebase();
   document.getElementById('admin-date').textContent =
     new Date().toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-  updateCounts();
-  renderRecentArticles();
-  renderArticlesTable();
+  await updateCounts();
+  await renderRecentArticles();
+  await renderArticlesTable();
   loadFrais();
   renderContacts();
   renderPI();
 }
- 
-function updateCounts() {
-  const arts = getData('articles');
+
+async function updateCounts() {
+  const arts = firestoreEnabled ? await getArticles() : getData('articles');
   const msgs = getData('messages');
   const pis  = getData('preinscriptions');
   document.getElementById('count-articles').textContent = arts.filter(a => a.statut === 'publie').length;
@@ -448,40 +512,56 @@ function showSection(name) {
 const catLabels  = { resultats: '📊 Résultats', vie: '🏫 Vie du collège', spiritualite: '⛪ Spiritualité', soir: '🌙 Cours du soir' };
 const catClasses = { resultats: 'tag-resultats', vie: 'tag-vie', spiritualite: 'tag-spiritualite', soir: 'tag-soir' };
  
-function renderRecentArticles() {
-  const arts = getData('articles').slice(0, 5);
+async function renderRecentArticles() {
+  const arts = firestoreEnabled ? await getArticles() : getData('articles');
+  currentArticles = arts;
   const el = document.getElementById('recent-articles-list');
   if (!arts.length) {
     el.innerHTML = '<p style="color:var(--text-muted);font-size:.875rem;padding:16px 0;">Aucun article encore.</p>';
     return;
   }
-  el.innerHTML = arts.map(a => `
-    <div class="recent-row">
-      <div>
-        <div class="recent-row-title">${a.emoji || ''} ${a.titre}</div>
-        <div class="recent-row-date">${a.date}</div>
+  el.innerHTML = arts.slice(0, 5).map(a => {
+    const mediaLabel = a.mediaType && a.mediaType !== 'none'
+      ? `<span class="tag ${a.mediaType === 'photo' ? 'tag-photo' : 'tag-video'}">${a.mediaType === 'photo' ? '📸 Photo' : '🎬 Vidéo'}</span>`
+      : '';
+    return `
+      <div class="recent-row">
+        <div>
+          <div class="recent-row-title">${a.emoji || ''} ${a.titre}</div>
+          <div class="recent-row-date">${a.date}</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          ${mediaLabel}
+          <span class="tag ${catClasses[a.cat] || ''}">${catLabels[a.cat] || a.cat}</span>
+        </div>
       </div>
-      <span class="tag ${catClasses[a.cat] || ''}">${catLabels[a.cat] || a.cat}</span>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 }
  
-function renderArticlesTable() {
-  const arts = getData('articles');
+async function renderArticlesTable() {
+  const arts = firestoreEnabled ? await getArticles() : getData('articles');
+  currentArticles = arts;
   const tbody = document.getElementById('articles-tbody');
   document.getElementById('no-articles').style.display = arts.length ? 'none' : 'block';
-  tbody.innerHTML = arts.map((a, i) => `
-    <tr>
-      <td style="font-weight:600;max-width:280px;">${a.emoji || ''} ${a.titre}</td>
-      <td><span class="tag ${catClasses[a.cat] || ''}">${catLabels[a.cat] || a.cat}</span></td>
-      <td style="color:var(--text-muted);font-size:.82rem;">${a.date}</td>
-      <td><span class="${a.statut === 'publie' ? 'badge-pub' : 'badge-draft'}">${a.statut === 'publie' ? '✅ Publié' : '📝 Brouillon'}</span></td>
-      <td style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button class="btn-edit" onclick="editArticle(${i})">✏️ Modifier</button>
-        <button class="btn-danger" onclick="deleteArticle(${i})">🗑️ Suppr.</button>
-      </td>
-    </tr>
-  `).join('');
+  tbody.innerHTML = arts.map((a, i) => {
+    const mediaLabel = a.mediaType && a.mediaType !== 'none'
+      ? `<span class="tag ${a.mediaType === 'photo' ? 'tag-photo' : 'tag-video'}">${a.mediaType === 'photo' ? '📸 Photo' : '🎬 Vidéo'}</span>`
+      : '<span class="tag tag-none">Aucun</span>';
+    return `
+      <tr>
+        <td style="font-weight:600;max-width:280px;">${a.emoji || ''} ${a.titre}</td>
+        <td>${mediaLabel}</td>
+        <td><span class="tag ${catClasses[a.cat] || ''}">${catLabels[a.cat] || a.cat}</span></td>
+        <td style="color:var(--text-muted);font-size:.82rem;">${a.date}</td>
+        <td><span class="${a.statut === 'publie' ? 'badge-pub' : 'badge-draft'}">${a.statut === 'publie' ? '✅ Publié' : '📝 Brouillon'}</span></td>
+        <td style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn-edit" onclick="editArticle(${i})">✏️ Modifier</button>
+          <button class="btn-danger" onclick="deleteArticle(${i})">🗑️ Suppr.</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
 }
  
 function openNewArticle() {
@@ -492,46 +572,66 @@ function openNewArticle() {
 }
  
 function editArticle(i) {
-  const a = getData('articles')[i];
-  document.getElementById('article-id').value = i;
+  const a = currentArticles[i] || {};
+  document.getElementById('article-id').value = a.id || '';
   document.getElementById('modal-article-title').textContent = "Modifier l'article";
-  document.getElementById('art-titre').value   = a.titre;
-  document.getElementById('art-cat').value     = a.cat;
-  document.getElementById('art-statut').value  = a.statut;
-  document.getElementById('art-resume').value  = a.resume;
+  document.getElementById('art-titre').value   = a.titre || '';
+  document.getElementById('art-cat').value     = a.cat || '';
+  document.getElementById('art-statut').value  = a.statut || 'publie';
+  document.getElementById('art-resume').value  = a.resume || '';
   document.getElementById('art-contenu').value = a.contenu || '';
   document.getElementById('art-emoji').value   = a.emoji || '';
+  document.getElementById('art-media-type').value = a.mediaType || 'none';
+  document.getElementById('art-media-url').value  = a.mediaUrl || '';
+  document.getElementById('art-media-alt').value  = a.mediaAlt || '';
   document.getElementById('modal-article').classList.add('open');
 }
  
-function saveArticle(e) {
+async function saveArticle(e) {
   e.preventDefault();
-  const arts = getData('articles');
   const id = document.getElementById('article-id').value;
   const article = {
-    titre:   document.getElementById('art-titre').value,
-    cat:     document.getElementById('art-cat').value,
-    statut:  document.getElementById('art-statut').value,
-    resume:  document.getElementById('art-resume').value,
-    contenu: document.getElementById('art-contenu').value,
-    emoji:   document.getElementById('art-emoji').value || '📰',
-    date:    new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })
+    titre:     document.getElementById('art-titre').value,
+    cat:       document.getElementById('art-cat').value,
+    statut:    document.getElementById('art-statut').value,
+    resume:    document.getElementById('art-resume').value,
+    contenu:   document.getElementById('art-contenu').value,
+    emoji:     document.getElementById('art-emoji').value || '📰',
+    mediaType: document.getElementById('art-media-type').value || 'none',
+    mediaUrl:  document.getElementById('art-media-url').value.trim(),
+    mediaAlt:  document.getElementById('art-media-alt').value.trim(),
+    date:      new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }),
+    dateSort:  Date.now()
   };
-  if (id !== '') { arts[parseInt(id)] = article; } else { arts.unshift(article); }
-  setData('articles', arts);
-  closeModal('modal-article');
-  renderArticlesTable();
-  renderRecentArticles();
-  updateCounts();
+  if (article.mediaType === 'none') {
+    article.mediaUrl = '';
+    article.mediaAlt = '';
+  }
+  try {
+    await saveArticleRemote(article, id || undefined);
+    closeModal('modal-article');
+    await renderArticlesTable();
+    await renderRecentArticles();
+    await updateCounts();
+  } catch (err) {
+    alert('Impossible d’enregistrer l’article en ligne. Vérifiez la configuration Firebase.');
+    console.error(err);
+  }
 }
  
-function deleteArticle(i) {
+async function deleteArticle(i) {
   if (!confirm('Supprimer cet article ?')) return;
-  const arts = getData('articles');
-  arts.splice(i, 1);
-  setData('articles', arts);
-  renderArticlesTable();
-  updateCounts();
+  const a = currentArticles[i];
+  if (!a || !a.id) return;
+  try {
+    await deleteArticleRemote(a.id);
+    await renderArticlesTable();
+    await renderRecentArticles();
+    await updateCounts();
+  } catch (err) {
+    alert('Impossible de supprimer l’article en ligne.');
+    console.error(err);
+  }
 }
  
 /* ── FRAIS ────────────────────────────────────── */
