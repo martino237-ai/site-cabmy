@@ -4,12 +4,16 @@
   "description": "---",
   "main": "cabmy.js",
   "scripts": {
+    "start": "node supabase-proxy.js",
     "build": "tailwindcss -i ./input.css -o ./output.css --minify",
     "watch": "tailwindcss -i ./input.css -o ./output.css --watch"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.0"
+  },
   "devDependencies": {
     "tailwindcss": "^3.3.5",
     "postcss": "^8.4.24",

@@ -8,8 +8,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./../css/actualites.css">
   <link rel="stylesheet" href="../css/global.css">
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script>window.CABMY_NEWS_MEDIA_PATH = '../../images/';</script>
+  <script src="../js/news-data.js"></script>
+  <script src="../js/supabase.min.js"></script>
+  <script src="../../supabase-sdk.js"></script>
+  <style>
+    /* Media viewer modal */
+    #media-modal .media-inner img{max-width:100%;max-height:75vh;display:block}
+    #media-modal .media-inner iframe{width:100%;height:75vh;border:0}
+    #media-modal .media-toolbar{display:flex;justify-content:flex-end;gap:8px;padding:8px}
+  </style>
 </head>
 <body>
 
@@ -17,7 +25,7 @@
 <div class="bg-[#0f1f3d] text-white text-xs py-2 px-4 flex justify-between items-center">
   <span class="opacity-70">📍 Nyom II, Petit Marché · Yaoundé</span>
   <div class="flex gap-3 items-center">
-    <a href="tel:+237243850268" class="opacity-70 hover:opacity-100">📞 243 850 268 · 675 84 05 71</a>
+    <a href="tel:+237243850268" class="opacity-70 hover:opacity-100">📞 675 38 51 97</a>
     <span class="opacity-30">|</span>
     <button onclick="setLang('fr')" id="btn-fr" class="px-2 py-0.5 rounded text-xs font-semibold lang-active">FR</button>
     <button onclick="setLang('en')" id="btn-en" class="px-2 py-0.5 rounded text-xs font-semibold hover:bg-white/10">EN</button>
@@ -96,7 +104,7 @@
 
     <!-- ARTICLE À LA UNE -->
     <div class="featured-card rounded-2xl overflow-hidden shadow-lg mb-16 grid lg:grid-cols-2 animate-fade">
-      <div class="flex items-center justify-center text-7xl" style="background:linear-gradient(135deg,var(--blue-light),var(--gold-light));min-height:300px;">🏅</div>
+      <div class="news-img"><img src="../../images/7.jpg" alt="BEPC 2024 : Le CABMY réalise un taux de réussite exceptionnel de 96%" /></div>
       <div class="p-10 flex flex-col justify-center">
         <div class="flex items-center gap-2 mb-4">
           <span class="text-xs font-bold px-3 py-1 rounded-full" style="background:var(--gold-light);color:#7a5c00" data-fr="À LA UNE" data-en="FEATURED">À LA UNE</span>
@@ -124,7 +132,7 @@
     <div id="articles-grid" class="grid lg:grid-cols-3 gap-8">
 
       <div class="article-card show card-hover rounded-2xl overflow-hidden border border-gray-100 shadow-sm" data-cat="resultats">
-        <div class="news-img" style="background:linear-gradient(135deg,var(--blue-light),#d0ddf5)">🏅</div>
+        <div class="news-img"><img src="../../images/7.jpeg" alt="GCE 2024 : Excellents résultats pour la section anglophone" /></div>
         <div class="p-6">
           <span class="text-xs font-semibold px-2 py-1 rounded" style="background:var(--blue-light);color:var(--blue)" data-fr="Résultats" data-en="Results">Résultats</span>
           <h3 class="font-bold text-lg mt-3 mb-2" style="color:var(--blue)" data-fr="GCE 2024 : Excellents résultats pour la section anglophone" data-en="GCE 2024: Excellent results for the English section">GCE 2024 : Excellents résultats pour la section anglophone</h3>
@@ -137,7 +145,7 @@
       </div>
 
       <div class="article-card show card-hover rounded-2xl overflow-hidden border border-gray-100 shadow-sm" data-cat="spiritualite">
-        <div class="news-img" style="background:linear-gradient(135deg,#e8f0ff,#d5e3ff)">⛪</div>
+        <div class="news-img"><img src="../../images/3.jpeg" alt="Semaine de prière 2024 : un moment de grâce pour tous" /></div>
         <div class="p-6">
           <span class="text-xs font-semibold px-2 py-1 rounded" style="background:var(--blue-light);color:var(--blue)" data-fr="Spiritualité" data-en="Spirituality">Spiritualité</span>
           <h3 class="font-bold text-lg mt-3 mb-2" style="color:var(--blue)" data-fr="Semaine de prière 2024 : un moment de grâce pour tous" data-en="2024 Prayer Week: a moment of grace for all">Semaine de prière 2024 : un moment de grâce pour tous</h3>
@@ -150,7 +158,7 @@
       </div>
 
       <div class="article-card show card-hover rounded-2xl overflow-hidden border border-gray-100 shadow-sm" data-cat="soir">
-        <div class="news-img" style="background:linear-gradient(135deg,var(--dark),var(--blue))">🌙</div>
+        <div class="news-img"><img src="../../images/2.jpeg" alt="Rentrée 2024-2025 des cours du soir : inscriptions ouvertes" /></div>
         <div class="p-6">
           <span class="text-xs font-semibold px-2 py-1 rounded bg-gray-100 text-gray-600" data-fr="Cours du soir" data-en="Evening Classes">Cours du soir</span>
           <h3 class="font-bold text-lg mt-3 mb-2" style="color:var(--blue)" data-fr="Rentrée 2024-2025 des cours du soir : inscriptions ouvertes" data-en="2024-2025 Evening Classes Term Begins: Enrolment Open">Rentrée 2024-2025 des cours du soir : inscriptions ouvertes</h3>
@@ -163,7 +171,7 @@
       </div>
 
       <div class="article-card show card-hover rounded-2xl overflow-hidden border border-gray-100 shadow-sm" data-cat="vie">
-        <div class="news-img" style="background:linear-gradient(135deg,var(--gold-light),#ffe8a0)">⚽</div>
+        <div class="news-img"><img src="../../images/8.jpeg" alt="Tournoi sportif inter-scolaire : le CABMY brille" /></div>
         <div class="p-6">
           <span class="text-xs font-semibold px-2 py-1 rounded" style="background:var(--gold-light);color:#7a5c00" data-fr="Vie du collège" data-en="College Life">Vie du collège</span>
           <h3 class="font-bold text-lg mt-3 mb-2" style="color:var(--blue)" data-fr="Tournoi sportif inter-scolaire : le CABMY brille" data-en="Inter-school Sports Tournament: CABMY shines">Tournoi sportif inter-scolaire : le CABMY brille</h3>
@@ -176,26 +184,13 @@
       </div>
 
       <div class="article-card show card-hover rounded-2xl overflow-hidden border border-gray-100 shadow-sm" data-cat="vie">
-        <div class="news-img" style="background:linear-gradient(135deg,#e8f5e8,#c8e6c8)">🎓</div>
+        <div class="news-img"><img src="../../images/6.jpeg" alt="Cérémonie de remise des diplômes – Promotion 2024" /></div>
         <div class="p-6">
           <span class="text-xs font-semibold px-2 py-1 rounded" style="background:var(--gold-light);color:#7a5c00" data-fr="Vie du collège" data-en="College Life">Vie du collège</span>
           <h3 class="font-bold text-lg mt-3 mb-2" style="color:var(--blue)" data-fr="Cérémonie de remise des diplômes – Promotion 2024" data-en="Graduation Ceremony – Class of 2024">Cérémonie de remise des diplômes – Promotion 2024</h3>
           <p class="text-gray-500 text-sm mb-4 leading-relaxed" data-fr="Une cérémonie émouvante pour récompenser les élèves de la promotion 2024 qui ont brillé aux examens nationaux." data-en="A moving ceremony to reward the class of 2024 students who excelled in national examinations.">Une cérémonie émouvante pour récompenser les élèves de la promotion 2024.</p>
           <div class="flex justify-between items-center text-xs text-gray-400">
             <span>Août 2024</span>
-            <a href="#" onclick="openArticle(this)" class="font-semibold" style="color:var(--gold)" data-fr="Lire l'article →" data-en="Read article →">Lire l'article →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="article-card show card-hover rounded-2xl overflow-hidden border border-gray-100 shadow-sm" data-cat="spiritualite">
-        <div class="news-img" style="background:linear-gradient(135deg,#f0e8ff,#e0d0ff)">🙏</div>
-        <div class="p-6">
-          <span class="text-xs font-semibold px-2 py-1 rounded" style="background:var(--blue-light);color:var(--blue)" data-fr="Spiritualité" data-en="Spirituality">Spiritualité</span>
-          <h3 class="font-bold text-lg mt-3 mb-2" style="color:var(--blue)" data-fr="Culte de rentrée 2024-2025 : une nouvelle année sous la bénédiction" data-en="2024-2025 Opening Worship: A New Year Under Blessing">Culte de rentrée 2024-2025 : une nouvelle année sous la bénédiction</h3>
-          <p class="text-gray-500 text-sm mb-4 leading-relaxed" data-fr="L'année scolaire a débuté avec un culte solennel réunissant élèves, enseignants et parents pour une invocation collective." data-en="The school year began with a solemn worship service bringing together students, teachers and parents for a collective invocation.">L'année scolaire a débuté avec un culte solennel réunissant élèves, enseignants et parents.</p>
-          <div class="flex justify-between items-center text-xs text-gray-400">
-            <span>Sept. 2024</span>
             <a href="#" onclick="openArticle(this)" class="font-semibold" style="color:var(--gold)" data-fr="Lire l'article →" data-en="Read article →">Lire l'article →</a>
           </div>
         </div>
@@ -213,20 +208,34 @@
 
 <!-- MODAL ARTICLE -->
 <div id="article-modal" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4">
-  <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto shadow-2xl">
-    <div class="p-8">
-      <div class="flex justify-between items-start mb-4">
+  <div class="article-detail-modal bg-white w-full shadow-2xl">
+    <button onclick="closeArticle()" class="article-detail-close" aria-label="Fermer">&times;</button>
+    <div id="modal-media" class="article-detail-media"></div>
+    <div class="article-detail-body">
+      <div class="article-detail-meta">
         <div class="text-xs font-semibold px-3 py-1 rounded-full" style="background:var(--blue-light);color:var(--blue)" data-fr="Actualité CABMY" data-en="CABMY News">Actualité CABMY</div>
         <button onclick="closeArticle()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
       </div>
-      <h2 id="modal-title" class="text-2xl font-bold mb-2" style="color:var(--blue)"></h2>
+      <h2 id="modal-title" class="article-detail-title" style="color:var(--blue)"></h2>
+      <p id="modal-summary" class="article-detail-summary"></p>
       <div id="modal-date" class="text-sm text-gray-400 mb-6"></div>
-      <div id="modal-content" class="text-gray-600 leading-relaxed text-sm"></div>
+      <div id="modal-content" class="article-detail-content"></div>
       <div class="mt-8 pt-6 border-t border-gray-100 flex justify-between items-center">
         <div class="text-xs text-gray-400" data-fr="Collège Adventiste Bilingue Marathana de Yaoundé" data-en="Marathana Bilingual Adventist College of Yaoundé">Collège Adventiste Bilingue Marathana de Yaoundé</div>
         <button onclick="closeArticle()" class="btn-primary px-5 py-2 rounded-lg text-sm" data-fr="Fermer" data-en="Close">Fermer</button>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- MODAL MEDIA VIEWER -->
+<div id="media-modal" class="fixed inset-0 bg-black/70 z-60 hidden items-center justify-center p-4">
+  <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+    <div class="media-toolbar border-b border-gray-100">
+      <a id="media-download" class="btn-primary px-4 py-2 rounded text-sm" download>Télécharger</a>
+      <button onclick="closeMedia()" class="text-gray-600 hover:text-gray-800 text-2xl px-4">&times;</button>
+    </div>
+    <div class="media-inner p-4 flex items-center justify-center overflow-auto" id="media-content"></div>
   </div>
 </div>
 
@@ -243,65 +252,162 @@
 <footer class="py-12" style="background:var(--dark)">
   <div class="max-w-7xl mx-auto px-4 grid lg:grid-cols-4 gap-8">
     <div><div class="font-bold text-white mb-3" style="font-family:'Playfair Display',serif">CABMY</div><p class="text-white/40 text-sm">Collège Adventiste Bilingue Marathana de Yaoundé.</p></div>
-    <div><div class="font-bold text-white mb-3">Navigation</div><div class="flex flex-col gap-2 text-sm text-white/50"><a href="index.html" class="hover:text-white">Accueil</a><a href="apropos.html" class="hover:text-white">À propos</a><a href="enseignements.html" class="hover:text-white">Enseignements</a><a href="admissions.html" class="hover:text-white">Admissions</a></div></div>
+    <div><div class="font-bold text-white mb-3">Navigation</div><div class="flex flex-col gap-2 text-sm text-white/50"><a href="index.html" class="hover:text-white">Accueil</a><a href="apropos.html" class="hover:text-white">À propos</a><a href="enseignements.html" class="hover:text-white">Enseignements</a><a href="admissions.html" class="hover:text-white">Admissions</a><a href="../../404.html" class="hover:text-white">Erreur 404</a></div></div>
     <div><div class="font-bold text-white mb-3">Catégories</div><div class="flex flex-col gap-2 text-sm text-white/50"><a href="#" onclick="filterNews('resultats')" class="hover:text-white">Résultats</a><a href="#" onclick="filterNews('vie')" class="hover:text-white">Vie du collège</a><a href="#" onclick="filterNews('spiritualite')" class="hover:text-white">Spiritualité</a><a href="#" onclick="filterNews('soir')" class="hover:text-white">Cours du soir</a></div></div>
-    <div><div class="font-bold text-white mb-3">Contact</div><div class="flex flex-col gap-2 text-sm text-white/50"><div>📍 Nyom II, Petit Marché · Yaoundé</div><div>📞 243 850 268 · 675 84 05 71</div><div>✉ contact@cabmy.cm</div></div></div>
+    <div><div class="font-bold text-white mb-3">Contact</div><div class="flex flex-col gap-2 text-sm text-white/50"><div>📍 Nyom II, Petit Marché · Yaoundé</div><div>📞 675 38 51 97</div><div>✉ contact@cabmy.cm</div></div></div>
   </div>
   <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-white/10 text-center text-xs text-white/30">© 2024 CABMY – Tous droits réservés</div>
 </footer>
 
 <script>
-  const FIREBASE_CONFIG = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
-  };
-  let db = null;
+  const SUPABASE_URL = 'https://cqoyhtmowyzvpjdzypgs.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_mG8GhOAiTlu4q4avRhL5Qw_BoOzFn2F';
+  const SUPABASE_PROXY_URL = 'http://localhost:8001/api';
+  let supabaseClient = null;
+  let supabaseEnabled = false;
   const categoryLabels = { resultats: '📊 Résultats', vie: '🏫 Vie du collège', spiritualite: '⛪ Spiritualité', soir: '🌙 Cours du soir' };
 
-  function initFirebase() {
-    if (!FIREBASE_CONFIG.projectId || FIREBASE_CONFIG.projectId === 'YOUR_PROJECT_ID') {
-      console.warn('Firebase non configuré pour actualites.html');
+  async function ensureSupabaseAuth() {
+    return !!supabaseClient;
+  }
+
+  // Attendre le chargement du SDK Supabase
+  async function initSupabaseClient() {
+    return new Promise((resolve) => {
+      const maxAttempts = 50;
+      let attempts = 0;
+      const checkInterval = setInterval(() => {
+        if (window.supabase && window.supabase.createClient) {
+          clearInterval(checkInterval);
+          try {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+              auth: { persistSession: true, autoRefreshToken: true }
+            });
+            supabaseEnabled = !!supabaseClient;
+            ensureSupabaseAuth().then(() => {
+              supabaseEnabled = !!supabaseClient;
+              console.log('✅ Supabase client initialisé');
+              resolve(true);
+            }).catch(() => {
+              resolve(true);
+            });
+          } catch (err) {
+            console.error('❌ Erreur création client Supabase:', err);
+            resolve(false);
+          }
+        } else if (++attempts > maxAttempts) {
+          clearInterval(checkInterval);
+          console.warn('⚠️ SDK Supabase non trouvé après 5s');
+          resolve(false);
+        }
+      }, 100);
+    });
+  }
+
+  function getLocalArticles() {
+    try {
+      const raw = localStorage.getItem('cabmy_articles');
+      const parsed = raw ? JSON.parse(raw) : null;
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (err) {
+      console.warn('Impossible de lire les articles locaux', err);
+      return [];
+    }
+  }
+
+  function normalizeArticle(article) {
+    const cat = article.cat || article.category || 'vie';
+    const titleFr = article.titre || article.titleFr || article.title || '';
+    const titleEn = article.titleEn || article.titleFr || titleFr;
+    const resumeFr = article.resume || article.resumeFr || article.contenu || article.contenuFr || '';
+    const resumeEn = article.resumeEn || article.resumeFr || article.contenuEn || article.contenu || resumeFr;
+    const contentFr = article.contenu || article.contenuFr || resumeFr;
+    const contentEn = article.contenuEn || article.contenu || resumeEn;
+
+    return {
+      ...article,
+      id: article.id || `${titleFr}-${cat}-${article.date || ''}`,
+      cat,
+      titleFr,
+      titleEn,
+      resumeFr,
+      resumeEn,
+      contenuFr: contentFr,
+      contenuEn: contentEn,
+      date: article.date || article.dateFr || (article.created_at ? new Date(article.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }) : ''),
+      categoryFr: article.categoryFr || categoryLabels[cat] || cat,
+      categoryEn: article.categoryEn || categoryLabels[cat] || cat
+    };
+  }
+
+  function mergeArticles(...sources) {
+    const combined = sources.flat().filter(Boolean).map(normalizeArticle);
+    const seen = new Set();
+    return combined.filter(article => {
+      const key = article.id || `${article.titleFr || ''}-${article.cat || ''}-${article.date || ''}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    }).sort((a, b) => {
+      const aDate = a.dateSort || a.date || '';
+      const bDate = b.dateSort || b.date || '';
+      return String(bDate).localeCompare(String(aDate));
+    });
+  }
+
+  async function initSupabase() {
+    await initSupabaseClient();
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+      console.warn('Supabase non configuré pour actualites.html, chargement des actualités locales');
+      renderArticlesGrid(mergeArticles(getLocalArticles(), window.CABMY_NEWS || []));
       return;
     }
     try {
-      firebase.initializeApp(FIREBASE_CONFIG);
-      db = firebase.firestore();
-      loadNews();
+      await loadNews();
     } catch (err) {
-      console.error('Échec de l’initialisation Firebase', err);
+      console.error('Impossible de charger les actualités en ligne', err);
+      renderArticlesGrid(mergeArticles(getLocalArticles(), window.CABMY_NEWS || []));
     }
   }
 
   async function loadNews() {
-    if (!db) return;
-    try {
-      const snapshot = await db.collection('articles')
-        .where('statut', '==', 'publie')
-        .orderBy('dateSort', 'desc')
-        .get();
-      const articles = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      if (articles.length) renderArticlesGrid(articles);
-    } catch (err) {
-      console.error('Impossible de charger les actualités en ligne', err);
+    const localArticles = getLocalArticles().filter(article => article.statut !== 'brouillon');
+    const builtInArticles = Array.isArray(window.CABMY_NEWS) ? window.CABMY_NEWS : [];
+
+    if (!supabaseEnabled) {
+      renderArticlesGrid(mergeArticles(localArticles, builtInArticles));
+      return;
     }
+
+    try {
+      const response = await fetch(`${SUPABASE_PROXY_URL}/articles`);
+      const payload = await response.json();
+      if (!response.ok) throw new Error(payload?.error || 'Proxy unavailable');
+      const published = Array.isArray(payload) ? payload.filter(article => article.statut === 'publie' || article.statut === undefined) : [];
+      renderArticlesGrid(mergeArticles(published, localArticles, builtInArticles));
+      return;
+    } catch (err) {
+      console.warn('Proxy news fetch failed', err);
+    }
+
+    renderArticlesGrid(mergeArticles(localArticles, builtInArticles));
   }
 
   function renderArticlesGrid(articles) {
     const grid = document.getElementById('articles-grid');
+    if (!grid || !Array.isArray(articles)) return;
     grid.innerHTML = articles.map(article => {
       const mediaBlock = renderMediaBlock(article);
-      const category = categoryLabels[article.cat] || article.cat || 'Actualité';
+      const category = article.categoryFr || categoryLabels[article.cat] || article.cat || 'Actualité';
+      const title = article.titleFr || article.titre || article.title || '';
+      const summary = article.resumeFr || article.resume || article.contenu || article.contenuFr || '';
       return `
-        <div class="article-card show card-hover rounded-2xl overflow-hidden border border-gray-100 shadow-sm" data-cat="${article.cat}">
+        <div class="article-card show card-hover rounded-2xl overflow-hidden border border-gray-100 shadow-sm" data-cat="${article.cat || 'all'}">
           ${mediaBlock}
           <div class="p-6">
             <span class="text-xs font-semibold px-2 py-1 rounded" style="background:var(--blue-light);color:var(--blue)">${category}</span>
-            <h3 class="font-bold text-lg mt-3 mb-2" style="color:var(--blue)">${article.titre}</h3>
-            <p class="text-gray-500 text-sm mb-4 leading-relaxed">${article.resume || article.contenu || ''}</p>
+            <h3 class="font-bold text-lg mt-3 mb-2" style="color:var(--blue)">${title}</h3>
+            <p class="text-gray-500 text-sm mb-4 leading-relaxed">${summary}</p>
             <div class="flex justify-between items-center text-xs text-gray-400">
               <span>${article.date || ''}</span>
               <a href="#" onclick="openArticle(this)" class="font-semibold" style="color:var(--gold)">Lire l'article →</a>
@@ -310,19 +416,221 @@
         </div>
       `;
     }).join('');
+    bindMediaCarousels();
+    bindMediaClickHandlers();
   }
 
   function renderMediaBlock(article) {
-    if (article.mediaType === 'photo' && article.mediaUrl) {
-      return `<img src="${article.mediaUrl}" alt="${article.mediaAlt || article.titre}" class="news-img object-cover" loading="lazy" />`;
+    const mediaItems = getArticleMediaItems(article);
+    const mediaAlt = article.mediaAlt || article.titre || article.titleFr || article.titleEn || 'ActualitÃ©';
+    const safeAlt = window.escapeNewsHtml ? window.escapeNewsHtml(mediaAlt) : mediaAlt;
+
+    if (mediaItems.length) {
+      const slides = mediaItems.map((item, index) => {
+        const safeUrl = window.escapeNewsHtml ? window.escapeNewsHtml(item.url) : item.url;
+        if (item.type === 'video') {
+          return `<div class="news-media-slide ${index === 0 ? 'active' : ''}"><video controls preload="metadata"><source src="${safeUrl}">Votre navigateur ne supporte pas la vidÃ©o.</video></div>`;
+        }
+        return `<div class="news-media-slide ${index === 0 ? 'active' : ''}"><img src="${safeUrl}" alt="${safeAlt}" loading="lazy" /></div>`;
+      }).join('');
+      const controls = mediaItems.length > 1 ? `
+        <button type="button" class="news-media-btn prev" aria-label="MÃ©dia prÃ©cÃ©dent">â€¹</button>
+        <button type="button" class="news-media-btn next" aria-label="MÃ©dia suivant">â€º</button>
+        <div class="news-media-dots">${mediaItems.map((_, index) => `<button type="button" class="news-media-dot ${index === 0 ? 'active' : ''}" data-index="${index}" aria-label="Voir le mÃ©dia ${index + 1}"></button>`).join('')}</div>
+      ` : '';
+
+      return `<div class="news-media-carousel"><div class="news-media-track">${slides}</div>${controls}</div>`;
     }
-    if (article.mediaType === 'video' && article.mediaUrl) {
-      return `<video controls class="news-img" preload="metadata"><source src="${article.mediaUrl}" type="video/mp4">Votre navigateur ne supporte pas la vidéo.</video>`;
+    return `<div class="news-img" style="background:linear-gradient(135deg,var(--blue-light),#d0ddf5)">${article.emoji || 'ðŸ“°'}</div>`;
+  }
+
+  function renderMediaBlockLegacy(article) {
+    const mediaItems = getArticleMediaItems(article);
+    const mediaAlt = article.mediaAlt || article.titre || article.titleFr || article.titleEn || 'Actualité';
+    const safeAlt = window.escapeNewsHtml ? window.escapeNewsHtml(mediaAlt) : mediaAlt;
+
+    if (article.mediaType === 'photo' && mediaItems.length) {
+      const slides = mediaItems.map((url, index) => {
+        const safeUrl = window.escapeNewsHtml ? window.escapeNewsHtml(url) : url;
+        return `<div class="news-media-slide ${index === 0 ? 'active' : ''}"><img src="${safeUrl}" alt="${safeAlt}" loading="lazy" /></div>`;
+      }).join('');
+
+      if (mediaItems.length > 1) {
+        const dots = mediaItems.map((_, index) => `<button type="button" class="news-media-dot ${index === 0 ? 'active' : ''}" data-index="${index}" aria-label="Voir la photo ${index + 1}"></button>`).join('');
+        return `
+          <div class="news-media-carousel">
+            <button type="button" class="news-media-btn prev" aria-label="Photo précédente">‹</button>
+            <button type="button" class="news-media-btn next" aria-label="Photo suivante">›</button>
+            <div class="news-media-track">${slides}</div>
+            <div class="news-media-dots">${dots}</div>
+          </div>
+        `;
+      }
+
+      return `<div class="news-media-carousel"><div class="news-media-track">${slides}</div></div>`;
+    }
+
+    if (article.mediaType === 'video' && mediaItems.length) {
+      const safeUrl = window.escapeNewsHtml ? window.escapeNewsHtml(mediaItems[0]) : mediaItems[0];
+      return `<video controls class="news-img" preload="metadata"><source src="${safeUrl}" type="video/mp4">Votre navigateur ne supporte pas la vidéo.</video>`;
     }
     return `<div class="news-img" style="background:linear-gradient(135deg,var(--blue-light),#d0ddf5)">${article.emoji || '📰'}</div>`;
   }
 
+  function inferMediaType(url = '') {
+    const cleanUrl = String(url).split('?')[0].split('#')[0].toLowerCase();
+    if (/^data:video\//.test(cleanUrl) || /\.(mp4|webm|ogg|mov|m4v)$/i.test(cleanUrl)) return 'video';
+    return 'photo';
+  }
+
+  function normalizeMediaItem(item, fallbackType = 'auto') {
+    if (!item) return null;
+    if (typeof item === 'string') {
+      const url = item.trim();
+      if (!url) return null;
+      return { url, type: fallbackType === 'video' ? 'video' : fallbackType === 'photo' ? 'photo' : inferMediaType(url) };
+    }
+    if (typeof item.url !== 'string') return null;
+    const url = item.url.trim();
+    if (!url) return null;
+    const type = item.type === 'video' ? 'video' : item.type === 'photo' ? 'photo' : inferMediaType(url);
+    return { url, type };
+  }
+
+  function getArticleMediaItems(article = {}) {
+    const items = [];
+    const pushValue = (value) => {
+      if (!value) return;
+      if (Array.isArray(value)) {
+        value.forEach(pushValue);
+        return;
+      }
+      if (typeof value === 'object') {
+        const normalized = normalizeMediaItem(value, article.mediaType);
+        if (normalized) items.push(normalized);
+        return;
+      }
+      if (typeof value === 'string' && value.trim()) {
+        const trimmed = value.trim();
+        try {
+          const parsed = JSON.parse(trimmed);
+          if (Array.isArray(parsed)) {
+            parsed.forEach(pushValue);
+            return;
+          }
+        } catch (err) {
+          // Plain URL, handled below.
+        }
+        const normalized = normalizeMediaItem(trimmed, article.mediaType);
+        if (normalized) items.push(normalized);
+      }
+    };
+
+    pushValue(article.mediaItems);
+    pushValue(article.mediaUrl);
+    pushValue(article.mediaUrls);
+    pushValue(article.photoUrls);
+    pushValue(article.images);
+    pushValue(article.photos);
+
+    if (!items.length && article.mediaFilename) {
+      const prefix = window.CABMY_NEWS_MEDIA_PATH || '';
+      items.push({ url: prefix + article.mediaFilename, type: 'photo' });
+    }
+
+    const seen = new Set();
+    return items.filter(item => {
+      if (seen.has(item.url)) return false;
+      seen.add(item.url);
+      return true;
+    });
+  }
+
+  function bindMediaCarousels() {
+    document.querySelectorAll('.news-media-carousel').forEach((carousel) => {
+      const slides = carousel.querySelectorAll('.news-media-slide');
+      if (slides.length <= 1) return;
+
+      let currentIndex = 0;
+      const dots = carousel.querySelectorAll('.news-media-dot');
+      const prevButton = carousel.querySelector('.news-media-btn.prev');
+      const nextButton = carousel.querySelector('.news-media-btn.next');
+
+      const updateCarousel = (index) => {
+        currentIndex = (index + slides.length) % slides.length;
+        slides.forEach((slide, slideIndex) => {
+          slide.classList.toggle('active', slideIndex === currentIndex);
+        });
+        dots.forEach((dot, dotIndex) => {
+          dot.classList.toggle('active', dotIndex === currentIndex);
+        });
+      };
+
+      prevButton?.addEventListener('click', () => updateCarousel(currentIndex - 1));
+      nextButton?.addEventListener('click', () => updateCarousel(currentIndex + 1));
+      dots.forEach((dot) => {
+        dot.addEventListener('click', () => updateCarousel(Number(dot.dataset.index || 0)));
+      });
+    });
+  }
+
   let currentLang = localStorage.getItem('cabmy-lang') || 'fr';
+
+  function openMedia(src, type = 'image', filename = '') {
+    const modal = document.getElementById('media-modal');
+    const content = document.getElementById('media-content');
+    content.innerHTML = '';
+    if (!src) return;
+    if (type === 'image') {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = filename || src.split('/').pop();
+      img.loading = 'eager';
+      content.appendChild(img);
+    } else {
+      const iframe = document.createElement('iframe');
+      iframe.src = src;
+      iframe.setAttribute('title', filename || 'Document');
+      content.appendChild(iframe);
+    }
+    const dl = document.getElementById('media-download');
+    dl.href = src;
+    dl.download = filename || src.split('/').pop() || '';
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+
+  function closeMedia() {
+    const modal = document.getElementById('media-modal');
+    const content = document.getElementById('media-content');
+    content.innerHTML = '';
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+
+  function bindMediaClickHandlers() {
+    // Images inside news cards
+    document.querySelectorAll('.news-media-slide img, .news-img img').forEach(img => {
+      img.style.cursor = 'zoom-in';
+      if (img.dataset.mediaBound) return;
+      img.dataset.mediaBound = '1';
+      img.addEventListener('click', (e) => {
+        e.preventDefault();
+        openMedia(img.src, 'image', img.alt || img.src.split('/').pop());
+      });
+    });
+
+    // Documents (pdf, doc, etc.) - capture common extensions
+    document.querySelectorAll('a[href$=".pdf"], a[href$=".doc"], a[href$=".docx"], a[href$=".ppt"], a[href$=".pptx"], a[href$=".xls"], a[href$=".xlsx"]').forEach(a => {
+      if (a.dataset.mediaBound) return;
+      a.dataset.mediaBound = '1';
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const href = a.href || a.getAttribute('href');
+        openMedia(href, 'document', href.split('/').pop());
+      });
+    });
+  }
   function setLang(lang) {
     currentLang = lang;
     localStorage.setItem('cabmy-lang', lang);
@@ -371,7 +679,7 @@
   const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: .1 });
   document.querySelectorAll('.animate-fade').forEach(el => observer.observe(el));
 
-  initFirebase();
+  initSupabase();
 </script>
 </body>
 </html>

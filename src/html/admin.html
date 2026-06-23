@@ -7,8 +7,11 @@
   <link rel="icon" type="image/jpeg" href="../../images/logo/WhatsApp Image 2025-09-23 at 19.42.18.jpeg">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./../css/admin.css">
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="../js/supabase.min.js"></script>
+  <script src="../../supabase-sdk.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
  
@@ -284,7 +287,11 @@
       <div id="section-preinscriptions" style="display:none;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
           <h3 style="font-size:1.2rem;color:var(--blue);">Pré-inscriptions reçues</h3>
-          <button onclick="exportPI()" class="btn-secondary">📥 Exporter CSV</button>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button onclick="exportPI()" class="btn-secondary">📥 Exporter CSV</button>
+            <button onclick="exportPIAsPDF()" class="btn-secondary">📄 Exporter PDF</button>
+            <button onclick="exportPIAsXLSX()" class="btn-secondary">📊 Exporter XLSX</button>
+          </div>
         </div>
         <div class="card">
           <div class="table-wrap">
@@ -319,68 +326,115 @@
       <button onclick="closeModal('modal-article')" class="modal-close">✕</button>
     </div>
     <div class="modal-body">
-      <form id="article-form" onsubmit="saveArticle(event)" style="display:flex;flex-direction:column;gap:16px;">
+      <form id="article-form" onsubmit="saveArticle(event)" class="article-form">
         <input type="hidden" id="article-id">
- 
-        <div>
-          <label>Titre de l'article *</label>
-          <input type="text" id="art-titre" class="form-input" required placeholder="Ex: Résultats BEPC 2024…">
-        </div>
- 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+
+        <div class="article-hero">
           <div>
-            <label>Catégorie *</label>
-            <select id="art-cat" class="form-input" required>
-              <option value="">— Choisir —</option>
-              <option value="resultats">📊 Résultats</option>
-              <option value="vie">🏫 Vie du collège</option>
-              <option value="spiritualite">⛪ Spiritualité</option>
-              <option value="soir">🌙 Cours du soir</option>
-            </select>
+            <div class="article-hero-badge">✍️ Création d’article</div>
+            <p>Rédigez un article, ajoutez une image depuis la galerie ou la caméra, et choisissez une icône illustrative.</p>
           </div>
-          <div>
-            <label>Statut</label>
+        </div>
+
+        <div class="article-grid two-cols">
+          <div class="article-field">
+            <label for="art-titre">Titre de l'article *</label>
+            <input type="text" id="art-titre" class="form-input" required placeholder="Ex: Résultats BEPC 2024…">
+          </div>
+          <div class="article-field">
+            <label for="art-emoji">Icône illustrative</label>
+            <input type="text" id="art-emoji" class="form-input" placeholder="Ex: 🏅 ou 🎓 ou ⛪">
+            <div class="emoji-grid">
+              <button type="button" class="emoji-option" onclick="selectArticleEmoji('🏅')">🏅</button>
+              <button type="button" class="emoji-option" onclick="selectArticleEmoji('🎓')">🎓</button>
+              <button type="button" class="emoji-option" onclick="selectArticleEmoji('⛪')">⛪</button>
+              <button type="button" class="emoji-option" onclick="selectArticleEmoji('🌙')">🌙</button>
+              <button type="button" class="emoji-option" onclick="selectArticleEmoji('📚')">📚</button>
+              <button type="button" class="emoji-option" onclick="selectArticleEmoji('✏️')">✏️</button>
+              <button type="button" class="emoji-option" onclick="selectArticleEmoji('📸')">📸</button>
+              <button type="button" class="emoji-option" onclick="selectArticleEmoji('🎉')">🎉</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="article-grid two-cols">
+          <div class="article-field">
+            <label for="art-cat">Catégorie *</label>
+            <select id="art-cat" class="form-input" required></select>
+          </div>
+          <div class="article-field">
+            <label for="art-statut">Statut</label>
             <select id="art-statut" class="form-input">
               <option value="publie">✅ Publié</option>
               <option value="brouillon">📝 Brouillon</option>
             </select>
           </div>
         </div>
- 
-        <div>
-          <label>Résumé (affiché en liste) *</label>
-          <textarea id="art-resume" class="form-input" style="min-height:80px;resize:vertical;" required
-            placeholder="Résumé court de l'article…"></textarea>
-        </div>
-        <div>
-          <label>Contenu complet</label>
-          <textarea id="art-contenu" class="form-input" style="min-height:120px;resize:vertical;"
-            placeholder="Contenu détaillé de l'article…"></textarea>
-        </div>
-        <div>
-          <label>Emoji / Icône illustrative</label>
-          <input type="text" id="art-emoji" class="form-input" placeholder="Ex: 🏅 ou 🎓 ou ⛪">
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-          <div>
-            <label>Type de média</label>
-            <select id="art-media-type" class="form-input">
-              <option value="none">Aucun</option>
-              <option value="photo">Photo</option>
-              <option value="video">Vidéo</option>
-            </select>
+
+        <div class="category-manager">
+          <label>Ajouter une catégorie</label>
+          <div class="category-manager-row">
+            <input type="text" id="new-category-label" class="form-input" placeholder="Ex: 📢 Événements">
+            <button type="button" onclick="addCustomCategory()" class="btn-secondary">+ Ajouter</button>
           </div>
-          <div>
-            <label>URL du média</label>
-            <input type="url" id="art-media-url" class="form-input" placeholder="https://..." />
+          <div id="article-categories-list" class="category-chip-list"></div>
+        </div>
+
+        <div class="article-field">
+          <label for="art-resume">Résumé (affiché en liste) *</label>
+          <textarea id="art-resume" class="form-input article-textarea" required placeholder="Résumé court de l'article…"></textarea>
+        </div>
+        <div class="article-field">
+          <label for="art-contenu">Contenu complet</label>
+          <textarea id="art-contenu" class="form-input article-textarea large" placeholder="Contenu détaillé de l'article…"></textarea>
+        </div>
+
+        <div class="media-card">
+          <div class="media-card-header">
+            <div>
+              <h3>Média de l’article</h3>
+              <p>Choisissez une photo depuis la galerie ou prenez-la directement avec la caméra.</p>
+            </div>
+          </div>
+          <div class="media-actions">
+            <button type="button" class="upload-btn" onclick="triggerArticleMediaPicker('art-media-files')">📁 Ajouter des médias</button>
+            <button type="button" class="upload-btn secondary" onclick="triggerArticleMediaPicker('art-media-camera')">📷 Prendre une photo/vidéo</button>
+            <input type="file" id="art-media-files" accept="image/*,video/*" multiple class="visually-hidden" title="Ajouter des médias" aria-label="Ajouter des médias" onchange="handleArticleMediaFilesUpload(this)">
+            <input type="file" id="art-media-camera" accept="image/*,video/*" capture="environment" class="visually-hidden" title="Prendre une photo ou une vidéo" aria-label="Prendre une photo ou une vidéo" onchange="handleArticleMediaUpload(this,'camera')">
+          </div>
+          <div class="article-grid two-cols">
+            <div class="article-field">
+              <label for="art-media-type">Type de média</label>
+              <select id="art-media-type" class="form-input">
+                <option value="none">Aucun</option>
+                <option value="photo">Photo</option>
+                <option value="video">Vidéo</option>
+                <option value="auto">Auto</option>
+              </select>
+            </div>
+            <div class="article-field" style="display:flex;gap:8px;align-items:flex-end;">
+              <div style="flex:1;">
+                <label for="art-media-url">URL du média</label>
+                <input type="url" id="art-media-url" class="form-input" placeholder="https://..." />
+              </div>
+              <button type="button" class="btn-secondary" style="height:44px;white-space:nowrap;" onclick="addArticleMediaUrl()">Ajouter</button>
+            </div>
+          </div>
+          <div class="article-field">
+            <label for="art-media-alt">Description média</label>
+            <input type="text" id="art-media-alt" class="form-input" placeholder="Texte alternatif ou description" />
+          </div>
+          <div id="article-media-list" class="media-list"></div>
+          <div id="article-media-preview" class="media-preview hidden">
+            <img id="article-media-img" alt="Aperçu du média">
+            <div>
+              <strong id="article-media-title">Aperçu</strong>
+              <p id="article-media-help">Votre image apparaîtra ici.</p>
+            </div>
           </div>
         </div>
-        <div>
-          <label>Description média</label>
-          <input type="text" id="art-media-alt" class="form-input" placeholder="Texte alternatif ou description" />
-        </div>
- 
-        <div style="display:flex;gap:12px;padding-top:8px;">
+
+        <div class="form-actions">
           <button type="submit" class="btn-primary">💾 Enregistrer</button>
           <button type="button" onclick="closeModal('modal-article')" class="btn-ghost">Annuler</button>
         </div>
@@ -392,6 +446,61 @@
 <script>
 /* ── AUTH ─────────────────────────────────────── */
 const ADMIN_USER = 'admin', ADMIN_PASS = 'cabmy2024';
+const DEFAULT_ARTICLE_CATEGORIES = [
+  { value: 'resultats', label: '📊 Résultats', color: 'tag-resultats' },
+  { value: 'vie', label: '🏫 Vie du collège', color: 'tag-vie' },
+  { value: 'spiritualite', label: '⛪ Spiritualité', color: 'tag-spiritualite' },
+  { value: 'soir', label: '🌙 Cours du soir', color: 'tag-soir' }
+];
+
+function slugifyCategory(value) {
+  return (value || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '') || 'categorie';
+}
+
+function getArticleCategories() {
+  const stored = getData('categories');
+  if (Array.isArray(stored) && stored.length) return stored;
+  setData('categories', DEFAULT_ARTICLE_CATEGORIES);
+  return DEFAULT_ARTICLE_CATEGORIES;
+}
+
+function getCategoryMeta(categoryValue) {
+  const categories = getArticleCategories();
+  const found = categories.find(c => c.value === categoryValue);
+  return found || { value: categoryValue, label: categoryValue || 'Catégorie', color: 'tag-generic' };
+}
+
+function renderCategoryOptions(selectedValue = '') {
+  const select = document.getElementById('art-cat');
+  const categories = getArticleCategories();
+  if (!select) return;
+  select.innerHTML = '<option value="">— Choisir —</option>' + categories.map(cat => `<option value="${cat.value}">${cat.label}</option>`).join('');
+  select.value = selectedValue || '';
+  const container = document.getElementById('article-categories-list');
+  if (container) {
+    container.innerHTML = categories.map(cat => `<span class="category-chip">${cat.label}</span>`).join('');
+  }
+}
+
+function addCustomCategory() {
+  const input = document.getElementById('new-category-label');
+  const label = (input?.value || '').trim();
+  if (!label) return;
+  const categories = getArticleCategories();
+  const normalizedValue = slugifyCategory(label);
+  const exists = categories.some(cat => cat.value === normalizedValue || cat.label.toLowerCase() === label.toLowerCase());
+  if (!exists) {
+    categories.unshift({ value: normalizedValue, label, color: 'tag-generic' });
+    setData('categories', categories);
+  }
+  renderCategoryOptions(normalizedValue);
+  if (input) input.value = '';
+}
  
 function doLogin() {
   const u = document.getElementById('login-user').value;
@@ -399,7 +508,7 @@ function doLogin() {
   if (u === ADMIN_USER && p === ADMIN_PASS) {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('admin-ui').style.display = 'block';
-    initAdmin();
+    initSupabaseClient().then(() => initAdmin());
   } else {
     const err = document.getElementById('login-error');
     err.style.display = 'flex';
@@ -417,49 +526,202 @@ function doLogout() {
   document.getElementById('login-pass').value = '';
 }
  
-/* ── FIREBASE ─────────────────────────────────── */
-const FIREBASE_CONFIG = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
-let db = null;
-let firestoreEnabled = false;
+/* ── SUPABASE ─────────────────────────────────── */
+const SUPABASE_URL = 'https://cqoyhtmowyzvpjdzypgs.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_mG8GhOAiTlu4q4avRhL5Qw_BoOzFn2F';
+const SUPABASE_PROXY_URL = 'http://localhost:8001/api';
+let supabaseClient = null;
+let supabaseEnabled = false;
 let currentArticles = [];
+let currentArticleMediaItems = [];
 
-function initFirebase() {
-  if (!FIREBASE_CONFIG.projectId || FIREBASE_CONFIG.projectId === 'YOUR_PROJECT_ID') return;
+function getLocalFallbackData(key) {
+  const local = getData(key);
+  return Array.isArray(local) ? local : [];
+}
+
+async function ensureSupabaseAuth() {
+  return !!supabaseClient;
+}
+
+// Attendre le chargement du SDK Supabase
+async function initSupabaseClient() {
+  return new Promise((resolve) => {
+    const maxAttempts = 50;
+    let attempts = 0;
+    const checkInterval = setInterval(() => {
+      if (window.supabase && window.supabase.createClient) {
+        clearInterval(checkInterval);
+        try {
+          supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+            auth: { persistSession: true, autoRefreshToken: true }
+          });
+          supabaseEnabled = !!supabaseClient;
+          ensureSupabaseAuth().then(() => {
+            supabaseEnabled = !!supabaseClient;
+            console.log('✅ Supabase client initialisé');
+            resolve(true);
+          }).catch(() => {
+            resolve(true);
+          });
+        } catch (err) {
+          console.error('❌ Erreur création client Supabase:', err);
+          resolve(false);
+        }
+      } else if (++attempts > maxAttempts) {
+        clearInterval(checkInterval);
+        console.warn('⚠️ SDK Supabase non trouvé après 5s');
+        resolve(false);
+      }
+    }, 100);
+  });
+}
+
+function buildArticlePayloadVariants(article) {
+  const base = {
+    titre: article.titre || '',
+    cat: article.cat || '',
+    statut: article.statut || 'publie',
+    resume: article.resume || '',
+    contenu: article.contenu || ''
+  };
+  if (article.date) base.date = article.date;
+
+  return [
+    { ...base, emoji: article.emoji || '📰' },
+    { ...base, emoji: article.emoji || '📰', mediaType: article.mediaType || 'none', mediaUrl: article.mediaUrl || '', mediaUrls: article.mediaUrls || [], mediaItems: article.mediaItems || [], mediaAlt: article.mediaAlt || '' },
+    { ...base, emoji: article.emoji || '📰', mediaType: article.mediaType || 'none', mediaUrl: article.mediaUrl || '', mediaUrls: article.mediaUrls || [] },
+    { ...base, date: article.date || '' }
+  ];
+}
+
+function isColumnError(err) {
+  const message = err?.message || err?.details || '';
+  return /could not find the ['"]/.test(message) || /column/.test(message) || /PGRST204/.test(message);
+}
+
+async function fetchArticlesViaProxy() {
   try {
-    firebase.initializeApp(FIREBASE_CONFIG);
-    db = firebase.firestore();
-    firestoreEnabled = true;
+    const response = await fetch(`${SUPABASE_PROXY_URL}/articles`);
+    const payload = await response.json();
+    if (!response.ok) throw new Error(payload?.error || 'Proxy unavailable');
+    return Array.isArray(payload) ? payload : [];
   } catch (err) {
-    console.warn('Firebase initialisation échouée', err);
+    return null;
   }
 }
 
 async function getArticles() {
-  if (!firestoreEnabled) return [];
-  const snapshot = await db.collection('articles').orderBy('dateSort', 'desc').get();
-  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  try {
+    const proxyArticles = await fetchArticlesViaProxy();
+    if (Array.isArray(proxyArticles) && proxyArticles.length > 0) {
+      return proxyArticles;
+    }
+
+    const local = getData('articles');
+    if (Array.isArray(local) && local.length > 0) {
+      return local;
+    }
+
+    if (!supabaseClient) {
+      return [];
+    }
+
+    const columnSets = [
+      'id,titre,cat,statut,resume,contenu,emoji,date,mediaType,mediaUrl,mediaUrls,mediaAlt,created_at',
+      'id,titre,cat,statut,resume,contenu,emoji,date,created_at',
+      'id,titre,cat,statut,resume,contenu,date',
+      'id,titre,cat,statut,date'
+    ];
+
+    for (const columns of columnSets) {
+      try {
+        const { data: rows, error } = await supabaseClient.from('articles').select(columns);
+        if (error) throw error;
+        return Array.isArray(rows) ? rows : [];
+      } catch (err) {
+        if (!isColumnError(err)) break;
+      }
+    }
+
+    return [];
+  } catch (err) {
+    return getData('articles');
+  }
 }
 
 async function saveArticleRemote(article, id) {
-  if (!firestoreEnabled) throw new Error('Firebase non configuré');
-  if (id) {
-    await db.collection('articles').doc(id).set(article, { merge: true });
-    return id;
+  const payload = buildArticlePayloadVariants(article)[0];
+
+  try {
+    const response = await fetch(`${SUPABASE_PROXY_URL}/articles${id ? `/${id}` : ''}`, {
+      method: id ? 'PUT' : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data?.error || 'Proxy unavailable');
+    return data?.id || id || null;
+  } catch (err) {
+    console.warn('Proxy save failed, fallback localStorage', err);
+    const existing = getData('articles') || [];
+    const saved = { ...payload, id: id || `local-${Date.now()}` };
+    const next = id ? existing.map(a => (a.id === id ? saved : a)) : [saved, ...existing];
+    setData('articles', next);
+    return saved.id;
   }
-  const ref = await db.collection('articles').add(article);
-  return ref.id;
 }
 
 async function deleteArticleRemote(id) {
-  if (!firestoreEnabled) throw new Error('Firebase non configuré');
-  await db.collection('articles').doc(id).delete();
+  try {
+    const response = await fetch(`${SUPABASE_PROXY_URL}/articles/${id}`, { method: 'DELETE' });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data?.error || 'Proxy unavailable');
+    return true;
+  } catch (err) {
+    console.warn('Proxy delete failed', err);
+    const existing = getData('articles') || [];
+    setData('articles', existing.filter(a => a.id !== id));
+    return true;
+  }
+}
+
+async function getMessages() {
+  try {
+    if (!supabaseClient) {
+      return getLocalFallbackData('messages');
+    }
+    const { data, error } = await supabaseClient.from('messages').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    return Array.isArray(data) && data.length ? data : getLocalFallbackData('messages');
+  } catch (err) {
+    return getLocalFallbackData('messages');
+  }
+}
+
+async function getPreinscriptions() {
+  try {
+    if (!supabaseClient) {
+      return getLocalFallbackData('preinscriptions');
+    }
+    const { data, error } = await supabaseClient.from('preinscriptions').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    return Array.isArray(data) && data.length ? data : getLocalFallbackData('preinscriptions');
+  } catch (err) {
+    return getLocalFallbackData('preinscriptions');
+  }
+}
+
+async function deleteMsgRemote(id) {
+  if (!supabaseEnabled) throw new Error('Supabase non configuré');
+  const { error } = await supabaseClient.from('messages').delete().eq('id', id);
+  if (error) throw error;
+}
+
+async function deletePIRemote(id) {
+  if (!supabaseEnabled) throw new Error('Supabase non configuré');
+  const { error } = await supabaseClient.from('preinscriptions').delete().eq('id', id);
+  if (error) throw error;
 }
 
 function getData(key, def = []) {
@@ -469,21 +731,27 @@ function setData(key, val) { localStorage.setItem('cabmy_' + key, JSON.stringify
 
 /* ── INIT ─────────────────────────────────────── */
 async function initAdmin() {
-  initFirebase();
   document.getElementById('admin-date').textContent =
     new Date().toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-  await updateCounts();
-  await renderRecentArticles();
+
+  // Charger d'abord les articles locaux comme source de secours, puis la vue admin.
+  const localArticles = getData('articles');
+  if (Array.isArray(localArticles) && localArticles.length) {
+    currentArticles = localArticles;
+  }
+
   await renderArticlesTable();
+  await renderRecentArticles();
+  await updateCounts();
   loadFrais();
-  renderContacts();
-  renderPI();
+  await renderContacts();
+  await renderPI();
 }
 
 async function updateCounts() {
-  const arts = firestoreEnabled ? await getArticles() : getData('articles');
-  const msgs = getData('messages');
-  const pis  = getData('preinscriptions');
+  const arts = await getArticles();
+  const msgs = supabaseEnabled ? await getMessages() : getData('messages');
+  const pis  = supabaseEnabled ? await getPreinscriptions() : getData('preinscriptions');
   document.getElementById('count-articles').textContent = arts.filter(a => a.statut === 'publie').length;
   document.getElementById('count-messages').textContent = msgs.length;
   document.getElementById('count-pi').textContent       = pis.length;
@@ -513,17 +781,26 @@ const catLabels  = { resultats: '📊 Résultats', vie: '🏫 Vie du collège', 
 const catClasses = { resultats: 'tag-resultats', vie: 'tag-vie', spiritualite: 'tag-spiritualite', soir: 'tag-soir' };
  
 async function renderRecentArticles() {
-  const arts = firestoreEnabled ? await getArticles() : getData('articles');
-  currentArticles = arts;
+  let arts = currentArticles.length ? currentArticles : await getArticles();
+  if (!Array.isArray(arts) || !arts.length) {
+    const local = getData('articles');
+    if (Array.isArray(local) && local.length) {
+      arts = local;
+    }
+  }
+  currentArticles = Array.isArray(arts) ? arts : [];
   const el = document.getElementById('recent-articles-list');
-  if (!arts.length) {
+  if (!currentArticles.length) {
     el.innerHTML = '<p style="color:var(--text-muted);font-size:.875rem;padding:16px 0;">Aucun article encore.</p>';
     return;
   }
-  el.innerHTML = arts.slice(0, 5).map(a => {
-    const mediaLabel = a.mediaType && a.mediaType !== 'none'
-      ? `<span class="tag ${a.mediaType === 'photo' ? 'tag-photo' : 'tag-video'}">${a.mediaType === 'photo' ? '📸 Photo' : '🎬 Vidéo'}</span>`
+  el.innerHTML = currentArticles.slice(0, 5).map(a => {
+    const mediaItems = getStoredArticleMediaItems(a);
+    const mediaType = getArticleMediaType(mediaItems);
+    const mediaLabel = mediaType !== 'none'
+      ? `<span class="tag ${mediaType === 'video' ? 'tag-video' : 'tag-photo'}">${getArticleMediaSummary(mediaItems)}</span>`
       : '';
+    const category = getCategoryMeta(a.cat);
     return `
       <div class="recent-row">
         <div>
@@ -532,7 +809,7 @@ async function renderRecentArticles() {
         </div>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
           ${mediaLabel}
-          <span class="tag ${catClasses[a.cat] || ''}">${catLabels[a.cat] || a.cat}</span>
+          <span class="tag ${category.color || 'tag-generic'}">${category.label || a.cat}</span>
         </div>
       </div>
     `;
@@ -540,19 +817,29 @@ async function renderRecentArticles() {
 }
  
 async function renderArticlesTable() {
-  const arts = firestoreEnabled ? await getArticles() : getData('articles');
+  let arts = await getArticles();
+  // Si Supabase renvoie vide mais que le localStorage contient des articles,
+  // utiliser le local pour éviter un tableau vide côté UI.
+  const local = getData('articles');
+  if (Array.isArray(arts) && arts.length === 0 && Array.isArray(local) && local.length > 0) {
+    console.warn('Utilisation des articles depuis localStorage (fallback)');
+    arts = local;
+  }
   currentArticles = arts;
   const tbody = document.getElementById('articles-tbody');
   document.getElementById('no-articles').style.display = arts.length ? 'none' : 'block';
-  tbody.innerHTML = arts.map((a, i) => {
-    const mediaLabel = a.mediaType && a.mediaType !== 'none'
-      ? `<span class="tag ${a.mediaType === 'photo' ? 'tag-photo' : 'tag-video'}">${a.mediaType === 'photo' ? '📸 Photo' : '🎬 Vidéo'}</span>`
+  tbody.innerHTML = (arts || []).map((a, i) => {
+    const mediaItems = getStoredArticleMediaItems(a);
+    const mediaType = getArticleMediaType(mediaItems);
+    const mediaLabel = mediaType !== 'none'
+      ? `<span class="tag ${mediaType === 'video' ? 'tag-video' : 'tag-photo'}">${getArticleMediaSummary(mediaItems)}</span>`
       : '<span class="tag tag-none">Aucun</span>';
+    const category = getCategoryMeta(a.cat);
     return `
       <tr>
         <td style="font-weight:600;max-width:280px;">${a.emoji || ''} ${a.titre}</td>
         <td>${mediaLabel}</td>
-        <td><span class="tag ${catClasses[a.cat] || ''}">${catLabels[a.cat] || a.cat}</span></td>
+        <td><span class="tag ${category.color || 'tag-generic'}">${category.label || a.cat}</span></td>
         <td style="color:var(--text-muted);font-size:.82rem;">${a.date}</td>
         <td><span class="${a.statut === 'publie' ? 'badge-pub' : 'badge-draft'}">${a.statut === 'publie' ? '✅ Publié' : '📝 Brouillon'}</span></td>
         <td style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -564,10 +851,212 @@ async function renderArticlesTable() {
   }).join('');
 }
  
+function selectArticleEmoji(icon) {
+  const input = document.getElementById('art-emoji');
+  if (input) input.value = icon;
+}
+
+function triggerArticleMediaPicker(id) {
+  const input = document.getElementById(id);
+  if (input) input.click();
+}
+
+function setArticleMediaPreview(url, title = 'Aperçu') {
+  const preview = document.getElementById('article-media-preview');
+  const img = document.getElementById('article-media-img');
+  const titleEl = document.getElementById('article-media-title');
+  const helpEl = document.getElementById('article-media-help');
+  if (!preview || !img || !titleEl || !helpEl) return;
+  if (!url) {
+    preview.classList.add('hidden');
+    img.removeAttribute('src');
+    titleEl.textContent = 'Aperçu';
+    helpEl.textContent = 'Votre média apparaîtra ici.';
+    return;
+  }
+  img.src = url;
+  titleEl.textContent = title;
+  helpEl.textContent = 'Média prêt à être enregistré avec l’article.';
+  preview.classList.remove('hidden');
+}
+
+function inferArticleMediaType(url = '') {
+  const cleanUrl = String(url).split('?')[0].split('#')[0].toLowerCase();
+  if (/^data:video\//.test(cleanUrl) || /\.(mp4|webm|ogg|mov|m4v)$/i.test(cleanUrl)) return 'video';
+  return 'photo';
+}
+
+function normalizeArticleMediaItem(item, fallbackType = 'auto') {
+  if (!item) return null;
+  if (typeof item === 'string') {
+    const url = item.trim();
+    if (!url) return null;
+    return { url, type: fallbackType === 'video' ? 'video' : fallbackType === 'photo' ? 'photo' : inferArticleMediaType(url) };
+  }
+  if (typeof item.url !== 'string') return null;
+  const url = item.url.trim();
+  if (!url) return null;
+  const type = item.type === 'video' ? 'video' : item.type === 'photo' ? 'photo' : inferArticleMediaType(url);
+  return { url, type };
+}
+
+function getArticleMediaSummary(mediaItems = []) {
+  const photos = mediaItems.filter(item => item.type !== 'video').length;
+  const videos = mediaItems.filter(item => item.type === 'video').length;
+  if (photos && videos) return `${photos} photo${photos > 1 ? 's' : ''} + ${videos} vidéo${videos > 1 ? 's' : ''}`;
+  if (photos) return `${photos} photo${photos > 1 ? 's' : ''}`;
+  if (videos) return `${videos} vidéo${videos > 1 ? 's' : ''}`;
+  return 'Aucun';
+}
+
+function getArticleMediaType(mediaItems = []) {
+  const hasPhoto = mediaItems.some(item => item.type !== 'video');
+  const hasVideo = mediaItems.some(item => item.type === 'video');
+  if (hasPhoto && hasVideo) return 'mixed';
+  if (hasVideo) return 'video';
+  if (hasPhoto) return 'photo';
+  return 'none';
+}
+
+function getArticleMediaDisplayName(item, index) {
+  if (!item?.url) return `Média ${index + 1}`;
+  if (item.url.startsWith('data:')) return item.type === 'video' ? `Vidéo importée ${index + 1}` : `Photo importée ${index + 1}`;
+  try {
+    const pathname = new URL(item.url, window.location.href).pathname;
+    const filename = decodeURIComponent(pathname.split('/').filter(Boolean).pop() || '');
+    return filename || `Média ${index + 1}`;
+  } catch (err) {
+    return item.url.length > 48 ? `${item.url.slice(0, 45)}...` : item.url;
+  }
+}
+
+function updateArticleMediaList(mediaItems) {
+  const list = document.getElementById('article-media-list');
+  if (!list) return;
+  if (!Array.isArray(mediaItems) || !mediaItems.length) {
+    list.innerHTML = '<p style="color:var(--text-muted);font-size:.95rem;margin:8px 0;">Aucun média ajouté.</p>';
+    return;
+  }
+  list.innerHTML = mediaItems.map((item, index) => {
+    const normalized = normalizeArticleMediaItem(item);
+    if (!normalized) return '';
+    const label = normalized.type === 'video' ? 'Vidéo' : 'Photo';
+    const src = normalized.url;
+    const preview = normalized.type === 'video'
+      ? `<video class="media-item-thumb" src="${src}" muted preload="metadata"></video>`
+      : `<img class="media-item-thumb" src="${src}" alt="${label} ${index + 1}">`;
+    const displayName = getArticleMediaDisplayName(normalized, index);
+    return `
+      <div class="media-item">
+        <div class="media-item-info">
+          ${preview}
+          <div>
+            <strong>${label} ${index + 1}</strong>
+            <span class="media-item-url">${displayName}</span>
+          </div>
+        </div>
+        <button type="button" class="btn-ghost btn-small" onclick="removeArticleMediaItem(${index})">Supprimer</button>
+      </div>
+    `;
+  }).join('');
+}
+
+function getArticleMediaItems() {
+  return currentArticleMediaItems;
+}
+
+function setArticleMediaItems(items) {
+  currentArticleMediaItems = Array.isArray(items) ? items.map(item => normalizeArticleMediaItem(item)).filter(Boolean) : [];
+  updateArticleMediaList(currentArticleMediaItems);
+}
+
+function getStoredArticleMediaItems(article = {}) {
+  if (Array.isArray(article.mediaItems) && article.mediaItems.length) {
+    return article.mediaItems.map(item => normalizeArticleMediaItem(item, article.mediaType)).filter(Boolean);
+  }
+  if (Array.isArray(article.mediaUrls) && article.mediaUrls.length) {
+    return article.mediaUrls.map(url => normalizeArticleMediaItem(url, article.mediaType)).filter(Boolean);
+  }
+  if (typeof article.mediaUrl === 'string' && article.mediaUrl.trim()) {
+    try {
+      const parsed = JSON.parse(article.mediaUrl);
+      if (Array.isArray(parsed)) {
+        return parsed.map(item => normalizeArticleMediaItem(item, article.mediaType)).filter(Boolean);
+      }
+    } catch (err) {
+      // Plain URL, handled below.
+    }
+    return [normalizeArticleMediaItem(article.mediaUrl, article.mediaType)].filter(Boolean);
+  }
+  return [];
+}
+
+function addArticleMediaUrl() {
+  const input = document.getElementById('art-media-url');
+  if (!input) return;
+  const url = input.value.trim();
+  if (!url) return;
+  const selectedType = document.getElementById('art-media-type')?.value || 'auto';
+  const type = selectedType === 'video' ? 'video' : selectedType === 'photo' ? 'photo' : inferArticleMediaType(url);
+  const items = getArticleMediaItems();
+  items.push({ url, type });
+  setArticleMediaItems(items);
+  input.value = '';
+}
+
+function removeArticleMediaItem(index) {
+  const items = getArticleMediaItems();
+  items.splice(index, 1);
+  setArticleMediaItems(items);
+}
+
+function handleArticleMediaFilesUpload(input) {
+  const files = input?.files;
+  if (!files || !files.length) return;
+  const items = getArticleMediaItems();
+  Array.from(files).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = function (event) {
+      const dataUrl = event.target?.result;
+      const type = file.type.startsWith('video/') ? 'video' : 'photo';
+      items.push({ url: dataUrl, type });
+      setArticleMediaItems(items);
+    };
+    reader.readAsDataURL(file);
+  });
+  input.value = '';
+}
+
+function handleArticleMediaUpload(input, source) {
+  const file = input?.files?.[0];
+  if (!file) return;
+  const items = getArticleMediaItems();
+  const reader = new FileReader();
+  reader.onload = function (event) {
+    const dataUrl = event.target?.result;
+    const type = file.type.startsWith('video/') ? 'video' : 'photo';
+    items.push({ url: dataUrl, type });
+    setArticleMediaItems(items);
+    document.getElementById('art-media-type').value = type;
+    document.getElementById('art-media-alt').value = file.name || 'Média sélectionné';
+    setArticleMediaPreview(dataUrl, source === 'camera' ? 'Média pris avec l’appareil' : 'Média depuis la galerie');
+  };
+  reader.readAsDataURL(file);
+  input.value = '';
+}
+
 function openNewArticle() {
   document.getElementById('article-id').value = '';
   document.getElementById('modal-article-title').textContent = 'Nouvel article';
   document.getElementById('article-form').reset();
+  document.getElementById('art-emoji').value = '📰';
+  document.getElementById('art-media-type').value = 'auto';
+  document.getElementById('art-media-url').value = '';
+  document.getElementById('art-media-alt').value = '';
+  currentArticleMediaItems = [];
+  updateArticleMediaList([]);
+  renderCategoryOptions('');
+  setArticleMediaPreview('');
   document.getElementById('modal-article').classList.add('open');
 }
  
@@ -580,16 +1069,29 @@ function editArticle(i) {
   document.getElementById('art-statut').value  = a.statut || 'publie';
   document.getElementById('art-resume').value  = a.resume || '';
   document.getElementById('art-contenu').value = a.contenu || '';
-  document.getElementById('art-emoji').value   = a.emoji || '';
-  document.getElementById('art-media-type').value = a.mediaType || 'none';
-  document.getElementById('art-media-url').value  = a.mediaUrl || '';
+  document.getElementById('art-emoji').value   = a.emoji || '📰';
+  document.getElementById('art-media-type').value = 'auto';
+  document.getElementById('art-media-url').value  = '';
   document.getElementById('art-media-alt').value  = a.mediaAlt || '';
+
+  currentArticleMediaItems = getStoredArticleMediaItems(a);
+  updateArticleMediaList(currentArticleMediaItems);
+  if (currentArticleMediaItems.length && currentArticleMediaItems[0].type === 'photo') {
+    setArticleMediaPreview(currentArticleMediaItems[0].url, 'Média enregistré');
+  } else {
+    setArticleMediaPreview('', 'Média enregistré');
+  }
+
+  renderCategoryOptions(a.cat || '');
   document.getElementById('modal-article').classList.add('open');
 }
  
 async function saveArticle(e) {
   e.preventDefault();
   const id = document.getElementById('article-id').value;
+  const mediaItems = getArticleMediaItems();
+  const mediaUrls = mediaItems.map(item => item.url).filter(Boolean);
+  const mediaType = getArticleMediaType(mediaItems);
   const article = {
     titre:     document.getElementById('art-titre').value,
     cat:       document.getElementById('art-cat').value,
@@ -597,24 +1099,33 @@ async function saveArticle(e) {
     resume:    document.getElementById('art-resume').value,
     contenu:   document.getElementById('art-contenu').value,
     emoji:     document.getElementById('art-emoji').value || '📰',
-    mediaType: document.getElementById('art-media-type').value || 'none',
-    mediaUrl:  document.getElementById('art-media-url').value.trim(),
+    mediaType: mediaType,
+    mediaUrl:  mediaItems.length === 1 ? mediaItems[0].url : JSON.stringify(mediaItems),
+    mediaUrls: mediaUrls,
+    mediaItems: mediaItems,
     mediaAlt:  document.getElementById('art-media-alt').value.trim(),
-    date:      new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }),
-    dateSort:  Date.now()
+    date:      new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })
   };
   if (article.mediaType === 'none') {
     article.mediaUrl = '';
+    article.mediaUrls = [];
+    article.mediaItems = [];
     article.mediaAlt = '';
   }
   try {
-    await saveArticleRemote(article, id || undefined);
+    const savedId = await saveArticleRemote(article, id || undefined);
+    const articleToStore = { ...article, id: savedId || id || undefined };
+    const existing = getData('articles');
+    const nextArticles = id
+      ? (existing || []).map(a => (a.id === id ? articleToStore : a))
+      : [articleToStore, ...(existing || [])];
+    setData('articles', nextArticles);
     closeModal('modal-article');
     await renderArticlesTable();
     await renderRecentArticles();
     await updateCounts();
   } catch (err) {
-    alert('Impossible d’enregistrer l’article en ligne. Vérifiez la configuration Firebase.');
+    alert('Impossible d’enregistrer l’article en ligne. Vérifiez les règles RLS de Supabase sur la table articles.');
     console.error(err);
   }
 }
@@ -650,8 +1161,8 @@ function saveFrais() {
 }
  
 /* ── MESSAGES ─────────────────────────────────── */
-function renderContacts() {
-  const msgs = getData('messages');
+async function renderContacts() {
+  const msgs = supabaseEnabled ? await getMessages() : getData('messages');
   const el = document.getElementById('contacts-list');
   const empty = document.getElementById('no-contacts');
   empty.style.display = msgs.length ? 'none' : 'block';
@@ -669,16 +1180,25 @@ function renderContacts() {
     </div>
   `).join('');
 }
- 
-function deleteMsg(i) {
+
+async function deleteMsg(i) {
   if (!confirm('Supprimer ce message ?')) return;
-  const msgs = getData('messages'); msgs.splice(i, 1); setData('messages', msgs);
-  renderContacts(); updateCounts();
+  const msgs = supabaseEnabled ? await getMessages() : getData('messages');
+  const msg = msgs[i];
+  if (!msg) return;
+  if (supabaseEnabled && msg.id) {
+    await deleteMsgRemote(msg.id);
+  } else {
+    msgs.splice(i, 1);
+    setData('messages', msgs);
+  }
+  await renderContacts();
+  await updateCounts();
 }
  
 /* ── PRÉ-INSCRIPTIONS ─────────────────────────── */
-function renderPI() {
-  const pis = getData('preinscriptions');
+async function renderPI() {
+  const pis = supabaseEnabled ? await getPreinscriptions() : getData('preinscriptions');
   const tbody = document.getElementById('pi-tbody');
   const empty = document.getElementById('no-pi');
   empty.style.display = pis.length ? 'none' : 'block';
@@ -694,19 +1214,106 @@ function renderPI() {
   `).join('');
 }
  
-function deletePI(i) {
+async function deletePI(i) {
   if (!confirm('Supprimer cette pré-inscription ?')) return;
-  const pis = getData('preinscriptions'); pis.splice(i, 1); setData('preinscriptions', pis);
-  renderPI(); updateCounts();
+  const pis = supabaseEnabled ? await getPreinscriptions() : getData('preinscriptions');
+  const pi = pis[i];
+  if (!pi) return;
+  if (supabaseEnabled && pi.id) {
+    await deletePIRemote(pi.id);
+  } else {
+    pis.splice(i, 1);
+    setData('preinscriptions', pis);
+  }
+  await renderPI();
+  await updateCounts();
 }
  
-function exportPI() {
-  const pis = getData('preinscriptions');
+async function exportPI() {
+  const pis = supabaseEnabled ? await getPreinscriptions() : getData('preinscriptions');
   if (!pis.length) { alert('Aucune pré-inscription à exporter.'); return; }
-  const csv = ['Nom,Niveau,Section,Téléphone,Date', ...pis.map(p => `${p.nom},${p.niveau},${p.section},${p.tel},${p.date}`)].join('\n');
+  const csv = ['Nom,Niveau,Section,Téléphone,Email,Date', ...pis.map(p => `${p.nom || ''},${p.niveau || ''},${p.section || ''},${p.tel || ''},${p.email || ''},${p.date || ''}`)].join('\n');
   const blob = new Blob([csv], { type: 'text/csv' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a'); a.href = url; a.download = 'preinscriptions-cabmy.csv'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+async function exportPIAsPDF() {
+  const pis = supabaseEnabled ? await getPreinscriptions() : getData('preinscriptions');
+  if (!pis.length) { alert('Aucune pré-inscription à exporter.'); return; }
+  const title = 'Pré-inscriptions reçues';
+
+  if (window.jspdf && window.jspdf.jsPDF && window.jspdf.jsPDF.autoTable) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+    doc.setFontSize(18);
+    doc.text(title, 40, 50);
+    const columns = ['Nom', 'Niveau', 'Section', 'Téléphone', 'Email', 'Date'];
+    const rows = pis.map(p => [p.nom || '-', p.niveau || '-', p.section || '-', p.tel || '-', p.email || '-', p.date || '-']);
+    doc.autoTable({
+      startY: 75,
+      head: [columns],
+      body: rows,
+      styles: { fontSize: 9, cellPadding: 6 },
+      headStyles: { fillColor: [15, 77, 164], textColor: 255, halign: 'center' },
+      alternateRowStyles: { fillColor: [245,245,245] },
+      margin: { left: 40, right: 40 },
+      theme: 'striped'
+    });
+    doc.save('preinscriptions-cabmy.pdf');
+    return;
+  }
+
+  // Fallback simple PDF via fenêtre d'impression
+  const html = [`<html><head><title>${title}</title><style>`,
+    'body{font-family:Arial,Helvetica,sans-serif;padding:20px;color:#111}',
+    'h1{color:#0f4da4;margin-bottom:18px;}',
+    '.pi-card{border:1px solid #ddd;border-radius:8px;padding:16px;margin-bottom:16px;box-shadow:0 2px 6px rgba(0,0,0,.08);}',
+    '.pi-card h2{margin:0 0 10px;font-size:15px;color:#0f4da4}',
+    '.pi-card p{margin:5px 0;font-size:13px;}',
+    '</style></head><body>',
+    `<h1>${title}</h1>`
+  ].join('');
+
+  const rows = pis.map((p, index) => `
+    <div class="pi-card">
+      <h2>Pré-inscription ${index + 1}</h2>
+      <p><strong>Nom :</strong> ${p.nom || '-'}</p>
+      <p><strong>Niveau :</strong> ${p.niveau || '-'}</p>
+      <p><strong>Section :</strong> ${p.section || '-'}</p>
+      <p><strong>Téléphone :</strong> ${p.tel || '-'}</p>
+      <p><strong>Email :</strong> ${p.email || '-'}</p>
+      <p><strong>Date :</strong> ${p.date || '-'}</p>
+    </div>`).join('');
+
+  const win = window.open('', '_blank');
+  if (!win) { alert('Impossible d’ouvrir une nouvelle fenêtre pour l’export PDF.'); return; }
+  win.document.write(html + rows + '</body></html>');
+  win.document.close();
+  win.focus();
+  win.print();
+}
+
+async function exportPIAsXLSX() {
+  const pis = supabaseEnabled ? await getPreinscriptions() : getData('preinscriptions');
+  if (!pis.length) { alert('Aucune pré-inscription à exporter.'); return; }
+  if (!window.XLSX) { alert('Bibliothèque XLSX introuvable.'); return; }
+  const wsData = [
+    ['Nom', 'Niveau', 'Section', 'Téléphone', 'Email', 'Date'],
+    ...pis.map(p => [p.nom || '', p.niveau || '', p.section || '', p.tel || '', p.email || '', p.date || ''])
+  ];
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet(wsData);
+  XLSX.utils.book_append_sheet(wb, ws, 'Pré-inscriptions');
+  const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+  const blob = new Blob([wbout], { type: 'application/octet-stream' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'preinscriptions-cabmy.xlsx';
+  a.click();
+  URL.revokeObjectURL(url);
 }
  
 /* ── MODAL ────────────────────────────────────── */

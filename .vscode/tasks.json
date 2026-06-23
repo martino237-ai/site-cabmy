@@ -1,0 +1,21 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start Supabase Proxy",
+      "type": "shell",
+      "command": "node supabase-proxy.js",
+      "problemMatcher": [],
+      "isBackground": true,
+      "runOptions": { "runOn": "folderOpen" }
+    },
+    {
+      "label": "Serve site (http-server)",
+      "type": "shell",
+      "command": "npx http-server -p 8000 .",
+      "problemMatcher": [],
+      "isBackground": true,
+      "runOptions": { "runOn": "folderOpen" }
+    }
+  ]
+}

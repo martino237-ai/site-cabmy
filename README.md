@@ -134,15 +134,166 @@ site-cabmy/
 
 ## Administration locale
 
-L'interface `admin.html` permet de gérer du contenu à distance via Firebase Firestore et de le rendre disponible sur la page `actualites.html`.
+L'interface `admin.html` permet de gérer les articles et les formulaires depuis un navigateur local.
 
-Fonctionnalités principales :
-- ajout et modification des actualités
-- publication de photos ou de vidéos d'actualité
-- affichage dynamique des articles publiés sur la page publique
-- suppression des articles en ligne
+### Accès rapide
+- Page d'administration : http://localhost:8000/src/html/admin.html
+- Page publique des actualités : http://localhost:8000/src/html/actualites.html
 
-> Le projet nécessite une configuration Firebase valide dans `src/html/admin.html` et `src/html/actualites.html` pour que l'enregistrement en ligne fonctionne correctement.
+### Fonctionnement actuel
+- Les articles créés dans l'admin sont sauvegardés localement dans le navigateur via `localStorage`.
+- La page publique lit ces données pour afficher les articles immédiatement.
+- Un proxy local est utilisé pour tenter la synchronisation avec Supabase si des identifiants valides sont fournis.
+
+### Serveur requis
+Le site doit être servi via un serveur local HTTP, sinon certaines fonctionnalités de stockage et de navigation ne fonctionnent pas correctement.
+
+### Démarrer les serveurs
+Dans le dossier du projet, exécutez :
+
+```bash
+python -m http.server 8000
+```
+
+Puis démarrez le proxy :
+
+```bash
+node supabase-proxy.js
+```
+
+Le proxy écoute sur :
+- http://localhost:8001/health
+- http://localhost:8001/api/articles
+
+### Important
+- Si Supabase n'est pas configuré avec une vraie clé service role, le proxy reste en mode secours et ne bloque pas l'administration.
+- Les données restent accessibles localement pour éviter que l'admin ne cesse de fonctionner.
+
+## Supabase (optionnel)
+
+Ce projet peut aussi être connecté à un backend Supabase pour gérer les actualités, les messages de contact et les pré-inscriptions.
+
+- Projet Supabase recommandé : `site_cabmy.com`
+- URL du projet : `https://cqoyhtmowyzvpjdzypgs.supabase.co`
+- Clé publique client : `sb_publishable_mG8GhOAiTlu4q4avRhL5Qw_BoOzFn2F`
+- Tables SQL utilisées : `articles`, `messages`, `preinscriptions`
+- Conserver les clés sensibles hors dépôt Git et dans un gestionnaire de mots de passe ou des variables d'environnement locales
+
+### Configuration des tables Supabase
+
+#### Table `articles`
+- `id` : uuid, clé primaire, default `gen_random_uuid()` ou `uuid_generate_v4()` selon la configuration
+- `titre` : text
+- `cat` : text
+- `statut` : text
+- `resume` : text
+- `contenu` : text
+- `emoji` : text
+- `mediaType` : text
+- `mediaUrl` : text
+- `mediaAlt` : text
+- `date` : text
+- `dateSort` : bigint
+- `created_at` : timestamp with time zone, default `now()` (optionnel)
+
+#### Table `messages`
+- `id` : uuid, clé primaire, default `gen_random_uuid()` ou `uuid_generate_v4()` 
+- `nom` : text
+- `telephone` : text
+- `email` : text
+- `sujet` : text
+- `message` : text
+- `date` : text
+- `dateSort` : bigint
+- `created_at` : timestamp with time zone, default `now()`
+
+#### Table `preinscriptions`
+- `id` : uuid, clé primaire, default `gen_random_uuid()` ou `uuid_generate_v4()` 
+- `nom` : text
+- `niveau` : text
+- `section` : text
+- `tel` : text
+- `date` : text
+- `dateSort` : bigint
+- `created_at` : timestamp with time zone, default `now()`
+
+### SQL pour créer les tables dans Supabase
+
+Copie ces commandes dans l'éditeur SQL du tableau de bord Supabase et exécute-les :
+
+```sql
+create extension if not exists "pgcrypto";
+
+create table if not exists articles (
+  id uuid primary key default gen_random_uuid(),
+  titre text,
+  cat text,
+  statut text,
+  resume text,
+  contenu text,
+  emoji text,
+  mediaType text,
+  mediaUrl text,
+  mediaAlt text,
+  date text,
+  dateSort bigint,
+  created_at timestamptz default now()
+);
+
+create table if not exists messages (
+  id uuid primary key default gen_random_uuid(),
+  nom text,
+  telephone text,
+  email text,
+  sujet text,
+  message text,
+  date text,
+  dateSort bigint,
+  created_at timestamptz default now()
+);
+
+create table if not exists preinscriptions (
+  id uuid primary key default gen_random_uuid(),
+  nom text,
+  niveau text,
+  section text,
+  tel text,
+  date text,
+  dateSort bigint,
+  created_at timestamptz default now()
+);
+```
+
+> Je ne peux pas exécuter ces commandes pour toi depuis ici car je n'ai pas d'accès direct à ton projet Supabase.
+
+### Règles de sécurité Supabase
+
+Pour le développement, vous pouvez désactiver RLS sur ces tables. Pour un usage plus sûr, créez des politiques qui autorisent :
+- `SELECT` sur `articles`, `messages`, `preinscriptions`
+- `INSERT` sur `messages` et `preinscriptions`
+- `DELETE` sur `messages` et `preinscriptions`
+
+> Le mot de passe administrateur ou les clés secrètes ne doivent jamais être ajoutés en clair dans le code source du projet.
+
+### Important : Utiliser un serveur local pour tester
+
+Les pages HTML avec Supabase **ne fonctionnent pas** si ouvertes directement (protocole `file://`). Vous devez utiliser un serveur local :
+
+**Avec Python 3 :**
+```bash
+python -m http.server 8000
+```
+Puis ouvrir `http://localhost:8000` dans le navigateur.
+
+**Avec Node.js (Live Server) :**
+```bash
+npm install -g live-server
+live-server
+```
+
+**Avec VS Code :**
+- Installer l'extension "Live Server"
+- Clic droit sur `index.html` → "Open with Live Server"
 
 ## Déploiement
 

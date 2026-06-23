@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Supabase - CABMY</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.27.0/dist/supabase.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+    .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+    .test-block { margin: 20px 0; padding: 15px; border-left: 4px solid #ddd; background: #f9f9f9; }
+    .test-block h3 { margin-top: 0; }
+    .success { border-left-color: #4caf50; background: #f1f8f4; }
+    .error { border-left-color: #f44336; background: #fef5f5; }
+    .pending { border-left-color: #ff9800; background: #fff3f0; }
+    code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-family: monospace; }
+    .status { font-weight: bold; margin: 5px 0; }
+    .success .status { color: #4caf50; }
+    .error .status { color: #f44336; }
+    .pending .status { color: #ff9800; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧪 Test Supabase - CABMY</h1>
+    
+    <div id="test-sdk" class="test-block pending">
+      <h3>1. Chargement du SDK Supabase</h3>
+      <div class="status">En cours...</div>
+      <p id="sdk-result"></p>
+    </div>
+
+    <div id="test-connection" class="test-block pending">
+      <h3>2. Connexion à Supabase</h3>
+      <div class="status">En attente...</div>
+      <p id="connection-result"></p>
+    </div>
+
+    <div id="test-articles" class="test-block pending">
+      <h3>3. Lecture de la table <code>articles</code></h3>
+      <div class="status">En attente...</div>
+      <p id="articles-result"></p>
+    </div>
+
+    <div id="test-messages" class="test-block pending">
+      <h3>4. Insertion d'un test dans <code>messages</code></h3>
+      <div class="status">En attente...</div>
+      <p id="messages-result"></p>
+    </div>
+
+    <div id="test-preinscriptions" class="test-block pending">
+      <h3>5. Lecture de la table <code>preinscriptions</code></h3>
+      <div class="status">En attente...</div>
+      <p id="preinscriptions-result"></p>
+    </div>
+
+    <div id="test-summary" class="test-block pending" style="margin-top: 30px;">
+      <h3>📊 Résumé</h3>
+      <p id="summary-result"></p>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://cqoyhtmowyzvpjdzypgs.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_mG8GhOAiTlu4q4avRhL5Qw_BoOzFn2F';
+    let testResults = { passed: 0, failed: 0, total: 5 };
+
+    async function runTests() {
+      // Test 1: SDK loaded
+      await testSDK();
+      
+      // Test 2: Connection
+      const client = await testConnection();
+      
+      if (client) {
+        // Test 3: Articles
+        await testArticles(client);
+        
+        // Test 4: Messages
+        await testMessages(client);
+        
+        // Test 5: Preinscriptions
+        await testPreinscriptions(client);
+      }
+
+      // Summary
+      updateSummary();
+    }
+
+    function updateBlock(blockId, isSuccess, message) {
+      const block = document.getElementById(blockId);
+      const resultEl = block.querySelector('p:last-of-type');
+      const statusEl = block.querySelector('.status');
+      
+      block.classList.remove('pending', 'error', 'success');
+      block.classList.add(isSuccess ? 'success' : 'error');
+      statusEl.textContent = isSuccess ? '✅ Succès' : '❌ Erreur';
+      resultEl.textContent = message;
+      
+      if (isSuccess) testResults.passed++;
+      else testResults.failed++;
+    }
+
+    async function testSDK() {
+      try {
+        if (window.supabase && window.supabase.createClient) {
+          updateBlock('test-sdk', true, 'SDK Supabase v2.27.0 chargé correctement');
+        } else {
+          updateBlock('test-sdk', false, 'SDK Supabase non trouvé');
+        }
+      } catch (err) {
+        updateBlock('test-sdk', false, `Erreur: ${err.message}`);
+      }
+    }
+
+    async function testConnection() {
+      try {
+        const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        // Test avec une requête ping simple
+        const { data, error } = await client.from('articles').select('count(*)');
+        
+        if (error) {
+          if (error.code === '42P01') {
+            updateBlock('test-connection', false, `Table 'articles' n'existe pas. Crée-la dans Supabase: ${error.message}`);
+          } else {
+            updateBlock('test-connection', false, `Erreur Supabase: ${error.message}`);
+          }
+          return null;
+        }
+        
+        updateBlock('test-connection', true, `Connecté à ${SUPABASE_URL}`);
+        return client;
+      } catch (err) {
+        updateBlock('test-connection', false, `Erreur: ${err.message}`);
+        return null;
+      }
+    }
+
+    async function testArticles(client) {
+      try {
+        const { data, error } = await client.from('articles').select('*').limit(1);
+        
+        if (error) {
+          updateBlock('test-articles', false, `Erreur: ${error.message}`);
+        } else {
+          const count = data ? data.length : 0;
+          updateBlock('test-articles', true, `Lecture OK. ${count} article(s) trouvé(s)`);
+        }
+      } catch (err) {
+        updateBlock('test-articles', false, `Erreur: ${err.message}`);
+      }
+    }
+
+    async function testMessages(client) {
+      try {
+        const testMsg = {
+          nom: 'Test Automation',
+          telephone: '+237000000000',
+          email: 'test@cabmy.cm',
+          sujet: 'Test Supabase Integration',
+          message: 'Message de test automatique - peut être supprimé',
+          date: new Date().toLocaleDateString('fr-FR'),
+          dateSort: Date.now()
+        };
+        
+        const { data, error } = await client.from('messages').insert([testMsg]).select('id');
+        
+        if (error) {
+          updateBlock('test-messages', false, `Erreur insertion: ${error.message}`);
+        } else {
+          const id = data && data[0] ? data[0].id : 'unknown';
+          updateBlock('test-messages', true, `Insertion OK. ID: ${id.slice(0, 8)}...`);
+          
+          // Auto-delete test message
+          await client.from('messages').delete().eq('id', id);
+        }
+      } catch (err) {
+        updateBlock('test-messages', false, `Erreur: ${err.message}`);
+      }
+    }
+
+    async function testPreinscriptions(client) {
+      try {
+        const { data, error } = await client.from('preinscriptions').select('*').limit(1);
+        
+        if (error) {
+          updateBlock('test-preinscriptions', false, `Erreur: ${error.message}`);
+        } else {
+          const count = data ? data.length : 0;
+          updateBlock('test-preinscriptions', true, `Lecture OK. ${count} pré-inscription(s) trouvée(s)`);
+        }
+      } catch (err) {
+        updateBlock('test-preinscriptions', false, `Erreur: ${err.message}`);
+      }
+    }
+
+    function updateSummary() {
+      const summaryBlock = document.getElementById('test-summary');
+      const summaryEl = document.getElementById('summary-result');
+      const isSuccess = testResults.failed === 0;
+      
+      summaryBlock.classList.remove('pending', 'error', 'success');
+      summaryBlock.classList.add(isSuccess ? 'success' : 'error');
+      
+      let message = `✅ ${testResults.passed}/${testResults.total} tests réussis`;
+      if (testResults.failed > 0) {
+        message = `❌ ${testResults.failed} erreur(s) détectée(s). Vérifiez Supabase.`;
+      }
+      
+      summaryEl.innerHTML = `
+        <strong>${message}</strong><br><br>
+        <strong>Points de vérification:</strong>
+        <ul>
+          <li>SDK Supabase chargé: ${testResults.passed > 0 ? '✅' : '❌'}</li>
+          <li>Tables créées (articles, messages, preinscriptions): ${testResults.passed > 1 ? '✅' : '❌'}</li>
+          <li>RLS désactivé ou bien configuré: ${testResults.passed > 2 ? '✅' : '❌'}</li>
+          <li>Insertions autorisées: ${testResults.passed > 3 ? '✅' : '❌'}</li>
+        </ul>
+        <br>
+        <strong>Prochaines étapes:</strong>
+        <ul>
+          <li>Tester <a href="src/html/contact.html" target="_blank">contact.html</a> - envoyer un message</li>
+          <li>Tester <a href="src/html/admin.html" target="_blank">admin.html</a> - lire les messages</li>
+          <li>Tester <a href="src/html/actualites.html" target="_blank">actualites.html</a> - lire les actualités</li>
+        </ul>
+      `;
+    }
+
+    // Run tests on page load
+    window.addEventListener('load', runTests);
+  </script>
+</body>
+</html>
