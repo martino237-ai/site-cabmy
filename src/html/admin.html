@@ -8,7 +8,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./../css/admin.css">
   <script src="../js/supabase.min.js"></script>
-  <script src="../../supabase-sdk.js"></script>
+  <script src="../js/supabase-config.js"></script>
+  <script src="../js/admin.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -25,8 +26,8 @@
     <p class="login-sub">CABMY — Espace réservé</p>
  
     <div style="margin-bottom:14px;">
-      <label>Identifiant</label>
-      <input type="text" id="login-user" class="form-input" placeholder="admin">
+      <label>Email</label>
+      <input type="email" id="login-user" class="form-input" placeholder="admin@cabmy.fr">
     </div>
     <div style="margin-bottom:22px;">
       <label>Mot de passe</label>
@@ -41,7 +42,7 @@
       Connexion →
     </button>
     <div style="margin-top:18px;font-size:.73rem;color:var(--text-muted);text-align:center;">
-      Identifiants par défaut : <strong>admin</strong> / <strong>cabmy2024</strong>
+      Compte admin : <strong>admin@cabmy.fr</strong> / <strong>cabmy2011</strong>
     </div>
   </div>
 </div>
@@ -371,6 +372,11 @@
           </div>
         </div>
 
+        <div class="article-field">
+          <label for="art-date">Date de publication</label>
+          <input type="date" id="art-date" class="form-input">
+        </div>
+
         <div class="category-manager">
           <label>Ajouter une catégorie</label>
           <div class="category-manager-row">
@@ -445,7 +451,7 @@
  
 <script>
 /* ── AUTH ─────────────────────────────────────── */
-const ADMIN_USER = 'admin', ADMIN_PASS = 'cabmy2024';
+const ADMIN_USER = 'admin', ADMIN_PASS = 'cabmy2011';
 const DEFAULT_ARTICLE_CATEGORIES = [
   { value: 'resultats', label: '📊 Résultats', color: 'tag-resultats' },
   { value: 'vie', label: '🏫 Vie du collège', color: 'tag-vie' },
@@ -530,7 +536,7 @@ function doLogout() {
 const SUPABASE_URL = 'https://cqoyhtmowyzvpjdzypgs.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_mG8GhOAiTlu4q4avRhL5Qw_BoOzFn2F';
 const SUPABASE_PROXY_URL = 'http://localhost:8001/api';
-let supabaseClient = null;
+let adminSupabaseClient = null;
 let supabaseEnabled = false;
 let currentArticles = [];
 let currentArticleMediaItems = [];
@@ -541,7 +547,7 @@ function getLocalFallbackData(key) {
 }
 
 async function ensureSupabaseAuth() {
-  return !!supabaseClient;
+  return !!adminSupabaseClient;
 }
 
 // Attendre le chargement du SDK Supabase
@@ -553,12 +559,12 @@ async function initSupabaseClient() {
       if (window.supabase && window.supabase.createClient) {
         clearInterval(checkInterval);
         try {
-          supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+          adminSupabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
             auth: { persistSession: true, autoRefreshToken: true }
           });
-          supabaseEnabled = !!supabaseClient;
+          supabaseEnabled = !!adminSupabaseClient;
           ensureSupabaseAuth().then(() => {
-            supabaseEnabled = !!supabaseClient;
+            supabaseEnabled = !!adminSupabaseClient;
             console.log('✅ Supabase client initialisé');
             resolve(true);
           }).catch(() => {
@@ -623,7 +629,7 @@ async function getArticles() {
       return local;
     }
 
-    if (!supabaseClient) {
+    if (!adminSupabaseClient) {
       return [];
     }
 
@@ -636,7 +642,7 @@ async function getArticles() {
 
     for (const columns of columnSets) {
       try {
-        const { data: rows, error } = await supabaseClient.from('articles').select(columns);
+        const { data: rows, error } = await adminSupabaseClient.from('articles').select(columns);
         if (error) throw error;
         return Array.isArray(rows) ? rows : [];
       } catch (err) {
@@ -651,7 +657,7 @@ async function getArticles() {
 }
 
 async function saveArticleRemote(article, id) {
-  const payload = buildArticlePayloadVariants(article)[0];
+  const payload = buildArticlePayloadVariants(article)[1];
 
   try {
     const response = await fetch(`${SUPABASE_PROXY_URL}/articles${id ? `/${id}` : ''}`, {
@@ -688,10 +694,10 @@ async function deleteArticleRemote(id) {
 
 async function getMessages() {
   try {
-    if (!supabaseClient) {
+    if (!adminSupabaseClient) {
       return getLocalFallbackData('messages');
     }
-    const { data, error } = await supabaseClient.from('messages').select('*').order('created_at', { ascending: false });
+    const { data, error } = await adminSupabaseClient.from('messages').select('*').order('created_at', { ascending: false });
     if (error) throw error;
     return Array.isArray(data) && data.length ? data : getLocalFallbackData('messages');
   } catch (err) {
@@ -701,10 +707,10 @@ async function getMessages() {
 
 async function getPreinscriptions() {
   try {
-    if (!supabaseClient) {
+    if (!adminSupabaseClient) {
       return getLocalFallbackData('preinscriptions');
     }
-    const { data, error } = await supabaseClient.from('preinscriptions').select('*').order('created_at', { ascending: false });
+    const { data, error } = await adminSupabaseClient.from('preinscriptions').select('*').order('created_at', { ascending: false });
     if (error) throw error;
     return Array.isArray(data) && data.length ? data : getLocalFallbackData('preinscriptions');
   } catch (err) {
@@ -714,13 +720,13 @@ async function getPreinscriptions() {
 
 async function deleteMsgRemote(id) {
   if (!supabaseEnabled) throw new Error('Supabase non configuré');
-  const { error } = await supabaseClient.from('messages').delete().eq('id', id);
+  const { error } = await adminSupabaseClient.from('messages').delete().eq('id', id);
   if (error) throw error;
 }
 
 async function deletePIRemote(id) {
   if (!supabaseEnabled) throw new Error('Supabase non configuré');
-  const { error } = await supabaseClient.from('preinscriptions').delete().eq('id', id);
+  const { error } = await adminSupabaseClient.from('preinscriptions').delete().eq('id', id);
   if (error) throw error;
 }
 
@@ -1067,6 +1073,7 @@ function editArticle(i) {
   document.getElementById('art-titre').value   = a.titre || '';
   document.getElementById('art-cat').value     = a.cat || '';
   document.getElementById('art-statut').value  = a.statut || 'publie';
+  document.getElementById('art-date').value = a.date ? new Date(a.date).toISOString().slice(0, 10) : '';
   document.getElementById('art-resume').value  = a.resume || '';
   document.getElementById('art-contenu').value = a.contenu || '';
   document.getElementById('art-emoji').value   = a.emoji || '📰';
@@ -1104,7 +1111,9 @@ async function saveArticle(e) {
     mediaUrls: mediaUrls,
     mediaItems: mediaItems,
     mediaAlt:  document.getElementById('art-media-alt').value.trim(),
-    date:      new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })
+    date:      document.getElementById('art-date').value
+      ? new Date(`${document.getElementById('art-date').value}T12:00:00`).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
+      : new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })
   };
   if (article.mediaType === 'none') {
     article.mediaUrl = '';

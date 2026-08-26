@@ -1,34 +1,119 @@
 /* admin.js – Scripts spécifiques à la page Administration */
 
-// Système d'authentification simple
-const defaultUser = 'admin';
-const defaultPass = 'cabmy2024';
 let isAuthenticated = false;
+let currentUser = null;
 
-function doLogin() {
-  const user = document.getElementById('login-user')?.value;
-  const pass = document.getElementById('login-pass')?.value;
+// Authentification Supabase
+async function doLogin() {
+  const email = document.getElementById('login-user')?.value || '';
+  const password = document.getElementById('login-pass')?.value || '';
   const errorDiv = document.getElementById('login-error');
   
-  if (user === defaultUser && pass === defaultPass) {
-    isAuthenticated = true;
-    localStorage.setItem('cabmy-admin-auth', 'true');
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('admin-ui').style.display = 'block';
-  } else {
-    if (errorDiv) errorDiv.style.display = 'block';
+  if (!email || !password) {
+    if (errorDiv) {
+      errorDiv.textContent = '❌ Veuillez remplir tous les champs';
+      errorDiv.style.display = 'block';
+    }
+    return;
+  }
+
+  try {
+    const supabase = getSupabaseClient();
+    if (!supabase) {
+      throw new Error('Client Supabase non initialisé');
+    }
+
+    // Connexion via email/password
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email.includes('@') ? email : `${email}@cabmy.fr`,
+      password: password
+    });
+
+    if (error) {
+      console.error('Erreur de connexion:', error.message);
+      if (errorDiv) {
+        errorDiv.textContent = `❌ ${error.message}`;
+        errorDiv.style.display = 'block';
+      }
+      return;
+    }
+
+    if (data.session) {
+      isAuthenticated = true;
+      currentUser = data.session.user;
+      
+      // Sauvegarder la session
+      localStorage.setItem('supabase.session', JSON.stringify(data.session));
+      
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-ui').style.display = 'block';
+      
+      // Afficher le nom/email de l'utilisateur
+      const userDisplay = document.getElementById('user-display');
+      if (userDisplay) {
+        userDisplay.textContent = currentUser.email || 'Admin';
+      }
+      
+      console.log('✅ Connecté en tant que:', currentUser.email);
+    }
+  } catch (err) {
+    console.error('Erreur:', err);
+    if (errorDiv) {
+      errorDiv.textContent = `❌ Erreur: ${err.message}`;
+      errorDiv.style.display = 'block';
+    }
   }
 }
 
 // Vérifier l'authentification au chargement
-function checkAuth() {
-  if (localStorage.getItem('cabmy-admin-auth')) {
-    isAuthenticated = true;
-    const loginScreen = document.getElementById('login-screen');
-    const adminUI = document.getElementById('admin-ui');
-    if (loginScreen) loginScreen.style.display = 'none';
-    if (adminUI) adminUI.style.display = 'block';
+async function checkAuth() {
+  try {
+    const supabase = getSupabaseClient();
+    if (!supabase) return;
+
+    const { data, error } = await supabase.auth.getSession();
+    
+    if (data?.session?.user) {
+      isAuthenticated = true;
+      currentUser = data.session.user;
+      
+      const loginScreen = document.getElementById('login-screen');
+      const adminUI = document.getElementById('admin-ui');
+      if (loginScreen) loginScreen.style.display = 'none';
+      if (adminUI) adminUI.style.display = 'block';
+      
+      const userDisplay = document.getElementById('user-display');
+      if (userDisplay) {
+        userDisplay.textContent = currentUser.email || 'Admin';
+      }
+    }
+  } catch (err) {
+    console.error('Erreur checkAuth:', err.message);
   }
+}
+
+// Déconnexion
+async function doLogout() {
+  try {
+    const supabase = getSupabaseClient();
+    if (supabase) {
+      await supabase.auth.signOut();
+    }
+  } catch (err) {
+    console.error('Erreur logout:', err);
+  }
+  
+  isAuthenticated = false;
+  currentUser = null;
+  localStorage.removeItem('supabase.session');
+  
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('admin-ui').style.display = 'none';
+  document.getElementById('login-error').style.display = 'none';
+  
+  // Réinitialiser les champs
+  document.getElementById('login-user').value = '';
+  document.getElementById('login-pass').value = '';
 }
 
 function showSection(section) {

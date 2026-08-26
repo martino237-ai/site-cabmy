@@ -22,8 +22,8 @@
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { font-family: 'Outfit', sans-serif; color: var(--text); background: var(--surface); overflow-x: hidden; }
-    h1,h2,h3,h4 { font-family: 'Cormorant Garamond', serif; }
+    body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--surface); overflow-x: hidden; }
+    h1,h2,h3,h4 { font-family: 'Playfair Display', serif; }
     a { text-decoration: none; }
     img { max-width: 100%; }
  
@@ -42,7 +42,7 @@
       background: none; border: 1px solid rgba(255,255,255,.2);
       color: rgba(255,255,255,.6); font-size: .72rem; font-weight: 600;
       padding: 2px 9px; border-radius: 20px; cursor: pointer;
-      transition: all .2s; font-family: 'Outfit', sans-serif;
+      transition: all .2s; font-family: 'DM Sans', sans-serif;
     }
     .lang-btn.lang-active { background: var(--gold); border-color: var(--gold); color: var(--dark); }
  
@@ -51,7 +51,7 @@
     ═══════════════════════════════════════ */
     .navbar {
       position: sticky; top: 0; z-index: 100;
-      background: rgba(13,27,56,.97); backdrop-filter: blur(20px);
+      background: rgba(13,27,56,.97); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(201,168,76,.15);
       height: var(--nav-h); display: flex; align-items: center;
       box-shadow: 0 2px 32px rgba(0,0,0,.25);
@@ -68,7 +68,7 @@
       box-shadow: 0 0 0 2px rgba(201,168,76,.4);
     }
     .nav-logo img { width: 100%; height: 100%; object-fit: cover; }
-    .brand-name { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 700; color: #fff; letter-spacing: .04em; }
+    .brand-name { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: #fff; letter-spacing: .04em; }
     .brand-sub  { font-size: .68rem; color: rgba(255,255,255,.4); }
  
     .nav-links { display: flex; align-items: center; gap: 2px; }
@@ -122,7 +122,7 @@
  
     .mobile-menu {
       display: none; position: fixed; inset: 0;
-      background: rgba(13,27,56,.97); backdrop-filter: blur(20px);
+      background: rgba(13,27,56,.97); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
       z-index: 200; padding: 80px 32px 32px;
       flex-direction: column; gap: 6px;
     }
@@ -136,7 +136,7 @@
     .mobile-link {
       color: rgba(255,255,255,.75); font-size: 1.1rem; font-weight: 500;
       padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,.08);
-      font-family: 'Cormorant Garamond', serif; transition: color .2s;
+      font-family: 'Playfair Display', serif; transition: color .2s;
     }
     .mobile-link:hover, .mobile-link.active { color: var(--gold-warm); }
     .mobile-cta {
@@ -185,6 +185,7 @@
       border: 1px solid rgba(201,168,76,.3); border-radius: 14px;
       padding: 18px 24px; display: flex; align-items: center; gap: 16px;
       margin-top: 28px; max-width: 560px;
+      -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
     }
     .download-icon {
@@ -199,7 +200,7 @@
       background: var(--gold); color: var(--dark); font-weight: 700;
       padding: 10px 20px; border-radius: 10px; font-size: .82rem;
       display: flex; align-items: center; gap: 7px; white-space: nowrap;
-      transition: all .25s; border: none; cursor: pointer; font-family: 'Outfit', sans-serif;
+      transition: all .25s; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif;
     }
     .download-btn:hover { background: var(--gold-warm); transform: translateY(-1px); }
  
@@ -246,7 +247,7 @@
       background: var(--gold); color: var(--dark);
       font-weight: 700; font-size: .875rem; padding: 11px 20px;
       border-radius: 10px; border: none; cursor: pointer;
-      font-family: 'Outfit', sans-serif; transition: all .25s;
+      font-family: 'DM Sans', sans-serif; transition: all .25s;
       box-shadow: 0 4px 16px rgba(201,168,76,.25); white-space: nowrap;
     }
     .btn-primary:hover { background: var(--gold-warm); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,.35); }
@@ -254,7 +255,7 @@
       display: inline-flex; align-items: center; gap: 8px; justify-content: center;
       background: none; border: 1.5px solid var(--blue); color: var(--blue);
       font-weight: 600; font-size: .875rem; padding: 10px 20px;
-      border-radius: 10px; cursor: pointer; font-family: 'Outfit', sans-serif;
+      border-radius: 10px; cursor: pointer; font-family: 'DM Sans', sans-serif;
       transition: all .25s;
     }
     .btn-outline-blue:hover { background: var(--blue); color: #fff; }
@@ -347,7 +348,7 @@
       font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
       color: var(--muted); margin-bottom: 4px;
     }
-    .timeline-title { font-size: 1.15rem; font-weight: 700; color: var(--blue); margin-bottom: 4px; font-family: 'Cormorant Garamond', serif; }
+    .timeline-title { font-size: 1.15rem; font-weight: 700; color: var(--blue); margin-bottom: 4px; font-family: 'Playfair Display', serif; }
     .timeline-date { font-size: .82rem; font-weight: 700; color: var(--gold); margin-bottom: 6px; }
     .timeline-desc { font-size: .855rem; color: var(--text-2); line-height: 1.65; }
  
@@ -365,7 +366,7 @@
       flex: 1; padding: 16px 12px; text-align: center;
       font-size: .85rem; font-weight: 600; color: var(--muted);
       background: none; border: none; cursor: pointer;
-      font-family: 'Outfit', sans-serif; transition: all .25s;
+      font-family: 'DM Sans', sans-serif; transition: all .25s;
       border-right: 1px solid var(--border); position: relative;
     }
     .fee-tab:last-child { border-right: none; }
@@ -460,7 +461,7 @@
     ═══════════════════════════════════════ */
     footer { background: var(--dark); padding: 56px 24px 28px; }
     .footer-grid { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
-    .footer-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .footer-brand { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
     .footer-desc { font-size: .82rem; color: rgba(255,255,255,.35); line-height: 1.7; }
     .footer-col-title { font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
     .footer-link { display: block; font-size: .82rem; color: rgba(255,255,255,.4); padding: 4px 0; transition: color .2s; }
@@ -495,7 +496,7 @@
     }
     .fees-section-flag { font-size: 2.2rem; position: relative; z-index: 1; }
     .fees-section-title {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Playfair Display', serif;
       font-size: 1.4rem; font-weight: 700; color: #fff;
       position: relative; z-index: 1;
     }
@@ -545,7 +546,7 @@
       display: flex; justify-content: space-between; align-items: center;
     }
     .fee-card-level {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Playfair Display', serif;
       font-size: 1.3rem; font-weight: 700; color: var(--blue);
     }
     .fee-card-exam-badge {
@@ -568,7 +569,7 @@
     }
     .fee-price-label { font-size: .75rem; color: var(--muted); font-weight: 500; }
     .fee-price-value {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Playfair Display', serif;
       font-size: 1.2rem; font-weight: 700;
     }
     .fee-price-value.blue { color: var(--blue); }

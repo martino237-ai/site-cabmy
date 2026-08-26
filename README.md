@@ -1,5 +1,26 @@
 # CABMY - Site web du Collège Adventiste Bilingue Marathana de Yaoundé
 
+## ⚠️ ACTIONS MANUELLES REQUISES (à faire avant d'utiliser l'admin)
+
+Deux étapes doivent être faites **une seule fois**, directement dans le tableau de bord Supabase (https://supabase.com/dashboard). Personne d'autre que toi ne peut les faire — elles ne sont pas dans le code.
+
+**Étape 1 — Créer le compte administrateur**
+1. Ouvrir https://supabase.com/dashboard/project/cqoyhtmowyzvpjdzypgs
+2. Menu de gauche → **Authentication** → **Users**
+3. Cliquer **Add user** → **Create new user**
+4. Renseigner un email réel et un mot de passe fort → **Create user**
+5. C'est cet email + ce mot de passe qui serviront à se connecter sur `admin.html` (l'ancien mot de passe `admin` / `cabmy2024` codé en dur ne fonctionne plus).
+
+**Étape 2 — Activer les règles de sécurité (RLS)**
+1. Toujours dans le tableau de bord Supabase → menu de gauche → **SQL Editor**
+2. Cliquer **New query**
+3. Ouvrir le fichier [`supabase-rls.sql`](./supabase-rls.sql) à la racine de ce projet, copier tout son contenu, le coller dans l'éditeur SQL
+4. Cliquer **Run**
+
+Sans l'étape 2, les données (messages, pré-inscriptions) restent lisibles par n'importe qui disposant de la clé publique du site. Sans l'étape 1, personne ne peut se connecter à `admin.html`.
+
+---
+
 ## Présentation
 
 Ce projet est un site web statique pour le Collège Adventiste Bilingue Marathana de Yaoundé (CABMY).
@@ -140,6 +161,21 @@ L'interface `admin.html` permet de gérer les articles et les formulaires depuis
 - Page d'administration : http://localhost:8000/src/html/admin.html
 - Page publique des actualités : http://localhost:8000/src/html/actualites.html
 
+### Authentification admin
+L'accès à `admin.html` est protégé par une vraie connexion **Supabase Auth**
+(email + mot de passe) — il n'y a plus de mot de passe codé en dur dans le
+code source. Avant la première utilisation :
+
+1. Ouvrir le tableau de bord Supabase → **Authentication → Users → Add user**.
+2. Créer un compte avec une adresse email réelle et un mot de passe fort.
+3. Exécuter `supabase-rls.sql` (voir plus bas) pour activer les règles de
+   sécurité qui réservent la lecture/écriture des données sensibles à ce
+   compte connecté.
+4. Se connecter sur `admin.html` avec cet email/mot de passe.
+
+La session reste active entre deux rafraîchissements de page (gérée par le
+SDK Supabase) ; utiliser le bouton *Déconnexion* pour la clôturer.
+
 ### Fonctionnement actuel
 - Les articles créés dans l'admin sont sauvegardés localement dans le navigateur via `localStorage`.
 - La page publique lit ces données pour afficher les articles immédiatement.
@@ -164,6 +200,12 @@ node supabase-proxy.js
 Le proxy écoute sur :
 - http://localhost:8001/health
 - http://localhost:8001/api/articles
+
+Le proxy détient la clé `service_role` (accès complet, contourne RLS) : il
+n'accepte par défaut que les requêtes venant de `http://localhost:8000`. Pour
+l'utiliser depuis un autre domaine (site déployé), définir la variable
+d'environnement `ALLOWED_ORIGINS` (liste séparée par des virgules) avec le(s)
+domaine(s) réel(s) avant de lancer `node supabase-proxy.js`.
 
 ### Important
 - Si Supabase n'est pas configuré avec une vraie clé service role, le proxy reste en mode secours et ne bloque pas l'administration.
@@ -268,11 +310,15 @@ create table if not exists preinscriptions (
 
 ### Règles de sécurité Supabase
 
-Pour le développement, vous pouvez désactiver RLS sur ces tables. Pour un usage plus sûr, créez des politiques qui autorisent :
-- `SELECT` sur `articles`, `messages`, `preinscriptions`
-- `INSERT` sur `messages` et `preinscriptions`
-- `DELETE` sur `messages` et `preinscriptions`
+Exécutez `supabase-rls.sql` dans l'éditeur SQL du tableau de bord Supabase.
+Il active RLS et crée des politiques strictes :
+- `SELECT` public sur `articles` (nécessaire pour la page actualités et le tableau de bord).
+- `INSERT` public sur `messages` et `preinscriptions` (formulaires publics), mais **aucune lecture publique**.
+- `SELECT`/`DELETE` sur `messages` et `preinscriptions` réservés aux utilisateurs authentifiés (le compte admin).
+- Aucune écriture publique sur `articles` : la création/modification/suppression passe uniquement par `supabase-proxy.js`, qui utilise la clé `service_role` côté serveur.
 
+> ⚠️ Ne jamais désactiver RLS en production : sans ces règles, n'importe qui connaissant la clé publique peut lire ou supprimer les messages et pré-inscriptions des familles, ou modifier les articles directement via l'API Supabase.
+>
 > Le mot de passe administrateur ou les clés secrètes ne doivent jamais être ajoutés en clair dans le code source du projet.
 
 ### Important : Utiliser un serveur local pour tester
@@ -313,7 +359,7 @@ Pour déployer le site sur un hébergement statique :
 - Faire une sauvegarde régulière du projet
 - Mettre à jour le contenu des actualités chaque mois
 - Vérifier que les coordonnées de contact sont à jour
-- Remplacer le mot de passe ADMIN par une authentification plus sécurisée avant publication
+- Vérifier que RLS est actif sur les 3 tables Supabase (`supabase-rls.sql` exécuté) avant publication
 
 ## Notes importantes
 

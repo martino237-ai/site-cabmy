@@ -252,7 +252,7 @@
 <footer class="py-12" style="background:var(--dark)">
   <div class="max-w-7xl mx-auto px-4 grid lg:grid-cols-4 gap-8">
     <div><div class="font-bold text-white mb-3" style="font-family:'Playfair Display',serif">CABMY</div><p class="text-white/40 text-sm">Collège Adventiste Bilingue Marathana de Yaoundé.</p></div>
-    <div><div class="font-bold text-white mb-3">Navigation</div><div class="flex flex-col gap-2 text-sm text-white/50"><a href="index.html" class="hover:text-white">Accueil</a><a href="apropos.html" class="hover:text-white">À propos</a><a href="enseignements.html" class="hover:text-white">Enseignements</a><a href="admissions.html" class="hover:text-white">Admissions</a><a href="../../404.html" class="hover:text-white">Erreur 404</a></div></div>
+    <div><div class="font-bold text-white mb-3">Navigation</div><div class="flex flex-col gap-2 text-sm text-white/50"><a href="../../index.html" class="hover:text-white">Accueil</a><a href="apropos.html" class="hover:text-white">À propos</a><a href="enseignements.html" class="hover:text-white">Enseignements</a><a href="admissions.html" class="hover:text-white">Admissions</a><a href="../../404.html" class="hover:text-white">Erreur 404</a></div></div>
     <div><div class="font-bold text-white mb-3">Catégories</div><div class="flex flex-col gap-2 text-sm text-white/50"><a href="#" onclick="filterNews('resultats')" class="hover:text-white">Résultats</a><a href="#" onclick="filterNews('vie')" class="hover:text-white">Vie du collège</a><a href="#" onclick="filterNews('spiritualite')" class="hover:text-white">Spiritualité</a><a href="#" onclick="filterNews('soir')" class="hover:text-white">Cours du soir</a></div></div>
     <div><div class="font-bold text-white mb-3">Contact</div><div class="flex flex-col gap-2 text-sm text-white/50"><div>📍 Nyom II, Petit Marché · Yaoundé</div><div>📞 675 38 51 97</div><div>✉ contact@cabmy.cm</div></div></div>
   </div>
@@ -422,21 +422,21 @@
 
   function renderMediaBlock(article) {
     const mediaItems = getArticleMediaItems(article);
-    const mediaAlt = article.mediaAlt || article.titre || article.titleFr || article.titleEn || 'ActualitÃ©';
+    const mediaAlt = article.mediaAlt || article.titre || article.titleFr || article.titleEn || 'Actualité';
     const safeAlt = window.escapeNewsHtml ? window.escapeNewsHtml(mediaAlt) : mediaAlt;
 
     if (mediaItems.length) {
       const slides = mediaItems.map((item, index) => {
         const safeUrl = window.escapeNewsHtml ? window.escapeNewsHtml(item.url) : item.url;
         if (item.type === 'video') {
-          return `<div class="news-media-slide ${index === 0 ? 'active' : ''}"><video controls preload="metadata"><source src="${safeUrl}">Votre navigateur ne supporte pas la vidÃ©o.</video></div>`;
+          return `<div class="news-media-slide ${index === 0 ? 'active' : ''}"><video controls preload="metadata"><source src="${safeUrl}">Votre navigateur ne supporte pas la vidéo.</video></div>`;
         }
         return `<div class="news-media-slide ${index === 0 ? 'active' : ''}"><img src="${safeUrl}" alt="${safeAlt}" loading="lazy" /></div>`;
       }).join('');
       const controls = mediaItems.length > 1 ? `
-        <button type="button" class="news-media-btn prev" aria-label="MÃ©dia prÃ©cÃ©dent">â€¹</button>
-        <button type="button" class="news-media-btn next" aria-label="MÃ©dia suivant">â€º</button>
-        <div class="news-media-dots">${mediaItems.map((_, index) => `<button type="button" class="news-media-dot ${index === 0 ? 'active' : ''}" data-index="${index}" aria-label="Voir le mÃ©dia ${index + 1}"></button>`).join('')}</div>
+        <button type="button" class="news-media-btn prev" aria-label="Média précédent">‹</button>
+        <button type="button" class="news-media-btn next" aria-label="Média suivant">›</button>
+        <div class="news-media-dots">${mediaItems.map((_, index) => `<button type="button" class="news-media-dot ${index === 0 ? 'active' : ''}" data-index="${index}" aria-label="Voir le média ${index + 1}"></button>`).join('')}</div>
       ` : '';
 
       return `<div class="news-media-carousel"><div class="news-media-track">${slides}</div>${controls}</div>`;
