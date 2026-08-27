@@ -61,7 +61,7 @@ function sendJson(res, statusCode, payload, origin) {
 function normalizePayload(body) {
   if (!body || typeof body !== 'object') return {};
   const payload = {};
-  for (const key of ['titre', 'cat', 'statut', 'resume', 'contenu', 'emoji', 'date']) {
+  for (const key of ['titre', 'cat', 'statut', 'featured', 'resume', 'contenu', 'emoji', 'date']) {
     if (body[key] !== undefined) payload[key] = body[key];
   }
   const mediaColumns = { mediaType: 'mediatype', mediaUrl: 'mediaurl', mediaUrls: 'mediaurls', mediaAlt: 'mediaalt' };
@@ -78,7 +78,8 @@ function normalizeArticleRow(article) {
     mediaType: article.mediaType ?? article.mediatype ?? null,
     mediaUrl: article.mediaUrl ?? article.mediaurl ?? '',
     mediaUrls: article.mediaUrls ?? article.mediaurls ?? [],
-    mediaAlt: article.mediaAlt ?? article.mediaalt ?? ''
+    mediaAlt: article.mediaAlt ?? article.mediaalt ?? '',
+    featured: Boolean(article.featured)
   };
 }
 
@@ -216,7 +217,7 @@ const server = http.createServer(async (req, res) => {
       }
 
       try {
-        const { data, error } = await client.from('articles').select('id,titre,cat,statut,resume,contenu,emoji,date,mediaType,mediaUrl,mediaUrls,mediaAlt,created_at').order('created_at', { ascending: false });
+        const { data, error } = await client.from('articles').select('id,titre,cat,statut,featured,resume,contenu,emoji,date,mediaType,mediaUrl,mediaUrls,mediaAlt,created_at').order('created_at', { ascending: false });
         if (error) throw error;
         sendJson(res, 200, data || []);
       } catch (error) {
@@ -244,7 +245,7 @@ const server = http.createServer(async (req, res) => {
         }
         const client = getSupabaseClient();
         if (!client) {
-          sendJson(res, 200, { id: payload.id || `local-${Date.now()}`, storedLocally: true });
+          sendJson(res, 503, { error: 'Supabase non configuré sur Render' }, origin);
           return;
         }
 
@@ -253,7 +254,7 @@ const server = http.createServer(async (req, res) => {
           if (error) throw error;
           sendJson(res, 200, { id: data?.id || null });
         } catch (error) {
-          sendJson(res, 200, { id: payload.id || `local-${Date.now()}`, storedLocally: true });
+          sendJson(res, 500, { error: error.message || 'Enregistrement impossible' }, origin);
         }
       });
       return;
@@ -275,7 +276,7 @@ const server = http.createServer(async (req, res) => {
       }
       const client = getSupabaseClient();
       if (!client) {
-        sendJson(res, 200, { id, storedLocally: true });
+        sendJson(res, 503, { error: 'Supabase non configuré sur Render' }, origin);
         return;
       }
 
@@ -284,7 +285,7 @@ const server = http.createServer(async (req, res) => {
         if (error) throw error;
         sendJson(res, 200, { id });
       } catch (error) {
-        sendJson(res, 200, { id, storedLocally: true });
+        sendJson(res, 500, { error: error.message || 'Modification impossible' }, origin);
       }
     });
     return;
@@ -294,7 +295,7 @@ const server = http.createServer(async (req, res) => {
     const id = articleMatch[1];
     const client = getSupabaseClient();
     if (!client) {
-      sendJson(res, 200, { ok: true, storedLocally: true });
+      sendJson(res, 503, { error: 'Supabase non configuré sur Render' }, origin);
       return;
     }
 
@@ -303,7 +304,7 @@ const server = http.createServer(async (req, res) => {
       if (error) throw error;
       sendJson(res, 200, { ok: true });
     } catch (error) {
-      sendJson(res, 200, { ok: true, storedLocally: true });
+      sendJson(res, 500, { error: error.message || 'Suppression impossible' }, origin);
     }
     return;
   }

@@ -22,6 +22,7 @@ create table if not exists public.articles (
   titre text not null,
   cat text not null default 'actualite', -- Category: resultats, spiritualite, soir, actualite, etc.
   statut text not null default 'brouillon', -- brouillon, publie, archive
+  featured boolean not null default false,
   resume text,
   contenu text,
   emoji text default '📰',
@@ -31,6 +32,8 @@ create table if not exists public.articles (
   mediaUrls jsonb, -- Pour multiple medias
   mediaAlt text -- Alt text pour accessibilité
 );
+
+alter table public.articles add column if not exists featured boolean not null default false;
 
 -- Table messages (formulaire de contact)
 create table if not exists public.messages (

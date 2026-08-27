@@ -350,6 +350,7 @@
       seen.add(key);
       return true;
     }).sort((a, b) => {
+      if (Boolean(a.featured) !== Boolean(b.featured)) return a.featured ? -1 : 1;
       const aDate = a.dateSort || a.date || '';
       const bDate = b.dateSort || b.date || '';
       return String(bDate).localeCompare(String(aDate));
@@ -406,6 +407,7 @@
         <div class="article-card show card-hover rounded-2xl overflow-hidden border border-gray-100 shadow-sm" data-cat="${article.cat || 'all'}">
           ${mediaBlock}
           <div class="p-6">
+            ${article.featured ? '<span class="text-xs font-bold px-2 py-1 rounded" style="background:var(--gold);color:var(--dark)">⭐ À la une</span>' : ''}
             <span class="text-xs font-semibold px-2 py-1 rounded" style="background:var(--blue-light);color:var(--blue)">${category}</span>
             <h3 class="font-bold text-lg mt-3 mb-2" style="color:var(--blue)">${title}</h3>
             <p class="text-gray-500 text-sm mb-4 leading-relaxed">${summary}</p>

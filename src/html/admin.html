@@ -370,6 +370,13 @@
               <option value="brouillon">📝 Brouillon</option>
             </select>
           </div>
+          <div class="article-field">
+            <label for="art-featured">Mise en avant</label>
+            <label style="display:flex;gap:8px;align-items:center;min-height:44px;">
+              <input type="checkbox" id="art-featured">
+              À la une
+            </label>
+          </div>
         </div>
 
         <div class="article-field">
@@ -577,6 +584,7 @@ function buildArticlePayloadVariants(article) {
     titre: article.titre || '',
     cat: article.cat || '',
     statut: article.statut || 'publie',
+    featured: Boolean(article.featured),
     resume: article.resume || '',
     contenu: article.contenu || ''
   };
@@ -623,7 +631,7 @@ async function getArticles() {
     }
 
     const columnSets = [
-      'id,titre,cat,statut,resume,contenu,emoji,date,mediaType,mediaUrl,mediaUrls,mediaAlt,created_at',
+      'id,titre,cat,statut,featured,resume,contenu,emoji,date,mediaType,mediaUrl,mediaUrls,mediaAlt,created_at',
       'id,titre,cat,statut,resume,contenu,emoji,date,created_at',
       'id,titre,cat,statut,resume,contenu,date',
       'id,titre,cat,statut,date'
@@ -1062,6 +1070,7 @@ function editArticle(i) {
   document.getElementById('art-titre').value   = a.titre || '';
   document.getElementById('art-cat').value     = a.cat || '';
   document.getElementById('art-statut').value  = a.statut || 'publie';
+  document.getElementById('art-featured').checked = Boolean(a.featured);
   document.getElementById('art-date').value = a.date ? new Date(a.date).toISOString().slice(0, 10) : '';
   document.getElementById('art-resume').value  = a.resume || '';
   document.getElementById('art-contenu').value = a.contenu || '';
@@ -1092,6 +1101,7 @@ async function saveArticle(e) {
     titre:     document.getElementById('art-titre').value,
     cat:       document.getElementById('art-cat').value,
     statut:    document.getElementById('art-statut').value,
+    featured:  document.getElementById('art-featured').checked,
     resume:    document.getElementById('art-resume').value,
     contenu:   document.getElementById('art-contenu').value,
     emoji:     document.getElementById('art-emoji').value || '📰',
@@ -1134,6 +1144,7 @@ async function deleteArticle(i) {
   if (!a || !a.id) return;
   try {
     await deleteArticleRemote(a.id);
+    setData('articles', (getData('articles') || []).filter(article => String(article.id) !== String(a.id)));
     await renderArticlesTable();
     await renderRecentArticles();
     await updateCounts();
