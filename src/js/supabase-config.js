@@ -2,8 +2,8 @@
 
 // Configuration depuis .env.local (sera injectée par le serveur)
 const SUPABASE_CONFIG = {
-  url: 'https://cqoyhtmowyzvpjdzypgs.supabase.co',
-  anonKey: 'sb_publishable_mG8GhOAiTlu4q4avRhL5Qw_BoOzFn2F'
+  url: 'https://dkhgaehodxugrwpdvbuk.supabase.co',
+  anonKey: 'sb_publishable_27QjPv6iSD64BTyIjm--jA_j3oJwSkv'
 };
 
 // Initialiser le client Supabase avec REST API
