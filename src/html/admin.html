@@ -42,7 +42,7 @@
       Connexion →
     </button>
     <div style="margin-top:18px;font-size:.73rem;color:var(--text-muted);text-align:center;">
-      Compte admin : <strong>admin@cabmy.fr</strong> / <strong>cabmy2011</strong>
+      Utilisez votre compte Supabase administrateur.
     </div>
   </div>
 </div>
@@ -451,7 +451,6 @@
  
 <script>
 /* ── AUTH ─────────────────────────────────────── */
-const ADMIN_USER = 'admin', ADMIN_PASS = 'cabmy2011';
 const DEFAULT_ARTICLE_CATEGORIES = [
   { value: 'resultats', label: '📊 Résultats', color: 'tag-resultats' },
   { value: 'vie', label: '🏫 Vie du collège', color: 'tag-vie' },
@@ -507,24 +506,14 @@ function addCustomCategory() {
   renderCategoryOptions(normalizedValue);
   if (input) input.value = '';
 }
- 
-function doLogin() {
-  const u = document.getElementById('login-user').value;
-  const p = document.getElementById('login-pass').value;
-  if (u === ADMIN_USER && p === ADMIN_PASS) {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('admin-ui').style.display = 'block';
-    initSupabaseClient().then(() => initAdmin());
-  } else {
-    const err = document.getElementById('login-error');
-    err.style.display = 'flex';
-    setTimeout(() => err.style.display = 'none', 3500);
-  }
+
+const loginPassInput = document.getElementById('login-pass');
+if (loginPassInput) {
+  loginPassInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') doLogin();
+  });
 }
-document.getElementById('login-pass').addEventListener('keydown', e => {
-  if (e.key === 'Enter') doLogin();
-});
- 
+
 function doLogout() {
   document.getElementById('admin-ui').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';
