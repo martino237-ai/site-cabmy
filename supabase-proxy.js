@@ -7,6 +7,9 @@ const { google } = require('googleapis');
 require('dotenv').config({ path: '.env.local' });
 
 const PORT = Number(process.env.PORT || 8001);
+const APP_ORIGIN = (process.env.APP_ORIGIN || process.env.PUBLIC_URL || `http://localhost:${PORT}`).replace(/\/$/, '');
+const GOOGLE_OAUTH_REDIRECT_URI = process.env.GOOGLE_OAUTH_REDIRECT_URI || new URL('/oauth2callback', APP_ORIGIN).toString();
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'http://localhost:8000,http://localhost:8001,https://cabmy.netlify.app,https://site-cabmy.onrender.com').split(',').map(item => item.trim()).filter(Boolean);
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://dkhgaehodxugrwpdvbuk.supabase.co';
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 const GOOGLE_DRIVE_FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID || '1PVlizDx7kuKO7NYp9VgchePO-K77_e_w';
@@ -36,8 +39,22 @@ function getSupabaseClient() {
   }
 }
 
-function sendJson(res, statusCode, payload) {
-  res.writeHead(statusCode, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+function getAllowedOrigin(origin) {
+  if (!origin) return '*';
+  if (ALLOWED_ORIGINS.includes(origin)) return origin;
+  if (origin.startsWith('http://localhost:')) return origin;
+  if (origin === 'null') return '*';
+  return '*';
+}
+
+function sendJson(res, statusCode, payload, origin) {
+  const allowedOrigin = getAllowedOrigin(origin || '*');
+  res.writeHead(statusCode, {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': allowedOrigin,
+    'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+  });
   res.end(JSON.stringify(payload));
 }
 
@@ -98,7 +115,7 @@ function getOAuthClient() {
   if (!fs.existsSync(filePath)) return null;
   const config = JSON.parse(fs.readFileSync(filePath, 'utf8'));
   const credentials = config.installed || config.web || config;
-  return new google.auth.OAuth2(credentials.client_id, credentials.client_secret, 'http://localhost:8001/oauth2callback');
+  return new google.auth.OAuth2(credentials.client_id, credentials.client_secret, GOOGLE_OAUTH_REDIRECT_URI);
 }
 
 function parseDataUrl(value) {
@@ -136,20 +153,31 @@ async function uploadArticleMedia(payload) {
 }
 
 const server = http.createServer(async (req, res) => {
+  const origin = req.headers.origin || '*';
   const url = new URL(req.url, `http://${req.headers.host}`);
 
   if (req.method === 'OPTIONS') {
+    const allowedOrigin = getAllowedOrigin(origin);
     res.writeHead(200, {
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': allowedOrigin,
       'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type'
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization'
     });
     res.end();
     return;
   }
 
   if (url.pathname === '/health') {
-    sendJson(res, 200, { ok: true });
+    sendJson(res, 200, { ok: true }, origin);
+    return;
+  }
+
+  if (url.pathname === '/' || url.pathname === '/api') {
+    sendJson(res, 200, {
+      ok: true,
+      service: 'cabmy-proxy',
+      endpoints: ['/health', '/api/articles', '/auth/google']
+    }, origin);
     return;
   }
 
