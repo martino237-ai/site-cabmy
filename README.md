@@ -207,6 +207,18 @@ l'utiliser depuis un autre domaine (site déployé), définir la variable
 d'environnement `ALLOWED_ORIGINS` (liste séparée par des virgules) avec le(s)
 domaine(s) réel(s) avant de lancer `node supabase-proxy.js`.
 
+### Configuration Render obligatoire
+
+Render ne reçoit pas le fichier `.env.local`. Dans **Environment** du service,
+ajouter `SUPABASE_URL` avec l'URL du projet actif et `SUPABASE_SERVICE_ROLE_KEY`
+avec la clé secrète `service_role` de Supabase. Sans ces deux variables, le
+proxy fonctionne en mode secours et les articles restent seulement dans le
+navigateur. Pour le site CABMY, définir aussi `ALLOWED_ORIGINS` avec
+`https://cabmy-maranatha.netlify.app` et `https://cabmy.netlify.app`.
+
+Exécuter [`supabase-deploy.sql`](./supabase-deploy.sql) dans le SQL Editor du
+même projet Supabase avant le premier ajout d'article.
+
 ### Important
 - Si Supabase n'est pas configuré avec une vraie clé service role, le proxy reste en mode secours et ne bloque pas l'administration.
 - Les données restent accessibles localement pour éviter que l'admin ne cesse de fonctionner.

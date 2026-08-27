@@ -666,12 +666,8 @@ async function saveArticleRemote(article, id) {
     if (!response.ok) throw new Error(data?.error || 'Proxy unavailable');
     return data?.id || id || null;
   } catch (err) {
-    console.warn('Proxy save failed, fallback localStorage', err);
-    const existing = getData('articles') || [];
-    const saved = { ...payload, id: id || `local-${Date.now()}` };
-    const next = id ? existing.map(a => (a.id === id ? saved : a)) : [saved, ...existing];
-    setData('articles', next);
-    return saved.id;
+    console.error('Enregistrement distant impossible', err);
+    throw err;
   }
 }
 
@@ -682,10 +678,8 @@ async function deleteArticleRemote(id) {
     if (!response.ok) throw new Error(data?.error || 'Proxy unavailable');
     return true;
   } catch (err) {
-    console.warn('Proxy delete failed', err);
-    const existing = getData('articles') || [];
-    setData('articles', existing.filter(a => a.id !== id));
-    return true;
+    console.error('Suppression distante impossible', err);
+    throw err;
   }
 }
 
