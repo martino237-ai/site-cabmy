@@ -18,13 +18,14 @@ async function doLogin() {
   }
 
   try {
-    const supabase = getSupabaseClient();
-    if (!supabase) {
-      throw new Error('Client Supabase non initialisé');
-    }
+    const authClient = window.supabase?.createClient
+      ? window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey, {
+          auth: { persistSession: true, autoRefreshToken: true }
+        })
+      : getSupabaseClient();
+    if (!authClient) throw new Error('Client Supabase non initialisé');
 
-    // Connexion via email/password
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await authClient.auth.signInWithPassword({
       email: email.includes('@') ? email : `${email}@cabmy.fr`,
       password: password
     });
@@ -42,9 +43,6 @@ async function doLogin() {
       isAuthenticated = true;
       currentUser = data.session.user;
       
-      // Sauvegarder la session
-      localStorage.setItem('supabase.session', JSON.stringify(data.session));
-      
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('admin-ui').style.display = 'block';
       
@@ -52,6 +50,13 @@ async function doLogin() {
       const userDisplay = document.getElementById('user-display');
       if (userDisplay) {
         userDisplay.textContent = currentUser.email || 'Admin';
+      }
+
+      if (typeof initSupabaseClient === 'function') {
+        await initSupabaseClient();
+      }
+      if (typeof initAdmin === 'function') {
+        await initAdmin();
       }
       
       console.log('✅ Connecté en tant que:', currentUser.email);
@@ -68,7 +73,11 @@ async function doLogin() {
 // Vérifier l'authentification au chargement
 async function checkAuth() {
   try {
-    const supabase = getSupabaseClient();
+    const supabase = window.supabase?.createClient
+      ? window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey, {
+          auth: { persistSession: true, autoRefreshToken: true }
+        })
+      : getSupabaseClient();
     if (!supabase) return;
 
     const { data, error } = await supabase.auth.getSession();
@@ -85,6 +94,13 @@ async function checkAuth() {
       const userDisplay = document.getElementById('user-display');
       if (userDisplay) {
         userDisplay.textContent = currentUser.email || 'Admin';
+      }
+
+      if (typeof initSupabaseClient === 'function') {
+        await initSupabaseClient();
+      }
+      if (typeof initAdmin === 'function') {
+        await initAdmin();
       }
     }
   } catch (err) {
