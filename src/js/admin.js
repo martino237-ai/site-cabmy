@@ -18,10 +18,9 @@ async function doLogin() {
   }
 
   try {
-    const authClient = window.supabase?.createClient
-      ? window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey, {
-          auth: { persistSession: true, autoRefreshToken: true }
-        })
+    if (typeof initSupabaseClient === 'function') await initSupabaseClient();
+    const authClient = typeof adminSupabaseClient !== 'undefined' && adminSupabaseClient
+      ? adminSupabaseClient
       : getSupabaseClient();
     if (!authClient) throw new Error('Client Supabase non initialisé');
 
@@ -73,10 +72,9 @@ async function doLogin() {
 // Vérifier l'authentification au chargement
 async function checkAuth() {
   try {
-    const supabase = window.supabase?.createClient
-      ? window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey, {
-          auth: { persistSession: true, autoRefreshToken: true }
-        })
+    if (typeof initSupabaseClient === 'function') await initSupabaseClient();
+    const supabase = typeof adminSupabaseClient !== 'undefined' && adminSupabaseClient
+      ? adminSupabaseClient
       : getSupabaseClient();
     if (!supabase) return;
 
