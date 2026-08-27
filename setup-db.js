@@ -4,7 +4,7 @@ require('dotenv').config({ path: '.env.local' });
 const https = require('https');
 const fs = require('fs');
 
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://dkhgaehodxugrwpdvbuk.supabase.co';
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://cqoyhtmowyzvpjdzypgs.supabase.co';
 const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 if (!SERVICE_ROLE_KEY) {
