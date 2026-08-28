@@ -266,7 +266,7 @@ const server = http.createServer(async (req, res) => {
         sendJson(res, 200, data || []);
       } catch (error) {
         try {
-            const { data, error: fallbackError } = await client.from('articles').select('id,titre,cat,statut,resume,contenu,emoji,date,mediatype,mediaurl,mediaurls,mediaalt,created_at').order('created_at', { ascending: false });
+            const { data, error: fallbackError } = await client.from('articles').select('id,titre,cat,statut,featured,resume,contenu,emoji,date,mediatype,mediaurl,mediaurls,mediaalt,created_at').order('created_at', { ascending: false });
           if (fallbackError) throw fallbackError;
             sendJson(res, 200, (data || []).map(normalizeArticleRow));
         } catch (fallbackError) {

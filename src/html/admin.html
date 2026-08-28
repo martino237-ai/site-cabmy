@@ -814,7 +814,10 @@ async function renderArticlesTable() {
         <td>${mediaLabel}</td>
         <td><span class="tag ${category.color || 'tag-generic'}">${category.label || a.cat}</span></td>
         <td style="color:var(--text-muted);font-size:.82rem;">${a.date}</td>
-        <td><span class="${a.statut === 'publie' ? 'badge-pub' : 'badge-draft'}">${a.statut === 'publie' ? '✅ Publié' : '📝 Brouillon'}</span></td>
+        <td>
+          <span class="${a.statut === 'publie' ? 'badge-pub' : 'badge-draft'}">${a.statut === 'publie' ? '✅ Publié' : '📝 Brouillon'}</span>
+          ${a.featured ? '<span class="badge-pub" style="margin-left:4px;">⭐ À la une</span>' : ''}
+        </td>
         <td style="display:flex;gap:8px;flex-wrap:wrap;">
           <button class="btn-edit" onclick="editArticle(${i})">✏️ Modifier</button>
           <button class="btn-danger" onclick="deleteArticle(${i})">🗑️ Suppr.</button>
