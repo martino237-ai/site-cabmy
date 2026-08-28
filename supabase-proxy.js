@@ -30,7 +30,7 @@ const GOOGLE_GMAIL_OAUTH_TOKEN_JSON = process.env.GOOGLE_GMAIL_OAUTH_TOKEN_JSON 
 const HAS_SUPABASE_CREDENTIALS = Boolean(SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY && SUPABASE_SERVICE_ROLE_KEY !== 'dummy-key' && !SUPABASE_SERVICE_ROLE_KEY.includes('dummy'));
 
 if (!HAS_SUPABASE_CREDENTIALS) {
-  console.warn('No usable Supabase credentials configured. The proxy will run in local fallback mode and return empty/success responses.');
+  console.warn('No usable Supabase credentials configured. Configure SUPABASE_SERVICE_ROLE_KEY on Render.');
 }
 
 let supabase = null;

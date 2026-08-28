@@ -1106,7 +1106,7 @@ async function saveArticle(e) {
     await renderRecentArticles();
     await updateCounts();
   } catch (err) {
-    alert('Impossible d’enregistrer l’article en ligne. Vérifiez les règles RLS de Supabase sur la table articles.');
+    alert(`Impossible d’enregistrer l’article : ${err.message || 'service distant indisponible'}. Vérifiez la configuration Supabase de Render.`);
     console.error(err);
   }
 }
