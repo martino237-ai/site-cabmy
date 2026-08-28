@@ -216,13 +216,15 @@ proxy fonctionne en mode secours et les articles restent seulement dans le
 navigateur. Pour le site CABMY, définir aussi `ALLOWED_ORIGINS` avec
 `https://cabmy-maranatha.netlify.app` et `https://cabmy.netlify.app`.
 
-Pour connecter Gmail du collège, définir `GOOGLE_GMAIL_USER=cabmy2011@gmail.com`
-et configurer `GOOGLE_OAUTH_CLIENT_FILE`/`GOOGLE_OAUTH_TOKEN_FILE` côté Render.
-Ouvrir ensuite `https://site-cabmy.onrender.com/auth/google` une fois et autoriser
-Drive et Gmail avec le compte du collège. Ne jamais mettre le mot de passe Gmail,
-le fichier OAuth ou une clé privée dans le frontend ou GitHub.
-Sur Render, utiliser de préférence `GOOGLE_OAUTH_CLIENT_JSON` et
-`GOOGLE_OAUTH_TOKEN_JSON` pour que l’autorisation survive au redémarrage du service.
+Le compte public de contact est `cabmy2011@gmail.com`. Le compte Drive est
+`cabmyschool@gmail.com`. Sur Render, configurer séparément
+`GOOGLE_GMAIL_USER=cabmy2011@gmail.com` et les variables
+`GOOGLE_GMAIL_OAUTH_CLIENT_JSON`/`GOOGLE_GMAIL_OAUTH_TOKEN_JSON`, puis autoriser
+Gmail avec `https://site-cabmy.onrender.com/auth/google/gmail`. Configurer ensuite
+`GOOGLE_DRIVE_OAUTH_CLIENT_JSON`/`GOOGLE_DRIVE_OAUTH_TOKEN_JSON` et autoriser
+Drive avec `https://site-cabmy.onrender.com/auth/google/drive` en étant connecté
+avec `cabmyschool@gmail.com`. Ne jamais mettre le mot de passe Gmail, un fichier
+OAuth ou une clé privée dans le frontend ou GitHub.
 
 Exécuter [`supabase-deploy.sql`](./supabase-deploy.sql) dans le SQL Editor du
 même projet Supabase avant le premier ajout d'article.

@@ -19,7 +19,14 @@ const GOOGLE_OAUTH_CLIENT_FILE = process.env.GOOGLE_OAUTH_CLIENT_FILE || 'google
 const GOOGLE_OAUTH_TOKEN_FILE = process.env.GOOGLE_OAUTH_TOKEN_FILE || 'google-oauth-token.json';
 const GOOGLE_OAUTH_CLIENT_JSON = process.env.GOOGLE_OAUTH_CLIENT_JSON || '';
 const GOOGLE_OAUTH_TOKEN_JSON = process.env.GOOGLE_OAUTH_TOKEN_JSON || '';
+const GOOGLE_DRIVE_ACCOUNT = process.env.GOOGLE_DRIVE_ACCOUNT || 'cabmyschool@gmail.com';
+const GOOGLE_DRIVE_OAUTH_CLIENT_FILE = process.env.GOOGLE_DRIVE_OAUTH_CLIENT_FILE || GOOGLE_OAUTH_CLIENT_FILE;
+const GOOGLE_DRIVE_OAUTH_TOKEN_FILE = process.env.GOOGLE_DRIVE_OAUTH_TOKEN_FILE || 'google-drive-oauth-token.json';
+const GOOGLE_DRIVE_OAUTH_CLIENT_JSON = process.env.GOOGLE_DRIVE_OAUTH_CLIENT_JSON || GOOGLE_OAUTH_CLIENT_JSON;
+const GOOGLE_DRIVE_OAUTH_TOKEN_JSON = process.env.GOOGLE_DRIVE_OAUTH_TOKEN_JSON || GOOGLE_OAUTH_TOKEN_JSON;
 const GOOGLE_GMAIL_USER = process.env.GOOGLE_GMAIL_USER || 'cabmy2011@gmail.com';
+const GOOGLE_GMAIL_OAUTH_CLIENT_JSON = process.env.GOOGLE_GMAIL_OAUTH_CLIENT_JSON || GOOGLE_OAUTH_CLIENT_JSON;
+const GOOGLE_GMAIL_OAUTH_TOKEN_JSON = process.env.GOOGLE_GMAIL_OAUTH_TOKEN_JSON || GOOGLE_OAUTH_TOKEN_JSON;
 const HAS_SUPABASE_CREDENTIALS = Boolean(SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY && SUPABASE_SERVICE_ROLE_KEY !== 'dummy-key' && !SUPABASE_SERVICE_ROLE_KEY.includes('dummy'));
 
 if (!HAS_SUPABASE_CREDENTIALS) {
@@ -87,11 +94,12 @@ function normalizeArticleRow(article) {
 }
 
 function getDriveClient() {
-  const oauthClient = getOAuthClient();
+  const oauthClient = getOAuthClient('drive');
   if (oauthClient) {
-    const tokenPath = path.resolve(GOOGLE_OAUTH_TOKEN_FILE);
-    if (fs.existsSync(tokenPath)) {
-      oauthClient.setCredentials(JSON.parse(fs.readFileSync(tokenPath, 'utf8')));
+    const tokenPath = path.resolve(GOOGLE_DRIVE_OAUTH_TOKEN_FILE);
+    const source = GOOGLE_DRIVE_OAUTH_TOKEN_JSON || (fs.existsSync(tokenPath) ? fs.readFileSync(tokenPath, 'utf8') : '');
+    if (source) {
+      oauthClient.setCredentials(JSON.parse(source));
       return google.drive({ version: 'v3', auth: oauthClient });
     }
   }
@@ -114,9 +122,11 @@ function getDriveClient() {
   return google.drive({ version: 'v3', auth });
 }
 
-function getOAuthClient() {
+function getOAuthClient(account = 'gmail') {
   const filePath = path.resolve(GOOGLE_OAUTH_CLIENT_FILE);
-  const source = GOOGLE_OAUTH_CLIENT_JSON || (fs.existsSync(filePath) ? fs.readFileSync(filePath, 'utf8') : '');
+  const source = account === 'drive'
+    ? GOOGLE_DRIVE_OAUTH_CLIENT_JSON || (fs.existsSync(path.resolve(GOOGLE_DRIVE_OAUTH_CLIENT_FILE)) ? fs.readFileSync(path.resolve(GOOGLE_DRIVE_OAUTH_CLIENT_FILE), 'utf8') : '')
+    : GOOGLE_GMAIL_OAUTH_CLIENT_JSON || (fs.existsSync(filePath) ? fs.readFileSync(filePath, 'utf8') : '');
   if (!source) return null;
   const config = JSON.parse(source);
   const credentials = config.installed || config.web || config;
@@ -124,9 +134,9 @@ function getOAuthClient() {
 }
 
 function getGmailClient() {
-  const client = getOAuthClient();
+  const client = getOAuthClient('gmail');
   const tokenPath = path.resolve(GOOGLE_OAUTH_TOKEN_FILE);
-  const source = GOOGLE_OAUTH_TOKEN_JSON || (fs.existsSync(tokenPath) ? fs.readFileSync(tokenPath, 'utf8') : '');
+  const source = GOOGLE_GMAIL_OAUTH_TOKEN_JSON || (fs.existsSync(tokenPath) ? fs.readFileSync(tokenPath, 'utf8') : '');
   if (!client || !source) return null;
   client.setCredentials(JSON.parse(source));
   return google.gmail({ version: 'v1', auth: client });
@@ -212,11 +222,15 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  if (url.pathname === '/auth/google') {
+  if (url.pathname === '/auth/google' || url.pathname === '/auth/google/drive' || url.pathname === '/auth/google/gmail') {
     try {
-      const client = getOAuthClient();
+      const account = url.pathname.endsWith('/drive') ? 'drive' : 'gmail';
+      const client = getOAuthClient(account);
       if (!client) throw new Error(`Déposez le fichier ${GOOGLE_OAUTH_CLIENT_FILE} dans le projet`);
-      res.writeHead(302, { Location: client.generateAuthUrl({ access_type: 'offline', prompt: 'consent', scope: ['https://www.googleapis.com/auth/drive.file', 'https://www.googleapis.com/auth/gmail.send'] }) });
+      const scopes = account === 'drive'
+        ? ['https://www.googleapis.com/auth/drive.file']
+        : ['https://www.googleapis.com/auth/gmail.send'];
+      res.writeHead(302, { Location: client.generateAuthUrl({ access_type: 'offline', prompt: 'consent', scope: scopes, state: account }) });
       res.end();
     } catch (error) {
       sendJson(res, 400, { error: error.message });
@@ -226,10 +240,13 @@ const server = http.createServer(async (req, res) => {
 
   if (url.pathname === '/oauth2callback') {
     try {
-      const client = getOAuthClient();
+      const account = url.searchParams.get('state') === 'drive' ? 'drive' : 'gmail';
+      const client = getOAuthClient(account);
       if (!client || !url.searchParams.get('code')) throw new Error('Autorisation Google incomplète');
       const { tokens } = await client.getToken(url.searchParams.get('code'));
-      fs.writeFileSync(path.resolve(GOOGLE_OAUTH_TOKEN_FILE), JSON.stringify(tokens, null, 2));
+      if (!process.env.GOOGLE_OAUTH_TOKEN_JSON) {
+        fs.writeFileSync(path.resolve(account === 'drive' ? GOOGLE_DRIVE_OAUTH_TOKEN_FILE : GOOGLE_OAUTH_TOKEN_FILE), JSON.stringify(tokens, null, 2));
+      }
       res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
       res.end('<h1>Google Drive est connecté</h1><p>Vous pouvez fermer cette fenêtre et publier votre article.</p>');
     } catch (error) {
