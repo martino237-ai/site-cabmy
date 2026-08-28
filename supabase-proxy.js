@@ -164,28 +164,25 @@ function parseDataUrl(value) {
   return match ? { mimeType: match[1], buffer: Buffer.from(match[2], 'base64') } : null;
 }
 
-async function uploadMediaToDrive(value, index) {
+async function uploadMediaToStorage(value, index) {
   const parsed = parseDataUrl(value?.url || value);
   if (!parsed) return value;
-  const drive = getDriveClient();
-  if (!drive) throw new Error('Google Drive non configuré: ajoutez GOOGLE_SERVICE_ACCOUNT_JSON');
+  const client = getSupabaseClient();
+  if (!client) throw new Error('Supabase non configuré sur Render');
   const extension = parsed.mimeType.split('/')[1]?.replace('jpeg', 'jpg') || 'bin';
-  const uploaded = await drive.files.create({
-    requestBody: {
-      name: `cabmy-${Date.now()}-${index}.${extension}`,
-      parents: [GOOGLE_DRIVE_FOLDER_ID]
-    },
-    media: { mimeType: parsed.mimeType, body: require('stream').Readable.from(parsed.buffer) },
-    fields: 'id'
+  const filePath = `articles/${Date.now()}-${index}.${extension}`;
+  const { error } = await client.storage.from('media').upload(filePath, parsed.buffer, {
+    contentType: parsed.mimeType,
+    upsert: false
   });
-  await drive.permissions.create({ fileId: uploaded.data.id, requestBody: { role: 'reader', type: 'anyone' } });
-  return `https://drive.usercontent.google.com/download?id=${uploaded.data.id}&export=view`;
+  if (error) throw error;
+  return client.storage.from('media').getPublicUrl(filePath).data.publicUrl;
 }
 
 async function uploadArticleMedia(payload) {
   const items = Array.isArray(payload.mediaurls) ? payload.mediaurls : [];
   if (!items.length) return payload;
-  const uploadedItems = await Promise.all(items.map((item, index) => uploadMediaToDrive(item, index)));
+  const uploadedItems = await Promise.all(items.map((item, index) => uploadMediaToStorage(item, index)));
   return {
     ...payload,
     mediaurl: uploadedItems.length === 1 ? uploadedItems[0] : JSON.stringify(uploadedItems),
