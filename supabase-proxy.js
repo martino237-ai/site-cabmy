@@ -266,7 +266,7 @@ const server = http.createServer(async (req, res) => {
         sendJson(res, 200, data || []);
       } catch (error) {
         try {
-            const { data, error: fallbackError } = await client.from('articles').select('id,titre,cat,statut,featured,resume,contenu,emoji,date,mediatype,mediaurl,mediaurls,mediaalt,created_at').order('created_at', { ascending: false });
+            const { data, error: fallbackError } = await client.from('articles').select('id,titre,cat,statut,resume,contenu,emoji,date,mediatype,mediaurl,mediaurls,mediaalt,created_at').order('created_at', { ascending: false });
           if (fallbackError) throw fallbackError;
             sendJson(res, 200, (data || []).map(normalizeArticleRow));
         } catch (fallbackError) {
@@ -294,7 +294,12 @@ const server = http.createServer(async (req, res) => {
         }
 
         try {
-          const { data, error } = await client.from('articles').insert(payload).select('id').single();
+          let { data, error } = await client.from('articles').insert(payload).select('id').single();
+          if (error && /featured/i.test(error.message || '')) {
+            const legacyPayload = { ...payload };
+            delete legacyPayload.featured;
+            ({ data, error } = await client.from('articles').insert(legacyPayload).select('id').single());
+          }
           if (error) throw error;
           sendJson(res, 200, { id: data?.id || null });
         } catch (error) {
@@ -352,7 +357,12 @@ const server = http.createServer(async (req, res) => {
       }
 
       try {
-        const { error } = await client.from('articles').update(payload).eq('id', id);
+        let { error } = await client.from('articles').update(payload).eq('id', id);
+        if (error && /featured/i.test(error.message || '')) {
+          const legacyPayload = { ...payload };
+          delete legacyPayload.featured;
+          ({ error } = await client.from('articles').update(legacyPayload).eq('id', id));
+        }
         if (error) throw error;
         sendJson(res, 200, { id });
       } catch (error) {
