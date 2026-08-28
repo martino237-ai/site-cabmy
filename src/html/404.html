@@ -59,7 +59,7 @@
   </div>
 
   <script>
-    let lang=localStorage.getItem('cabmy-lang')||'fr';
+    let lang='fr';
     document.querySelectorAll('[data-fr]').forEach(el=>{const v=el.getAttribute('data-'+lang);if(v)el.textContent=v;});
     document.documentElement.lang=lang;
   </script>

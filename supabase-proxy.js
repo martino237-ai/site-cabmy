@@ -17,6 +17,9 @@ const GOOGLE_SERVICE_ACCOUNT_JSON = process.env.GOOGLE_SERVICE_ACCOUNT_JSON || '
 const GOOGLE_SERVICE_ACCOUNT_FILE = process.env.GOOGLE_SERVICE_ACCOUNT_FILE || 'google-service-account.json';
 const GOOGLE_OAUTH_CLIENT_FILE = process.env.GOOGLE_OAUTH_CLIENT_FILE || 'google-oauth-client.json';
 const GOOGLE_OAUTH_TOKEN_FILE = process.env.GOOGLE_OAUTH_TOKEN_FILE || 'google-oauth-token.json';
+const GOOGLE_OAUTH_CLIENT_JSON = process.env.GOOGLE_OAUTH_CLIENT_JSON || '';
+const GOOGLE_OAUTH_TOKEN_JSON = process.env.GOOGLE_OAUTH_TOKEN_JSON || '';
+const GOOGLE_GMAIL_USER = process.env.GOOGLE_GMAIL_USER || 'cabmy2011@gmail.com';
 const HAS_SUPABASE_CREDENTIALS = Boolean(SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY && SUPABASE_SERVICE_ROLE_KEY !== 'dummy-key' && !SUPABASE_SERVICE_ROLE_KEY.includes('dummy'));
 
 if (!HAS_SUPABASE_CREDENTIALS) {
@@ -113,10 +116,37 @@ function getDriveClient() {
 
 function getOAuthClient() {
   const filePath = path.resolve(GOOGLE_OAUTH_CLIENT_FILE);
-  if (!fs.existsSync(filePath)) return null;
-  const config = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  const source = GOOGLE_OAUTH_CLIENT_JSON || (fs.existsSync(filePath) ? fs.readFileSync(filePath, 'utf8') : '');
+  if (!source) return null;
+  const config = JSON.parse(source);
   const credentials = config.installed || config.web || config;
   return new google.auth.OAuth2(credentials.client_id, credentials.client_secret, GOOGLE_OAUTH_REDIRECT_URI);
+}
+
+function getGmailClient() {
+  const client = getOAuthClient();
+  const tokenPath = path.resolve(GOOGLE_OAUTH_TOKEN_FILE);
+  const source = GOOGLE_OAUTH_TOKEN_JSON || (fs.existsSync(tokenPath) ? fs.readFileSync(tokenPath, 'utf8') : '');
+  if (!client || !source) return null;
+  client.setCredentials(JSON.parse(source));
+  return google.gmail({ version: 'v1', auth: client });
+}
+
+async function notifyByEmail(subject, text) {
+  const gmail = getGmailClient();
+  if (!gmail) return;
+  const message = [
+    `From: CABMY <${GOOGLE_GMAIL_USER}>`,
+    `To: ${GOOGLE_GMAIL_USER}`,
+    `Subject: ${subject}`,
+    'Content-Type: text/plain; charset=utf-8',
+    '',
+    text
+  ].join('\r\n');
+  await gmail.users.messages.send({
+    userId: 'me',
+    requestBody: { raw: Buffer.from(message).toString('base64url') }
+  });
 }
 
 function parseDataUrl(value) {
@@ -186,7 +216,7 @@ const server = http.createServer(async (req, res) => {
     try {
       const client = getOAuthClient();
       if (!client) throw new Error(`Déposez le fichier ${GOOGLE_OAUTH_CLIENT_FILE} dans le projet`);
-      res.writeHead(302, { Location: client.generateAuthUrl({ access_type: 'offline', prompt: 'consent', scope: ['https://www.googleapis.com/auth/drive.file'] }) });
+      res.writeHead(302, { Location: client.generateAuthUrl({ access_type: 'offline', prompt: 'consent', scope: ['https://www.googleapis.com/auth/drive.file', 'https://www.googleapis.com/auth/gmail.send'] }) });
       res.end();
     } catch (error) {
       sendJson(res, 400, { error: error.message });
@@ -259,6 +289,33 @@ const server = http.createServer(async (req, res) => {
       });
       return;
     }
+  }
+
+  const submissionMatch = url.pathname.match(/^\/api\/(messages|preinscriptions)$/);
+  if (submissionMatch && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', async () => {
+      try {
+        const input = JSON.parse(body || '{}');
+        const payload = submissionMatch[1] === 'messages'
+          ? { nom: input.nom || '', email: input.email || '', telephone: input.telephone || '', sujet: input.sujet || '', message: input.message || '' }
+          : { nom: input.nom || '', prenom: input.prenom || '', email: input.email || '', telephone: input.telephone || input.tel || '', classe: input.classe || input.niveau || '', statut: 'nouveau', notes: input.notes || '' };
+        const client = getSupabaseClient();
+        if (!client) throw new Error('Supabase non configuré sur Render');
+        const { data, error } = await client.from(submissionMatch[1]).insert(payload).select('id').single();
+        if (error) throw error;
+        try {
+          await notifyByEmail(`Nouveau ${submissionMatch[1]}`, JSON.stringify(payload, null, 2));
+        } catch (emailError) {
+          console.warn('Notification Gmail impossible:', emailError.message || emailError);
+        }
+        sendJson(res, 201, { ok: true, id: data?.id || null }, origin);
+      } catch (error) {
+        sendJson(res, 500, { error: error.message || 'Enregistrement impossible' }, origin);
+      }
+    });
+    return;
   }
 
   const articleMatch = url.pathname.match(/^\/api\/articles\/(.+)$/);

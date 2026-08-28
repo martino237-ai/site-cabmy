@@ -468,10 +468,9 @@
 <script src="src/js/news-data.js"></script>
 <script>
 /* ── LANG ── */
-let currentLang = localStorage.getItem('cabmy-lang') || 'fr';
+let currentLang = 'fr';
 function setLang(lang) {
   currentLang = lang;
-  localStorage.setItem('cabmy-lang', lang);
   document.querySelectorAll('[data-fr]').forEach(el => {
     const v = el.getAttribute('data-' + lang);
     if (v) el.innerHTML = v;

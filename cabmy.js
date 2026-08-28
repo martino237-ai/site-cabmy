@@ -3,11 +3,10 @@
 // ============================================
 
 // ---- LANGUE ----
-let currentLang = localStorage.getItem('cabmy-lang') || 'fr';
+let currentLang = 'fr';
 
 function setLang(lang) {
   currentLang = lang;
-  localStorage.setItem('cabmy-lang', lang);
   document.querySelectorAll('[data-fr]').forEach(el => {
     const val = el.getAttribute('data-' + lang);
     if (val) el.textContent = val;

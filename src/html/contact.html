@@ -101,7 +101,7 @@
         <div class="text-gray-600 text-sm"> 675 38 51 97</div>
       </div>
     </a>
-    <a href="mailto:contact@cabmy.cm" class="contact-card bg-white rounded-2xl p-6 flex items-center gap-4 card-hover">
+    <a href="mailto:cabmy2011@gmail.com" class="contact-card bg-white rounded-2xl p-6 flex items-center gap-4 card-hover">
       <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white text-xl flex-shrink-0" style="background:var(--blue)">✉</div>
       <div>
         <div class="font-bold text-sm" style="color:var(--blue)" data-fr="Email" data-en="Email">Email</div>
@@ -313,9 +313,9 @@
 </footer>
 
 <script>
-  let currentLang=localStorage.getItem('cabmy-lang')||'fr';
+  let currentLang='fr';
   function setLang(lang){
-    currentLang=lang;localStorage.setItem('cabmy-lang',lang);
+    currentLang=lang;
     document.querySelectorAll('[data-fr]').forEach(el=>{el.textContent=el.getAttribute('data-'+lang)||el.textContent;});
     document.getElementById('btn-fr').classList.toggle('lang-active',lang==='fr');
     document.getElementById('btn-en').classList.toggle('lang-active',lang==='en');
@@ -335,8 +335,9 @@
   initAntiSpam();
 
   const STORAGE_PREFIX = 'cabmy_';
-  const SUPABASE_URL = 'https://cqoyhtmowyzvpjdzypgs.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_mG8GhOAiTlu4q4avRhL5Qw_BoOzFn2F';
+  const SUPABASE_URL = 'https://dkhgaehodxugrwpdvbuk.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_27QjPv6iSD64BTyIjm--jA_j3oJwSkv';
+  const SUPABASE_PROXY_URL = 'https://site-cabmy.onrender.com/api';
   let supabaseClient = null;
   let supabaseEnabled = false;
 
@@ -349,7 +350,9 @@
         if (window.supabase && window.supabase.createClient) {
           clearInterval(checkInterval);
           try {
-            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+              auth: { persistSession: false, autoRefreshToken: false }
+            });
             supabaseEnabled = !!supabaseClient;
             console.log('✅ Supabase client initialisé');
             resolve(true);
@@ -371,32 +374,25 @@
 
 
   function getData(key, def = []) {
-    try {
-      return JSON.parse(localStorage.getItem(STORAGE_PREFIX + key)) || def;
-    } catch {
-      return def;
-    }
+    return def;
   }
   function setData(key, value) {
-    localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(value));
+    return value;
   }
 
   async function persistSubmission(tableName, payload) {
-    const items = getData(tableName);
-    items.unshift(payload);
-    setData(tableName, items);
-
-    if (!supabaseEnabled || !supabaseClient) {
-      return { ok: true, localOnly: true };
-    }
-
     try {
-      const { error } = await supabaseClient.from(tableName).insert(payload);
-      if (error) throw error;
+      const response = await fetch(`${SUPABASE_PROXY_URL}/${tableName}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result?.error || 'Service distant indisponible');
       return { ok: true, localOnly: false };
     } catch (err) {
-      console.warn(`Impossible d’enregistrer ${tableName} à Supabase`, err);
-      return { ok: false, localOnly: true, error: err };
+      console.error(`Impossible d’enregistrer ${tableName} à Supabase`, err);
+      return { ok: false, error: err };
     }
   }
 
@@ -428,7 +424,12 @@
       created_at: new Date().toISOString()
     };
 
-    await persistSubmission('messages', message);
+    const result = await persistSubmission('messages', message);
+    if (!result.ok) {
+      document.getElementById('error-msg').textContent = 'Impossible d’envoyer le message pour le moment.';
+      document.getElementById('error-msg').style.display = 'block';
+      return;
+    }
 
     setTimeout(()=>{
       document.getElementById('success-msg').style.display='block';
@@ -452,7 +453,15 @@
       created_at: new Date().toISOString()
     };
 
-    await persistSubmission('preinscriptions', preinscription);
+    const result = await persistSubmission('preinscriptions', preinscription);
+    if (!result.ok) {
+      const error = document.getElementById('pi-error');
+      if (error) {
+        error.textContent = 'Impossible d’envoyer la pré-inscription pour le moment.';
+        error.style.display = 'block';
+      }
+      return;
+    }
 
     setTimeout(()=>{
       document.getElementById('pi-success').style.display='block';

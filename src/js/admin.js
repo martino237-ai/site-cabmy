@@ -119,8 +119,6 @@ async function doLogout() {
   
   isAuthenticated = false;
   currentUser = null;
-  localStorage.removeItem('supabase.session');
-  
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('admin-ui').style.display = 'none';
   document.getElementById('login-error').style.display = 'none';

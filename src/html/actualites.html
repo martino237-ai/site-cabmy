@@ -282,7 +282,7 @@
           clearInterval(checkInterval);
           try {
             supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-              auth: { persistSession: true, autoRefreshToken: true }
+              auth: { persistSession: false, autoRefreshToken: false }
             });
             supabaseEnabled = !!supabaseClient;
             ensureSupabaseAuth().then(() => {
@@ -306,14 +306,7 @@
   }
 
   function getLocalArticles() {
-    try {
-      const raw = localStorage.getItem('cabmy_articles');
-      const parsed = raw ? JSON.parse(raw) : null;
-      return Array.isArray(parsed) ? parsed : [];
-    } catch (err) {
-      console.warn('Impossible de lire les articles locaux', err);
-      return [];
-    }
+    return [];
   }
 
   function normalizeArticle(article) {
@@ -577,7 +570,7 @@
     });
   }
 
-  let currentLang = localStorage.getItem('cabmy-lang') || 'fr';
+  let currentLang = 'fr';
 
   function openMedia(src, type = 'image', filename = '') {
     const modal = document.getElementById('media-modal');
@@ -636,7 +629,6 @@
   }
   function setLang(lang) {
     currentLang = lang;
-    localStorage.setItem('cabmy-lang', lang);
     document.querySelectorAll('[data-fr]').forEach(el => {
       el.textContent = el.getAttribute('data-' + lang) || el.textContent;
     });

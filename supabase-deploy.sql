@@ -47,3 +47,6 @@ using (true) with check (true);
 create policy "Admin delete articles"
 on public.articles for delete to authenticated
 using (true);
+
+-- Le formulaire public actuel ne demande pas d'email pour une pre-inscription.
+alter table public.preinscriptions alter column email drop not null;

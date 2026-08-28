@@ -51,19 +51,10 @@ function getSupabaseClient() {
         },
 
         async getSession() {
-          try {
-            const session = localStorage.getItem('supabase.session');
-            if (!session) return { data: { session: null }, error: null };
-            
-            const parsed = JSON.parse(session);
-            return { data: { session: parsed }, error: null };
-          } catch (err) {
-            return { data: { session: null }, error: null };
-          }
+          return { data: { session: null }, error: null };
         },
 
         async signOut() {
-          localStorage.removeItem('supabase.session');
           return { error: null };
         }
       },
@@ -72,8 +63,7 @@ function getSupabaseClient() {
         select: (columns = '*') => ({
           async eq(col, val) {
             try {
-              const session = localStorage.getItem('supabase.session');
-              const token = session ? JSON.parse(session).access_token : '';
+              const token = '';
               
               const res = await fetch(
                 `${SUPABASE_CONFIG.url}/rest/v1/${table}?select=${columns}&${col}=eq.${val}`,
@@ -99,8 +89,7 @@ function getSupabaseClient() {
           order: (col, opts = {}) => ({
             async limit(n) {
               try {
-                const session = localStorage.getItem('supabase.session');
-                const token = session ? JSON.parse(session).access_token : '';
+                const token = '';
                 const dir = opts.ascending ? 'asc' : 'desc';
 
                 const res = await fetch(

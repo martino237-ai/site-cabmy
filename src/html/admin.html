@@ -556,7 +556,7 @@ async function initSupabaseClient() {
         clearInterval(checkInterval);
         try {
           adminSupabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-            auth: { persistSession: true, autoRefreshToken: true }
+            auth: { persistSession: false, autoRefreshToken: false }
           });
           supabaseEnabled = !!adminSupabaseClient;
           ensureSupabaseAuth().then(() => {
@@ -617,18 +617,8 @@ async function fetchArticlesViaProxy() {
 async function getArticles() {
   try {
     const proxyArticles = await fetchArticlesViaProxy();
-    if (Array.isArray(proxyArticles) && proxyArticles.length > 0) {
-      return proxyArticles;
-    }
-
-    const local = getData('articles');
-    if (Array.isArray(local) && local.length > 0) {
-      return local;
-    }
-
-    if (!adminSupabaseClient) {
-      return [];
-    }
+    if (Array.isArray(proxyArticles)) return proxyArticles;
+    if (!adminSupabaseClient) throw new Error('Backend Render indisponible');
 
     const columnSets = [
       'id,titre,cat,statut,featured,resume,contenu,emoji,date,mediaType,mediaUrl,mediaUrls,mediaAlt,created_at',
@@ -649,7 +639,8 @@ async function getArticles() {
 
     return [];
   } catch (err) {
-    return getData('articles');
+    console.error('Lecture distante des articles impossible', err);
+    return [];
   }
 }
 
@@ -685,27 +676,25 @@ async function deleteArticleRemote(id) {
 
 async function getMessages() {
   try {
-    if (!adminSupabaseClient) {
-      return getLocalFallbackData('messages');
-    }
+    if (!adminSupabaseClient) throw new Error('Supabase non configuré');
     const { data, error } = await adminSupabaseClient.from('messages').select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return Array.isArray(data) && data.length ? data : getLocalFallbackData('messages');
+    return Array.isArray(data) ? data : [];
   } catch (err) {
-    return getLocalFallbackData('messages');
+    console.error('Lecture des messages impossible', err);
+    return [];
   }
 }
 
 async function getPreinscriptions() {
   try {
-    if (!adminSupabaseClient) {
-      return getLocalFallbackData('preinscriptions');
-    }
+    if (!adminSupabaseClient) throw new Error('Supabase non configuré');
     const { data, error } = await adminSupabaseClient.from('preinscriptions').select('*').order('created_at', { ascending: false });
     if (error) throw error;
-    return Array.isArray(data) && data.length ? data : getLocalFallbackData('preinscriptions');
+    return Array.isArray(data) ? data : [];
   } catch (err) {
-    return getLocalFallbackData('preinscriptions');
+    console.error('Lecture des pré-inscriptions impossible', err);
+    return [];
   }
 }
 
@@ -722,20 +711,14 @@ async function deletePIRemote(id) {
 }
 
 function getData(key, def = []) {
-  try { return JSON.parse(localStorage.getItem('cabmy_' + key)) || def; } catch { return def; }
+  return def;
 }
-function setData(key, val) { localStorage.setItem('cabmy_' + key, JSON.stringify(val)); }
+function setData() {}
 
 /* ── INIT ─────────────────────────────────────── */
 async function initAdmin() {
   document.getElementById('admin-date').textContent =
     new Date().toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-
-  // Charger d'abord les articles locaux comme source de secours, puis la vue admin.
-  const localArticles = getData('articles');
-  if (Array.isArray(localArticles) && localArticles.length) {
-    currentArticles = localArticles;
-  }
 
   await renderArticlesTable();
   await renderRecentArticles();
@@ -815,13 +798,6 @@ async function renderRecentArticles() {
  
 async function renderArticlesTable() {
   let arts = await getArticles();
-  // Si Supabase renvoie vide mais que le localStorage contient des articles,
-  // utiliser le local pour éviter un tableau vide côté UI.
-  const local = getData('articles');
-  if (Array.isArray(arts) && arts.length === 0 && Array.isArray(local) && local.length > 0) {
-    console.warn('Utilisation des articles depuis localStorage (fallback)');
-    arts = local;
-  }
   currentArticles = arts;
   const tbody = document.getElementById('articles-tbody');
   document.getElementById('no-articles').style.display = arts.length ? 'none' : 'block';
@@ -1325,14 +1301,6 @@ document.querySelectorAll('.modal').forEach(m =>
   m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); })
 );
  
-/* ── DEMO DATA ────────────────────────────────── */
-if (!getData('articles').length) {
-  setData('articles', [
-    { titre: 'BEPC 2024 : 96% de réussite au CABMY', cat: 'resultats', statut: 'publie', resume: 'Le CABMY célèbre une année exceptionnelle aux examens du BEPC.', emoji: '🏅', date: '15 juin 2024', contenu: '' },
-    { titre: 'Semaine de prière 2024', cat: 'spiritualite', statut: 'publie', resume: 'Un moment de grâce et de recueillement pour toute la communauté.', emoji: '⛪', date: '10 mai 2024', contenu: '' },
-    { titre: 'Inscription cours du soir ouverte', cat: 'soir', statut: 'publie', resume: 'Les inscriptions pour les cours du soir 2024-2025 sont ouvertes.', emoji: '🌙', date: '01 sept. 2024', contenu: '' },
-  ]);
-}
 </script>
 </body>
 </html>

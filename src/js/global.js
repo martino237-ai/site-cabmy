@@ -1,11 +1,10 @@
 /* global.js – Scripts partagés pour tout le site CABMY */
 
 // Système de langue (FR/EN)
-let currentLang = localStorage.getItem('cabmy-lang') || 'fr';
+let currentLang = 'fr';
 
 function setLang(lang) {
   currentLang = lang;
-  localStorage.setItem('cabmy-lang', lang);
   
   document.querySelectorAll('[data-fr]').forEach(el => {
     el.textContent = el.getAttribute('data-' + lang) || el.textContent;
