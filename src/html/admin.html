@@ -533,6 +533,7 @@ const SUPABASE_URL = 'https://dkhgaehodxugrwpdvbuk.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_27QjPv6iSD64BTyIjm--jA_j3oJwSkv';
 const SUPABASE_PROXY_URL = 'https://site-cabmy.onrender.com/api';
 let adminSupabaseClient = null;
+let supabaseInitPromise = null;
 let supabaseEnabled = false;
 let currentArticles = [];
 let currentArticleMediaItems = [];
@@ -548,7 +549,9 @@ async function ensureSupabaseAuth() {
 
 // Attendre le chargement du SDK Supabase
 async function initSupabaseClient() {
-  return new Promise((resolve) => {
+  if (adminSupabaseClient) return true;
+  if (supabaseInitPromise) return supabaseInitPromise;
+  supabaseInitPromise = new Promise((resolve) => {
     const maxAttempts = 50;
     let attempts = 0;
     const checkInterval = setInterval(() => {
@@ -577,6 +580,7 @@ async function initSupabaseClient() {
       }
     }, 100);
   });
+  return supabaseInitPromise;
 }
 
 function buildArticlePayloadVariants(article) {
@@ -657,8 +661,30 @@ async function saveArticleRemote(article, id) {
     if (!response.ok) throw new Error(data?.error || 'Proxy unavailable');
     return data?.id || id || null;
   } catch (err) {
-    console.error('Enregistrement distant impossible', err);
-    throw err;
+    if (!adminSupabaseClient) throw err;
+    const directPayload = { ...payload };
+    directPayload.mediatype = directPayload.mediaType;
+    directPayload.mediaurl = directPayload.mediaUrl;
+    directPayload.mediaurls = directPayload.mediaUrls;
+    directPayload.mediaalt = directPayload.mediaAlt;
+    delete directPayload.mediaType;
+    delete directPayload.mediaUrl;
+    delete directPayload.mediaUrls;
+    delete directPayload.mediaItems;
+    delete directPayload.mediaAlt;
+    let operation = id
+      ? adminSupabaseClient.from('articles').update(directPayload).eq('id', id).select('id').single()
+      : adminSupabaseClient.from('articles').insert(directPayload).select('id').single();
+    let { data, error } = await operation;
+    if (error && /featured/i.test(error.message || '')) {
+      delete directPayload.featured;
+      operation = id
+        ? adminSupabaseClient.from('articles').update(directPayload).eq('id', id).select('id').single()
+        : adminSupabaseClient.from('articles').insert(directPayload).select('id').single();
+      ({ data, error } = await operation);
+    }
+    if (error) throw error;
+    return data?.id || id || null;
   }
 }
 
@@ -669,8 +695,10 @@ async function deleteArticleRemote(id) {
     if (!response.ok) throw new Error(data?.error || 'Proxy unavailable');
     return true;
   } catch (err) {
-    console.error('Suppression distante impossible', err);
-    throw err;
+    if (!adminSupabaseClient) throw err;
+    const { error } = await adminSupabaseClient.from('articles').delete().eq('id', id);
+    if (error) throw error;
+    return true;
   }
 }
 
