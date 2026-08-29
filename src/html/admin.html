@@ -909,6 +909,44 @@ function inferArticleMediaType(url = '') {
   return 'photo';
 }
 
+function parseFrenchDateForInput(value) {
+  if (!value) return '';
+  const text = String(value).trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) return text;
+
+  const parsed = new Date(text);
+  if (!Number.isNaN(parsed.getTime())) {
+    return parsed.toISOString().slice(0, 10);
+  }
+
+  const monthMap = {
+    janvier: '01', fevrier: '02', février: '02', mars: '03', avril: '04', mai: '05', juin: '06',
+    juillet: '07', aout: '08', août: '08', septembre: '09', oct: '10', octobre: '10', nov: '11', novembre: '11', dec: '12', decembre: '12',
+    jan: '01', fev: '02', mar: '03', avr: '04', jun: '06', jul: '07', aug: '08', sep: '09', oct: '10', nov: '11', dec: '12'
+  };
+
+  const match = text.match(/(\d{1,2})\s+[A-Za-zÀ-ÿ]+\s+(\d{4})/);
+  if (match) {
+    const [, dayRaw, yearRaw] = match;
+    const day = String(Number(dayRaw)).padStart(2, '0');
+    const year = yearRaw;
+    const monthName = text.replace(match[0], '').trim();
+    const monthCandidate = monthName.replace(/^[^A-Za-zÀ-ÿ]+|[^A-Za-zÀ-ÿ]+$/g, '').trim().toLowerCase();
+    const month = monthMap[monthCandidate] || monthMap[monthCandidate.slice(0, 3)] || '01';
+    if (day && year && month) return `${year}-${month}-${day}`;
+  }
+
+  const matchSimple = text.match(/(\d{1,2})\s+(janvier|fevrier|février|mars|avril|mai|juin|juillet|aout|août|septembre|octobre|novembre|decembre|jan|fev|mar|avr|jun|jul|aug|sep|oct|nov|dec)\s+(\d{4})/i);
+  if (matchSimple) {
+    const [, dayRaw, monthName, yearRaw] = matchSimple;
+    const day = String(Number(dayRaw)).padStart(2, '0');
+    const month = monthMap[monthName.toLowerCase()] || monthMap[monthName.toLowerCase().slice(0, 3)] || '01';
+    return `${yearRaw}-${month}-${day}`;
+  }
+
+  return '';
+}
+
 function normalizeArticleMediaItem(item, fallbackType = 'auto') {
   if (!item) return null;
   if (typeof item === 'string') {
@@ -1091,7 +1129,7 @@ function editArticle(i) {
   document.getElementById('art-cat').value     = a.cat || '';
   document.getElementById('art-statut').value  = a.statut || 'publie';
   document.getElementById('art-featured').checked = Boolean(a.featured);
-  document.getElementById('art-date').value = a.date ? new Date(a.date).toISOString().slice(0, 10) : '';
+  document.getElementById('art-date').value = parseFrenchDateForInput(a.date);
   document.getElementById('art-resume').value  = a.resume || '';
   document.getElementById('art-contenu').value = a.contenu || '';
   document.getElementById('art-emoji').value   = a.emoji || '📰';
