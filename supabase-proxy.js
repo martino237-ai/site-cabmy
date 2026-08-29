@@ -394,15 +394,53 @@ const server = http.createServer(async (req, res) => {
     req.on('end', async () => {
       try {
         const input = JSON.parse(body || '{}');
-        const payload = submissionMatch[1] === 'messages'
-          ? { nom: input.nom || '', email: input.email || '', telephone: input.telephone || '', sujet: input.sujet || '', message: input.message || '' }
-          : { nom: input.nom || '', prenom: input.prenom || '', email: input.email || '', telephone: input.telephone || input.tel || '', classe: input.classe || input.niveau || '', statut: 'nouveau', notes: input.notes || '' };
+        const tableName = submissionMatch[1];
+        const buildFallbackPayload = () => tableName === 'messages'
+          ? {
+              nom: input.nom || '',
+              email: input.email || 'sans-email@cabmy.cm',
+              sujet: input.sujet || '',
+              message: [input.message || '', input.telephone ? `Téléphone: ${input.telephone}` : ''].filter(Boolean).join('\n').trim()
+            }
+          : {
+              nom: input.nom || '',
+              prenom: input.prenom || '',
+              email: input.email || 'sans-email@cabmy.cm',
+              telephone: input.telephone || input.tel || '',
+              classe: input.classe || input.niveau || input.section || '',
+              statut: 'nouveau',
+              notes: [input.section || '', input.notes || ''].filter(Boolean).join(' | ') || ''
+            };
+
+        const payload = buildFallbackPayload();
         const client = getSupabaseClient();
         if (!client) throw new Error('Supabase non configuré sur Render');
-        const { data, error } = await client.from(submissionMatch[1]).insert(payload).select('id').single();
+
+        let result;
+        try {
+          result = await client.from(tableName).insert(payload).select('id').single();
+        } catch (insertError) {
+          const fallbackPayload = tableName === 'messages'
+            ? {
+                nom: input.nom || '',
+                email: input.email || 'sans-email@cabmy.cm',
+                sujet: input.sujet || '',
+                message: input.message || ''
+              }
+            : {
+                nom: input.nom || '',
+                email: input.email || 'sans-email@cabmy.cm',
+                classe: input.classe || input.niveau || input.section || '',
+                statut: 'nouveau',
+                notes: [input.section || '', input.notes || ''].filter(Boolean).join(' | ') || ''
+              };
+          result = await client.from(tableName).insert(fallbackPayload).select('id').single();
+        }
+
+        const { data, error } = result;
         if (error) throw error;
         try {
-          await notifyByEmail(`Nouveau ${submissionMatch[1]}`, JSON.stringify(payload, null, 2));
+          await notifyByEmail(`Nouveau ${tableName}`, JSON.stringify(payload, null, 2));
         } catch (emailError) {
           console.warn('Notification Gmail impossible:', emailError.message || emailError);
         }
