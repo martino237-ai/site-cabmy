@@ -83,13 +83,42 @@ function normalizePayload(body) {
 
 function normalizeArticleRow(article) {
   if (!article) return article;
+
+  const rawMediaUrls = article.mediaUrls ?? article.mediaurls ?? article.mediaUrl ?? article.mediaurl ?? [];
+  let mediaUrls = [];
+  if (Array.isArray(rawMediaUrls)) {
+    mediaUrls = rawMediaUrls.filter(Boolean);
+  } else if (typeof rawMediaUrls === 'string') {
+    try {
+      const parsed = JSON.parse(rawMediaUrls);
+      mediaUrls = Array.isArray(parsed) ? parsed.filter(Boolean) : [rawMediaUrls].filter(Boolean);
+    } catch (error) {
+      mediaUrls = [rawMediaUrls].filter(Boolean);
+    }
+  }
+
+  const mediaUrl = article.mediaUrl ?? article.mediaurl ?? (mediaUrls.length ? mediaUrls[0] : '');
+  const inferredMediaType = typeof mediaUrl === 'string' && /\.(mp4|webm|ogg|mov|m4v)(\?.*)?$/i.test(mediaUrl)
+    ? 'video'
+    : (Array.isArray(article.mediaUrls) && article.mediaUrls.length && article.mediaUrls.some(item => typeof item === 'string' && /\.(mp4|webm|ogg|mov|m4v)(\?.*)?$/i.test(item)))
+      ? 'video'
+      : 'photo';
+
   return {
-    ...article,
-    mediaType: article.mediaType ?? article.mediatype ?? null,
-    mediaUrl: article.mediaUrl ?? article.mediaurl ?? '',
-    mediaUrls: article.mediaUrls ?? article.mediaurls ?? [],
+    id: article.id ?? null,
+    titre: article.titre ?? '',
+    cat: article.cat ?? 'vie',
+    statut: article.statut ?? 'publie',
+    featured: Boolean(article.featured),
+    resume: article.resume ?? '',
+    contenu: article.contenu ?? '',
+    emoji: article.emoji ?? '📰',
+    date: article.date ?? '',
+    mediaType: article.mediaType ?? article.mediatype ?? inferredMediaType ?? null,
+    mediaUrl: mediaUrl || '',
+    mediaUrls,
     mediaAlt: article.mediaAlt ?? article.mediaalt ?? '',
-    featured: Boolean(article.featured)
+    created_at: article.created_at ?? null
   };
 }
 
@@ -168,25 +197,73 @@ async function uploadMediaToStorage(value, index) {
   const parsed = parseDataUrl(value?.url || value);
   if (!parsed) return value;
   const client = getSupabaseClient();
-  if (!client) throw new Error('Supabase non configuré sur Render');
-  const extension = parsed.mimeType.split('/')[1]?.replace('jpeg', 'jpg') || 'bin';
-  const filePath = `articles/${Date.now()}-${index}.${extension}`;
-  const { error } = await client.storage.from('media').upload(filePath, parsed.buffer, {
-    contentType: parsed.mimeType,
-    upsert: false
-  });
-  if (error) throw error;
-  return client.storage.from('media').getPublicUrl(filePath).data.publicUrl;
+  if (!client) {
+    console.warn('⚠️ Supabase Storage non configuré; média gardé en base64');
+    return value;
+  }
+  try {
+    const extension = parsed.mimeType.split('/')[1]?.replace('jpeg', 'jpg') || 'bin';
+    const filePath = `articles/${Date.now()}-${index}.${extension}`;
+    const { error } = await client.storage.from('media').upload(filePath, parsed.buffer, {
+      contentType: parsed.mimeType,
+      upsert: false
+    });
+    if (error) {
+      console.warn(`⚠️ Upload Storage échoué: ${error.message}; média gardé en base64`);
+      return value;
+    }
+    return client.storage.from('media').getPublicUrl(filePath).data.publicUrl;
+  } catch (err) {
+    console.warn(`⚠️ Upload Storage exception: ${err.message}; média gardé en base64`);
+    return value;
+  }
 }
 
 async function uploadArticleMedia(payload) {
   const items = Array.isArray(payload.mediaurls) ? payload.mediaurls : [];
   if (!items.length) return payload;
-  const uploadedItems = await Promise.all(items.map((item, index) => uploadMediaToStorage(item, index)));
+  
+  const uploadedItems = await Promise.all(items.map(async (item, index) => {
+    if (!item) return null;
+    
+    const isDataUrl = typeof item === 'string' && item.startsWith('data:');
+    if (isDataUrl) {
+      console.warn(`⚠️ Item ${index}: Data URL détecté; ignoring to keep response small`);
+      return null;
+    }
+    
+    const parsed = parseDataUrl(item?.url || item);
+    if (!parsed) {
+      if (typeof item === 'string' && item.trim().length > 0) return item;
+      return null;
+    }
+    
+    const client = getSupabaseClient();
+    if (!client) {
+      console.warn(`⚠️ Item ${index}: Supabase Storage non configuré; ignoré`);
+      return null;
+    }
+    
+    try {
+      const extension = parsed.mimeType.split('/')[1]?.replace('jpeg', 'jpg') || 'bin';
+      const filePath = `articles/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${extension}`;
+      const { error } = await client.storage.from('media').upload(filePath, parsed.buffer, {
+        contentType: parsed.mimeType,
+        upsert: false
+      });
+      if (error) throw error;
+      return client.storage.from('media').getPublicUrl(filePath).data.publicUrl;
+    } catch (err) {
+      console.warn(`⚠️ Item ${index} upload failed: ${err.message}; ignoré`);
+      return null;
+    }
+  }));
+  
+  const validItems = uploadedItems.filter(Boolean);
   return {
     ...payload,
-    mediaurl: uploadedItems.length === 1 ? uploadedItems[0] : JSON.stringify(uploadedItems),
-    mediaurls: uploadedItems
+    mediaurl: validItems.length === 1 ? validItems[0] : (validItems.length ? JSON.stringify(validItems) : ''),
+    mediaurls: validItems
   };
 }
 
@@ -263,12 +340,12 @@ const server = http.createServer(async (req, res) => {
       try {
         const { data, error } = await client.from('articles').select('id,titre,cat,statut,featured,resume,contenu,emoji,date,mediaType,mediaUrl,mediaUrls,mediaAlt,created_at').order('created_at', { ascending: false });
         if (error) throw error;
-        sendJson(res, 200, data || []);
+        sendJson(res, 200, (data || []).map(normalizeArticleRow));
       } catch (error) {
         try {
-            const { data, error: fallbackError } = await client.from('articles').select('id,titre,cat,statut,resume,contenu,emoji,date,mediatype,mediaurl,mediaurls,mediaalt,created_at').order('created_at', { ascending: false });
+          const { data, error: fallbackError } = await client.from('articles').select('id,titre,cat,statut,resume,contenu,emoji,date,mediatype,mediaurl,mediaurls,mediaalt,created_at').order('created_at', { ascending: false });
           if (fallbackError) throw fallbackError;
-            sendJson(res, 200, (data || []).map(normalizeArticleRow));
+          sendJson(res, 200, (data || []).map(normalizeArticleRow));
         } catch (fallbackError) {
           sendJson(res, 200, []);
         }

@@ -531,7 +531,9 @@ function doLogout() {
 /* ── SUPABASE ─────────────────────────────────── */
 const SUPABASE_URL = 'https://dkhgaehodxugrwpdvbuk.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_27QjPv6iSD64BTyIjm--jA_j3oJwSkv';
-const SUPABASE_PROXY_URL = 'https://site-cabmy.onrender.com/api';
+const SUPABASE_PROXY_URL = /localhost|127\.0\.0\.1/.test(window.location.hostname)
+  ? 'http://localhost:8001/api'
+  : 'https://site-cabmy.onrender.com/api';
 let adminSupabaseClient = null;
 let supabaseInitPromise = null;
 let supabaseEnabled = false;
@@ -539,7 +541,7 @@ let currentArticles = [];
 let currentArticleMediaItems = [];
 
 function getLocalFallbackData(key) {
-  const local = getData(key);
+  const local = getData(key, []);
   return Array.isArray(local) ? local : [];
 }
 
@@ -739,9 +741,26 @@ async function deletePIRemote(id) {
 }
 
 function getData(key, def = []) {
-  return def;
+  try {
+    if (typeof localStorage === 'undefined') return def;
+    const raw = localStorage.getItem(`cabmy-${key}`);
+    if (raw === null) return def;
+    const parsed = JSON.parse(raw);
+    return parsed ?? def;
+  } catch (err) {
+    console.warn(`Lecture locale ${key} impossible`, err);
+    return def;
+  }
 }
-function setData() {}
+
+function setData(key, value) {
+  try {
+    if (typeof localStorage === 'undefined') return;
+    localStorage.setItem(`cabmy-${key}`, JSON.stringify(value));
+  } catch (err) {
+    console.warn(`Écriture locale ${key} impossible`, err);
+  }
+}
 
 /* ── INIT ─────────────────────────────────────── */
 async function initAdmin() {
@@ -1124,7 +1143,7 @@ async function saveArticle(e) {
   try {
     const savedId = await saveArticleRemote(article, id || undefined);
     const articleToStore = { ...article, id: savedId || id || undefined };
-    const existing = getData('articles');
+    const existing = getData('articles', []);
     const nextArticles = id
       ? (existing || []).map(a => (a.id === id ? articleToStore : a))
       : [articleToStore, ...(existing || [])];
@@ -1134,8 +1153,17 @@ async function saveArticle(e) {
     await renderRecentArticles();
     await updateCounts();
   } catch (err) {
-    alert(`Impossible d’enregistrer l’article : ${err.message || 'service distant indisponible'}. Vérifiez la configuration Supabase de Render.`);
-    console.error(err);
+    const existing = getData('articles', []);
+    const articleToStore = { ...article, id: id || `local-${Date.now()}` };
+    const nextArticles = id
+      ? (existing || []).map(a => (a.id === id ? articleToStore : a))
+      : [articleToStore, ...(existing || [])];
+    setData('articles', nextArticles);
+    closeModal('modal-article');
+    await renderArticlesTable();
+    await renderRecentArticles();
+    await updateCounts();
+    console.warn('Sauvegarde distante impossible, article enregistré localement.', err);
   }
 }
  

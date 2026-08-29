@@ -31,18 +31,45 @@ alter table public.preinscriptions enable row level security;
 
 -- ---------- articles ----------
 -- Lecture publique (site public + tableau de bord admin).
--- Aucune policy d'écriture : seule la clé service_role (via le proxy
--- local) peut créer/modifier/supprimer des articles.
+-- Écriture réservée aux utilisateurs authentifiés (admin).
 drop policy if exists "Public read access on articles" on public.articles;
+drop policy if exists "Public read articles" on public.articles;
+drop policy if exists "Admin read all articles" on public.articles;
 drop policy if exists "Allow authenticated reads on articles" on public.articles;
 drop policy if exists "Allow authenticated inserts on articles" on public.articles;
+drop policy if exists "Admin insert articles" on public.articles;
 drop policy if exists "Allow authenticated updates on articles" on public.articles;
+drop policy if exists "Admin update articles" on public.articles;
 drop policy if exists "Allow authenticated deletes on articles" on public.articles;
+drop policy if exists "Admin delete articles" on public.articles;
 
-create policy "Public read access on articles"
+-- Lecture publique des articles
+create policy "Public read articles"
 on public.articles
 for select
 to anon, authenticated
+using (true);
+
+-- Admin authentifié peut insérer des articles
+create policy "Admin insert articles"
+on public.articles
+for insert
+to authenticated
+with check (true);
+
+-- Admin authentifié peut modifier les articles
+create policy "Admin update articles"
+on public.articles
+for update
+to authenticated
+using (true)
+with check (true);
+
+-- Admin authentifié peut supprimer les articles
+create policy "Admin delete articles"
+on public.articles
+for delete
+to authenticated
 using (true);
 
 -- ---------- messages ----------
