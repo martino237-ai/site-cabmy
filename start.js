@@ -88,7 +88,7 @@ server.listen(PORT, () => {
 ╚════════════════════════════════════╝
 
 🌐 http://localhost:${PORT}
-📱 Admin: http://localhost:${PORT}/src/html/admin.html
+📱 Admin: http://localhost:${PORT}/src/pages/admin.html
 
 👤 Connexion Supabase:
    Email: admin@cabmy.fr

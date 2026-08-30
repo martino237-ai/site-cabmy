@@ -15,7 +15,7 @@ window.CABMY_NEWS = [
     contenuEn: 'The CABMY community celebrates an exceptional year. Thanks to the hard work of students and dedication of staff, the 2024 BEPC pass rate reaches 96%, confirming the school’s position as a reference for excellence in the region.',
     date: 'Juin 2024',
     dateSort: '2024-06-01',
-    link: 'src/html/actualites.html'
+    link: 'src/pages/actualites.html'
   },
   {
     id: 'priere_2024',
@@ -33,7 +33,7 @@ window.CABMY_NEWS = [
     contenuEn: 'The school community gathered for an enriching prayer week, full of testimonies and fraternal sharing. Students, teachers and families experienced a moment of fellowship and hope.',
     date: 'Mai 2024',
     dateSort: '2024-05-01',
-    link: 'src/html/actualites.html'
+    link: 'src/pages/actualites.html'
   },
   {
     id: 'soir_2026',
@@ -51,7 +51,7 @@ window.CABMY_NEWS = [
     contenuEn: 'Enrolment for the new evening classes year is officially open. Adults, workers and students seeking complementary training are invited to register now.',
     date: 'Juil. 2026',
     dateSort: '2026-07-01',
-    link: 'src/html/actualites.html'
+    link: 'src/pages/actualites.html'
   },
   {
     id: 'gce_2024',
@@ -69,7 +69,7 @@ window.CABMY_NEWS = [
     contenuEn: 'The English section records excellent results in the 2024 GCE O/L and A/L, with several distinctions. Congratulations to students and teachers for this success.',
     date: 'Juillet 2024',
     dateSort: '2024-07-01',
-    link: 'src/html/actualites.html'
+    link: 'src/pages/actualites.html'
   },
   {
     id: 'tournoi_2024',
@@ -87,7 +87,7 @@ window.CABMY_NEWS = [
     contenuEn: 'Our students brilliantly participated in the annual regional sports tournament, winning several trophies in football and athletics. A fine example of CABMY team spirit.',
     date: 'Mars 2024',
     dateSort: '2024-03-01',
-    link: 'src/html/actualites.html'
+    link: 'src/pages/actualites.html'
   },
   {
     id: 'diplomes_2024',
@@ -105,7 +105,7 @@ window.CABMY_NEWS = [
     contenuEn: 'A moving ceremony rewarded the class of 2024 students who excelled in national examinations. Families, teachers and students celebrated this success together.',
     date: 'Août 2024',
     dateSort: '2024-08-01',
-    link: 'src/html/actualites.html'
+    link: 'src/pages/actualites.html'
   }
 ];
 
@@ -164,7 +164,7 @@ window.escapeNewsHtml = function(text) {
 window.renderNewsCardHtml = function(article, options = {}) {
   const label = options.useCategoryLabel ? article.categoryFr || article.cat : article.cat;
   const badgeColor = article.cat === 'resultats' ? 'var(--gold-light);color:#7a5c00' : article.cat === 'spiritualite' ? 'var(--blue-light);color:var(--blue)' : article.cat === 'soir' ? 'background:rgba(255,255,255,.1);color:rgba(255,255,255,.8)' : 'background:var(--gold-light);color:#7a5c00';
-  const link = options.home ? (article.link || 'src/html/actualites.html') : '#';
+  const link = options.home ? (article.link || 'src/pages/actualites.html') : '#';
   const clickHandler = options.home ? '' : 'onclick="openArticle(this); return false;"';
   const readTextFr = options.home ? 'Lire →' : 'Lire l\'article →';
   const readTextEn = options.home ? 'Read →' : 'Read article →';

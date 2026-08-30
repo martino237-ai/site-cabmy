@@ -9,8 +9,8 @@
   <link rel="stylesheet" href="output.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="src/css/index.css">
-  <link rel="stylesheet" href="src/css/global.css">
+  <link rel="stylesheet" href="src/styles/index.css">
+  <link rel="stylesheet" href="src/styles/global.css">
 </head>
 <body>
 <!-- ▸ TOPBAR -->
@@ -38,23 +38,23 @@
     </a>
     <div class="nav-links">
       <a href="index.html"                  class="nav-link active"      data-fr="Accueil"       data-en="Home">Accueil</a>
-      <a href="src/html/apropos.html"        class="nav-link"             data-fr="À propos"      data-en="About">À propos</a>
-      <a href="src/html/enseignements.html"  class="nav-link"             data-fr="Enseignements" data-en="Academics">Enseignements</a>
-      <a href="src/html/vie-scolaire.html"   class="nav-link"             data-fr="Vie scolaire"  data-en="School Life">Vie scolaire</a>
+      <a href="src/pages/apropos.html"        class="nav-link"             data-fr="À propos"      data-en="About">À propos</a>
+      <a href="src/pages/enseignements.html"  class="nav-link"             data-fr="Enseignements" data-en="Academics">Enseignements</a>
+      <a href="src/pages/vie-scolaire.html"   class="nav-link"             data-fr="Vie scolaire"  data-en="School Life">Vie scolaire</a>
       <div class="dropdown">
-        <a href="src/html/admissions.html" class="nav-link dropdown-trigger">
+        <a href="src/pages/admissions.html" class="nav-link dropdown-trigger">
           <span data-fr="Admissions" data-en="Admissions">Admissions</span>
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
         </a>
         <div class="dropdown-panel">
-          <a href="src/html/admissions.html#conditions" data-fr="Conditions d'admission" data-en="Admission Conditions">Conditions d'admission</a>
-          <a href="src/html/admissions.html#frais"      data-fr="Frais de scolarité"     data-en="School Fees">Frais de scolarité</a>
-          <a href="src/html/admissions.html#calendrier" data-fr="Calendrier"              data-en="Calendar">Calendrier</a>
-          <a href="src/html/admissions.html#tenues"     data-fr="Tenues scolaires"        data-en="School Uniforms">Tenues scolaires</a>
+          <a href="src/pages/admissions.html#conditions" data-fr="Conditions d'admission" data-en="Admission Conditions">Conditions d'admission</a>
+          <a href="src/pages/admissions.html#frais"      data-fr="Frais de scolarité"     data-en="School Fees">Frais de scolarité</a>
+          <a href="src/pages/admissions.html#calendrier" data-fr="Calendrier"              data-en="Calendar">Calendrier</a>
+          <a href="src/pages/admissions.html#tenues"     data-fr="Tenues scolaires"        data-en="School Uniforms">Tenues scolaires</a>
         </div>
       </div>
-      <a href="src/html/actualites.html" class="nav-link" data-fr="Actualités" data-en="News">Actualités</a>
-      <a href="src/html/contact.html"    class="nav-cta"  data-fr="Contact"    data-en="Contact">Contact</a>
+      <a href="src/pages/actualites.html" class="nav-link" data-fr="Actualités" data-en="News">Actualités</a>
+      <a href="src/pages/contact.html"    class="nav-cta"  data-fr="Contact"    data-en="Contact">Contact</a>
     </div>
     <button class="hamburger" id="hamburger" onclick="toggleMobile()">
       <span></span><span></span><span></span>
@@ -66,12 +66,12 @@
 <div class="mobile-menu" id="mobile-menu">
   <button class="mobile-close" onclick="toggleMobile()">✕</button>
   <a href="index.html"                  class="mobile-link active">Accueil</a>
-  <a href="src/html/apropos.html"        class="mobile-link">À propos</a>
-  <a href="src/html/enseignements.html"  class="mobile-link">Enseignements</a>
-  <a href="src/html/vie-scolaire.html"   class="mobile-link">Vie scolaire</a>
-  <a href="src/html/admissions.html"     class="mobile-link">Admissions</a>
-  <a href="src/html/actualites.html"     class="mobile-link">Actualités</a>
-  <a href="src/html/contact.html"        class="mobile-cta">Contact</a>
+  <a href="src/pages/apropos.html"        class="mobile-link">À propos</a>
+  <a href="src/pages/enseignements.html"  class="mobile-link">Enseignements</a>
+  <a href="src/pages/vie-scolaire.html"   class="mobile-link">Vie scolaire</a>
+  <a href="src/pages/admissions.html"     class="mobile-link">Admissions</a>
+  <a href="src/pages/actualites.html"     class="mobile-link">Actualités</a>
+  <a href="src/pages/contact.html"        class="mobile-cta">Contact</a>
 </div>
  
 <!-- ════════════════════════════════════════════
@@ -110,8 +110,8 @@
         <span data-fr="SUCCÈS" data-en="SUCCESS">SUCCÈS</span>
       </div>
       <div class="hero-btns">
-        <a href="src/html/admissions.html" class="btn-primary" data-fr="Pré-inscrire mon enfant" data-en="Pre-register my child">Pré-inscrire mon enfant</a>
-        <a href="src/html/apropos.html"    class="btn-outline"  data-fr="Découvrir le collège"    data-en="Discover the college">Découvrir le collège</a>
+        <a href="src/pages/admissions.html" class="btn-primary" data-fr="Pré-inscrire mon enfant" data-en="Pre-register my child">Pré-inscrire mon enfant</a>
+        <a href="src/pages/apropos.html"    class="btn-outline"  data-fr="Découvrir le collège"    data-en="Discover the college">Découvrir le collège</a>
       </div>
     </div>
     <!-- Stats -->
@@ -157,7 +157,7 @@
             <div class="principal-name">MBANA Marin</div>
             <div class="principal-title">Principal — CABMY</div>
             <div class="principal-cred">Master en Didactique des Sciences<br>PLEG</div>
-            <a href="src/html/apropos.html" class="principal-btn" data-fr="📖 Voir l'historique du collège" data-en="📖 See the college history">📖 Voir l'historique du collège</a>
+            <a href="src/pages/apropos.html" class="principal-btn" data-fr="📖 Voir l'historique du collège" data-en="📖 See the college history">📖 Voir l'historique du collège</a>
           </div>
         </div>
       </div>
@@ -213,7 +213,7 @@
           <h3 class="section-card-title" data-fr="Section Francophone" data-en="French Section">Section Francophone</h3>
           <p class="section-card-desc" data-fr="De la 6ème à la Terminale. Préparation au BEPC et au Baccalauréat camerounais dans un environnement d'excellence." data-en="From 6th to Terminal. Preparation for BEPC and Baccalaureate in an environment of excellence.">De la 6ème à la Terminale. Préparation au BEPC et au Baccalauréat camerounais dans un environnement d'excellence.</p>
           <div class="tags"><span class="tag tag-blue">6ème – 3ème</span><span class="tag tag-blue">2nde – Tle</span><span class="tag tag-gold">BEPC . Probatoire . Bac</span></div>
-          <a href="src/html/enseignements.html" class="section-card-link" data-fr="En savoir plus →" data-en="Learn more →">En savoir plus →</a>
+          <a href="src/pages/enseignements.html" class="section-card-link" data-fr="En savoir plus →" data-en="Learn more →">En savoir plus →</a>
         </div>
       </div>
       <div class="section-card card-hover fade-up fade-up-d2">
@@ -223,7 +223,7 @@
           <h3 class="section-card-title" data-fr="Section Anglophone" data-en="English Section">Section Anglophone</h3>
           <p class="section-card-desc" data-fr="De Form 1 à Upper Sixth. Préparation aux examens GCE O/L et A/L pour une reconnaissance internationale." data-en="From Form 1 to Upper Sixth. GCE O/L and A/L preparation for international recognition.">De Form 1 à Upper Sixth. Préparation aux examens GCE O/L et A/L pour une reconnaissance internationale.</p>
           <div class="tags"><span class="tag tag-blue">Form 1–5</span><span class="tag tag-blue">L.Sixth – U.Sixth</span><span class="tag tag-gold">GCE O/L · A/L</span></div>
-          <a href="src/html/enseignements.html" class="section-card-link" data-fr="En savoir plus →" data-en="Learn more →">En savoir plus →</a>
+          <a href="src/pages/enseignements.html" class="section-card-link" data-fr="En savoir plus →" data-en="Learn more →">En savoir plus →</a>
         </div>
       </div>
       <div class="section-card dark card-hover fade-up fade-up-d3">
@@ -234,7 +234,7 @@
           <h3 class="section-card-title" data-fr="Cours du Soir" data-en="Evening Classes">Cours du Soir</h3>
           <p class="section-card-desc" data-fr="Pour adultes et travailleurs. Lun–Ven 18h–21h30. Préparez votre BEPC, Probatoire ou Bac à votre rythme." data-en="For All. Mon–Fri 4PM–9:30PM.">Pour tous. Lun–Ven 18h–21h30, Samedi 8h–12h. Préparez votre BEPC ou Bac à votre rythme.</p>
           <div class="tags"><span class="tag">16h – 21h30</span><span class="tag tag-gold">BEPC . Probatoire . Bac</span></div>
-          <a href="src/html/enseignements.html" class="section-card-link" data-fr="Je m'inscris →" data-en="Register now →">Je m'inscris →</a>
+          <a href="src/pages/enseignements.html" class="section-card-link" data-fr="Je m'inscris →" data-en="Register now →">Je m'inscris →</a>
         </div>
       </div>
     </div>
@@ -249,7 +249,7 @@
     <div class="gold-line mx-auto mb-4"></div>
     <h2 class="text-3xl font-bold mb-4" data-fr="Découvrez notre page Vie Scolaire" data-en="Discover our School Life page">Découvrez notre page Vie Scolaire</h2>
     <p class="text-gray-600 mb-6" data-fr="Règlement intérieur, guide parents-enfants et vie quotidienne au CABMY." data-en="School rules, parent-child guide and daily life at CABMY.">Règlement intérieur, guide parents-enfants et vie quotidienne au CABMY.</p>
-    <a href="src/html/vie-scolaire.html" class="btn-primary px-8 py-3 rounded-lg" data-fr="Voir Vie Scolaire" data-en="View School Life">Voir Vie Scolaire</a>
+    <a href="src/pages/vie-scolaire.html" class="btn-primary px-8 py-3 rounded-lg" data-fr="Voir Vie Scolaire" data-en="View School Life">Voir Vie Scolaire</a>
   </div>
 </div>
  
@@ -267,7 +267,7 @@
         <button class="gallery-nav-btn" onclick="galleryMove(-1)">‹</button>
         <button class="gallery-nav-btn" onclick="galleryMove(1)">›</button>
       </div>
-      <a href="src/html/actualites.html" class="gallery-strip-link" data-fr="Voir toutes les photos →" data-en="See all photos →">Voir toutes les photos →</a>
+      <a href="src/pages/actualites.html" class="gallery-strip-link" data-fr="Voir toutes les photos →" data-en="See all photos →">Voir toutes les photos →</a>
     </div>
   </div>
   <div class="gallery-track-wrap" id="galleryWrap">
@@ -346,7 +346,7 @@
       </div>
     </div>
     <div style="margin-top:36px;" class="fade-up">
-      <a href="src/html/apropos.html" style="display:inline-flex;align-items:center;gap:9px;border:1.5px solid var(--blue);color:var(--blue);font-weight:700;font-size:.875rem;padding:12px 26px;border-radius:12px;transition:all .28s;" onmouseover="this.style.background='var(--blue)';this.style.color='#fff';" onmouseout="this.style.background='';this.style.color='var(--blue)';" data-fr="Voir toute l'administration →" data-en="View all administration →">Voir toute l'administration →</a>
+      <a href="src/pages/apropos.html" style="display:inline-flex;align-items:center;gap:9px;border:1.5px solid var(--blue);color:var(--blue);font-weight:700;font-size:.875rem;padding:12px 26px;border-radius:12px;transition:all .28s;" onmouseover="this.style.background='var(--blue)';this.style.color='#fff';" onmouseout="this.style.background='';this.style.color='var(--blue)';" data-fr="Voir toute l'administration →" data-en="View all administration →">Voir toute l'administration →</a>
     </div>
   </div>
 </section>
@@ -361,7 +361,7 @@
         <div class="section-kicker" style="color:rgba(201,168,76,.85);">Dernières nouvelles</div>
         <h2 class="section-title" style="color:#fff;">Actualités du CABMY</h2>
       </div>
-      <a href="src/html/actualites.html" style="font-size:.84rem;font-weight:700;color:var(--gold);display:flex;align-items:center;gap:6px;" class="fade-up" data-fr="Toutes les actualités →" data-en="All news →">Toutes les actualités →</a>
+      <a href="src/pages/actualites.html" style="font-size:.84rem;font-weight:700;color:var(--gold);display:flex;align-items:center;gap:6px;" class="fade-up" data-fr="Toutes les actualités →" data-en="All news →">Toutes les actualités →</a>
     </div>
     <div class="news-grid">
       <div class="news-card card-hover fade-up fade-up-d1">
@@ -370,7 +370,7 @@
           <span class="news-badge" style="background:var(--gold-light);color:#7a5c00;">Résultats</span>
           <h4 class="news-card-title">Résultats BEPC 2024 : 96% de réussite au CABMY</h4>
           <p class="news-card-desc">Le CABMY célèbre une année exceptionnelle avec un taux record aux examens du BEPC.</p>
-          <div class="news-card-footer"><span>Juin 2024</span><a href="src/html/actualites.html" class="news-card-read">Lire →</a></div>
+          <div class="news-card-footer"><span>Juin 2024</span><a href="src/pages/actualites.html" class="news-card-read">Lire →</a></div>
         </div>
       </div>
       <div class="news-card card-hover fade-up fade-up-d2">
@@ -379,7 +379,7 @@
           <span class="news-badge" style="background:var(--blue-light);color:var(--blue);">Spiritualité</span>
           <h4 class="news-card-title">Semaine de prière : un moment de grâce pour tous</h4>
           <p class="news-card-desc">La communauté du CABMY s'est réunie pour une semaine spirituelle enrichissante.</p>
-          <div class="news-card-footer"><span>Mai 2024</span><a href="src/html/actualites.html" class="news-card-read">Lire →</a></div>
+          <div class="news-card-footer"><span>Mai 2024</span><a href="src/pages/actualites.html" class="news-card-read">Lire →</a></div>
         </div>
       </div>
       <div class="news-card card-hover fade-up fade-up-d3">
@@ -388,12 +388,12 @@
           <span class="news-badge" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);">Cours du soir</span>
           <h4 class="news-card-title">Rentrée 2026 des cours du soir : inscription ouverte</h4>
           <p class="news-card-desc">Les inscriptions pour les cours du soir sont désormais ouvertes pour la nouvelle année.</p>
-          <div class="news-card-footer"><span>Juil. 2026</span><a href="src/html/actualites.html" class="news-card-read">Lire →</a></div>
+          <div class="news-card-footer"><span>Juil. 2026</span><a href="src/pages/actualites.html" class="news-card-read">Lire →</a></div>
         </div>
       </div>
     </div>
     <div style="text-align:center;margin-top:42px;" class="fade-up">
-      <a href="src/html/actualites.html" class="btn-primary">Voir toutes les actualités</a>
+      <a href="src/pages/actualites.html" class="btn-primary">Voir toutes les actualités</a>
     </div>
   </div>
 </section>
@@ -405,9 +405,9 @@
   <h2 data-fr="Prêt à rejoindre la <em>famille CABMY</em> ?" data-en="Ready to join the <em>CABMY family</em>?">Prêt à rejoindre la <em>famille CABMY</em> ?</h2>
   <p>Les inscriptions sont ouvertes pour l'année scolaire 2026-2027. Contactez-nous dès aujourd'hui ou téléchargez le prospectus.</p>
   <div class="cta-btns">
-    <a href="src/html/admissions.html" class="btn-primary">S'inscrire maintenant</a>
+    <a href="src/pages/admissions.html" class="btn-primary">S'inscrire maintenant</a>
     <a href="pdf/prospectus-cabmy-2026-2027.pdf" download class="btn-white-outline">⬇ Télécharger le prospectus</a>
-    <a href="src/html/contact.html"    class="btn-white-outline">Nous contacter</a>
+    <a href="src/pages/contact.html"    class="btn-white-outline">Nous contacter</a>
   </div>
 </div>
  
@@ -432,19 +432,19 @@
     <div>
       <div class="footer-col-title">Navigation</div>
       <a href="index.html"                  class="footer-link">Accueil</a>
-      <a href="src/html/apropos.html"        class="footer-link">À propos</a>
-      <a href="src/html/enseignements.html"  class="footer-link">Enseignements</a>
-      <a href="src/html/admissions.html"     class="footer-link">Admissions</a>
-      <a href="src/html/actualites.html"     class="footer-link">Actualités</a>
-      <a href="src/html/contact.html"        class="footer-link">Contact</a>
+      <a href="src/pages/apropos.html"        class="footer-link">À propos</a>
+      <a href="src/pages/enseignements.html"  class="footer-link">Enseignements</a>
+      <a href="src/pages/admissions.html"     class="footer-link">Admissions</a>
+      <a href="src/pages/actualites.html"     class="footer-link">Actualités</a>
+      <a href="src/pages/contact.html"        class="footer-link">Contact</a>
       <a href="404.html"                    class="footer-link">Erreur 404</a>
     </div>
     <div>
       <div class="footer-col-title">Admissions</div>
-      <a href="src/html/admissions.html#conditions" class="footer-link">Conditions</a>
-      <a href="src/html/admissions.html#frais"      class="footer-link">Frais 2026-2027</a>
-      <a href="src/html/admissions.html#tenues"     class="footer-link">Tenues scolaires</a>
-      <a href="src/html/enseignements.html"         class="footer-link">Cours du soir</a>
+      <a href="src/pages/admissions.html#conditions" class="footer-link">Conditions</a>
+      <a href="src/pages/admissions.html#frais"      class="footer-link">Frais 2026-2027</a>
+      <a href="src/pages/admissions.html#tenues"     class="footer-link">Tenues scolaires</a>
+      <a href="src/pages/enseignements.html"         class="footer-link">Cours du soir</a>
       <a href="pdf/prospectus-cabmy-2026-2027.pdf" download class="footer-link" style="color:var(--gold);">⬇ Prospectus PDF</a>
     </div>
     <div>
