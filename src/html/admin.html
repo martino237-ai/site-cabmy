@@ -534,11 +534,46 @@ const SUPABASE_ANON_KEY = 'sb_publishable_27QjPv6iSD64BTyIjm--jA_j3oJwSkv';
 const SUPABASE_PROXY_URL = /localhost|127\.0\.0\.1/.test(window.location.hostname)
   ? 'http://localhost:8001/api'
   : 'https://site-cabmy.onrender.com/api';
+const MEDIA_UPLOAD_URL = `${SUPABASE_PROXY_URL}/upload`;
 let adminSupabaseClient = null;
 let supabaseInitPromise = null;
 let supabaseEnabled = false;
 let currentArticles = [];
 let currentArticleMediaItems = [];
+
+async function uploadLocalMediaToProxy(file) {
+  if (!(file instanceof File)) {
+    throw new Error('Fichier local invalide.');
+  }
+
+  const content = await readLocalFileAsDataUrl(file);
+  const response = await fetch(MEDIA_UPLOAD_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: file.name || 'upload.bin',
+      mime: file.type || 'application/octet-stream',
+      size: file.size || 0,
+      content
+    })
+  });
+
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data?.error || 'Upload local impossible.');
+  }
+
+  return data?.url || data?.publicUrl || null;
+}
+
+function readLocalFileAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result || '');
+    reader.onerror = () => reject(new Error('Lecture du fichier local impossible.'));
+    reader.readAsDataURL(file);
+  });
+}
 
 function getLocalFallbackData(key) {
   const local = getData(key, []);
@@ -890,17 +925,38 @@ function setArticleMediaPreview(url, title = 'Aperçu') {
   const titleEl = document.getElementById('article-media-title');
   const helpEl = document.getElementById('article-media-help');
   if (!preview || !img || !titleEl || !helpEl) return;
+
   if (!url) {
-    preview.classList.add('hidden');
     img.removeAttribute('src');
     titleEl.textContent = 'Aperçu';
     helpEl.textContent = 'Votre média apparaîtra ici.';
+    preview.classList.add('hidden');
+    preview.style.display = 'none';
+    preview.hidden = true;
     return;
   }
+
   img.src = url;
   titleEl.textContent = title;
   helpEl.textContent = 'Média prêt à être enregistré avec l’article.';
   preview.classList.remove('hidden');
+  preview.style.display = 'flex';
+  preview.hidden = false;
+}
+
+function syncArticleMediaPreviewState() {
+  const items = getArticleMediaItems();
+  if (!items.length) {
+    setArticleMediaPreview('');
+    return;
+  }
+  const last = items[items.length - 1];
+  if (!last?.url) {
+    setArticleMediaPreview('');
+    return;
+  }
+  const title = last.type === 'video' ? 'Vidéo importée' : 'Photo importée';
+  setArticleMediaPreview(last.url, title);
 }
 
 function inferArticleMediaType(url = '') {
@@ -914,16 +970,19 @@ function parseFrenchDateForInput(value) {
   const text = String(value).trim();
   if (/^\d{4}-\d{2}-\d{2}$/.test(text)) return text;
 
-  const parsed = new Date(text);
-  if (!Number.isNaN(parsed.getTime())) {
-    return parsed.toISOString().slice(0, 10);
-  }
-
   const monthMap = {
     janvier: '01', fevrier: '02', février: '02', mars: '03', avril: '04', mai: '05', juin: '06',
     juillet: '07', aout: '08', août: '08', septembre: '09', oct: '10', octobre: '10', nov: '11', novembre: '11', dec: '12', decembre: '12',
     jan: '01', fev: '02', mar: '03', avr: '04', jun: '06', jul: '07', aug: '08', sep: '09', oct: '10', nov: '11', dec: '12'
   };
+
+  const numericMatch = text.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$/);
+  if (numericMatch) {
+    const [, rawDay, rawMonth, year] = numericMatch;
+    const day = String(Number(rawDay)).padStart(2, '0');
+    const month = String(Number(rawMonth)).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
 
   const match = text.match(/(\d{1,2})\s+[A-Za-zÀ-ÿ]+\s+(\d{4})/);
   if (match) {
@@ -942,6 +1001,14 @@ function parseFrenchDateForInput(value) {
     const day = String(Number(dayRaw)).padStart(2, '0');
     const month = monthMap[monthName.toLowerCase()] || monthMap[monthName.toLowerCase().slice(0, 3)] || '01';
     return `${yearRaw}-${month}-${day}`;
+  }
+
+  const parsed = new Date(text);
+  if (!Number.isNaN(parsed.getTime())) {
+    const year = parsed.getFullYear();
+    const month = String(parsed.getMonth() + 1).padStart(2, '0');
+    const day = String(parsed.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
   return '';
@@ -1023,12 +1090,48 @@ function updateArticleMediaList(mediaItems) {
 }
 
 function getArticleMediaItems() {
+  if (!Array.isArray(currentArticleMediaItems)) currentArticleMediaItems = [];
   return currentArticleMediaItems;
 }
 
 function setArticleMediaItems(items) {
   currentArticleMediaItems = Array.isArray(items) ? items.map(item => normalizeArticleMediaItem(item)).filter(Boolean) : [];
   updateArticleMediaList(currentArticleMediaItems);
+
+  const preview = document.getElementById('article-media-preview');
+  const img = document.getElementById('article-media-img');
+  const titleEl = document.getElementById('article-media-title');
+  const helpEl = document.getElementById('article-media-help');
+  if (!preview || !img || !titleEl || !helpEl) return;
+
+  if (!currentArticleMediaItems.length) {
+    img.removeAttribute('src');
+    titleEl.textContent = 'Aperçu';
+    helpEl.textContent = 'Votre média apparaîtra ici.';
+    preview.classList.add('hidden');
+    preview.style.display = 'none';
+    preview.hidden = true;
+    return;
+  }
+
+  const last = currentArticleMediaItems[currentArticleMediaItems.length - 1];
+  const url = last?.url || '';
+  if (!url) {
+    img.removeAttribute('src');
+    titleEl.textContent = 'Aperçu';
+    helpEl.textContent = 'Votre média apparaîtra ici.';
+    preview.classList.add('hidden');
+    preview.style.display = 'none';
+    preview.hidden = true;
+    return;
+  }
+
+  img.src = url;
+  titleEl.textContent = last.type === 'video' ? 'Vidéo importée' : 'Photo importée';
+  helpEl.textContent = 'Média prêt à être enregistré avec l’article.';
+  preview.classList.remove('hidden');
+  preview.style.display = 'flex';
+  preview.hidden = false;
 }
 
 function getStoredArticleMediaItems(article = {}) {
@@ -1071,38 +1174,68 @@ function removeArticleMediaItem(index) {
   setArticleMediaItems(items);
 }
 
-function handleArticleMediaFilesUpload(input) {
+async function handleArticleMediaFilesUpload(input) {
   const files = input?.files;
   if (!files || !files.length) return;
-  const items = getArticleMediaItems();
-  Array.from(files).forEach(file => {
-    const reader = new FileReader();
-    reader.onload = function (event) {
-      const dataUrl = event.target?.result;
+  const nextItems = [...getArticleMediaItems()];
+
+  for (const file of Array.from(files)) {
+    try {
+      const dataUrl = await readLocalFileAsDataUrl(file);
       const type = file.type.startsWith('video/') ? 'video' : 'photo';
-      items.push({ url: dataUrl, type });
-      setArticleMediaItems(items);
-    };
-    reader.readAsDataURL(file);
-  });
+      const remoteUrl = await uploadLocalMediaToProxy(file).catch(() => null);
+      nextItems.push({ url: remoteUrl || dataUrl, type });
+      setArticleMediaItems(nextItems);
+      requestAnimationFrame(() => {
+        const preview = document.getElementById('article-media-preview');
+        const img = document.getElementById('article-media-img');
+        if (preview && img) {
+          img.src = remoteUrl || dataUrl;
+          document.getElementById('article-media-title').textContent = type === 'video' ? 'Vidéo importée' : 'Photo importée';
+          document.getElementById('article-media-help').textContent = 'Média prêt à être enregistré avec l’article.';
+          preview.classList.remove('hidden');
+          preview.style.display = 'flex';
+          preview.hidden = false;
+        }
+      });
+      document.getElementById('art-media-type').value = type;
+      document.getElementById('art-media-alt').value = file.name || 'Média sélectionné';
+    } catch (error) {
+      console.warn('Upload local du média impossible, fallback local:', error.message || error);
+    }
+  }
   input.value = '';
 }
 
-function handleArticleMediaUpload(input, source) {
+async function handleArticleMediaUpload(input, source) {
   const file = input?.files?.[0];
   if (!file) return;
-  const items = getArticleMediaItems();
-  const reader = new FileReader();
-  reader.onload = function (event) {
-    const dataUrl = event.target?.result;
+  const nextItems = [...getArticleMediaItems()];
+
+  try {
+    const dataUrl = await readLocalFileAsDataUrl(file);
     const type = file.type.startsWith('video/') ? 'video' : 'photo';
-    items.push({ url: dataUrl, type });
-    setArticleMediaItems(items);
+    const remoteUrl = await uploadLocalMediaToProxy(file).catch(() => null);
+    nextItems.push({ url: remoteUrl || dataUrl, type });
+    setArticleMediaItems(nextItems);
+    requestAnimationFrame(() => {
+      const preview = document.getElementById('article-media-preview');
+      const img = document.getElementById('article-media-img');
+      if (preview && img) {
+        img.src = remoteUrl || dataUrl;
+        document.getElementById('article-media-title').textContent = source === 'camera' ? 'Média pris avec l’appareil' : 'Média depuis la galerie';
+        document.getElementById('article-media-help').textContent = 'Média prêt à être enregistré avec l’article.';
+        preview.classList.remove('hidden');
+        preview.style.display = 'flex';
+        preview.hidden = false;
+      }
+    });
     document.getElementById('art-media-type').value = type;
     document.getElementById('art-media-alt').value = file.name || 'Média sélectionné';
-    setArticleMediaPreview(dataUrl, source === 'camera' ? 'Média pris avec l’appareil' : 'Média depuis la galerie');
-  };
-  reader.readAsDataURL(file);
+  } catch (error) {
+    console.warn('Upload local du média impossible, fallback local:', error.message || error);
+  }
+
   input.value = '';
 }
 
@@ -1155,6 +1288,12 @@ async function saveArticle(e) {
   const mediaItems = getArticleMediaItems();
   const mediaUrls = mediaItems.map(item => item.url).filter(Boolean);
   const mediaType = getArticleMediaType(mediaItems);
+  const rawDate = document.getElementById('art-date').value;
+  const parsedDate = rawDate ? new Date(`${rawDate}T12:00:00`) : new Date();
+  const articleDate = Number.isNaN(parsedDate.getTime())
+    ? new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })
+    : parsedDate.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+
   const article = {
     titre:     document.getElementById('art-titre').value,
     cat:       document.getElementById('art-cat').value,
@@ -1168,9 +1307,7 @@ async function saveArticle(e) {
     mediaUrls: mediaUrls,
     mediaItems: mediaItems,
     mediaAlt:  document.getElementById('art-media-alt').value.trim(),
-    date:      document.getElementById('art-date').value
-      ? new Date(`${document.getElementById('art-date').value}T12:00:00`).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
-      : new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })
+    date:      articleDate
   };
   if (article.mediaType === 'none') {
     article.mediaUrl = '';

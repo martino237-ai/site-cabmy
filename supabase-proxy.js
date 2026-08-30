@@ -193,26 +193,44 @@ function parseDataUrl(value) {
   return match ? { mimeType: match[1], buffer: Buffer.from(match[2], 'base64') } : null;
 }
 
+async function uploadBufferToSupabase(buffer, mimeType, fileName, index, folder = 'articles') {
+  if (!buffer || !mimeType) {
+    throw new Error('Buffer ou type MIME invalide pour l’upload Supabase.');
+  }
+
+  const client = getSupabaseClient();
+  if (!client) {
+    throw new Error('Supabase non configuré sur Render.');
+  }
+
+  const safeMime = mimeType || 'application/octet-stream';
+  const extension = safeMime.split('/')[1]?.replace('jpeg', 'jpg') || path.extname(fileName || '').replace('.', '') || 'bin';
+  const cleanExtension = extension || 'bin';
+  const filePath = `${folder}/${Date.now()}-${index || Math.random().toString(36).slice(2, 8)}.${cleanExtension}`;
+  const payload = Buffer.isBuffer(buffer) ? buffer : Buffer.from(buffer);
+
+  const { error } = await client.storage.from('media').upload(filePath, payload, {
+    contentType: safeMime,
+    upsert: false
+  });
+
+  if (error) {
+    throw error;
+  }
+
+  const publicUrl = client.storage.from('media').getPublicUrl(filePath).data.publicUrl;
+  if (!publicUrl) {
+    throw new Error('URL publique Supabase introuvable pour le fichier uploadé.');
+  }
+
+  return publicUrl;
+}
+
 async function uploadMediaToStorage(value, index) {
   const parsed = parseDataUrl(value?.url || value);
   if (!parsed) return value;
-  const client = getSupabaseClient();
-  if (!client) {
-    console.warn('⚠️ Supabase Storage non configuré; média gardé en base64');
-    return value;
-  }
   try {
-    const extension = parsed.mimeType.split('/')[1]?.replace('jpeg', 'jpg') || 'bin';
-    const filePath = `articles/${Date.now()}-${index}.${extension}`;
-    const { error } = await client.storage.from('media').upload(filePath, parsed.buffer, {
-      contentType: parsed.mimeType,
-      upsert: false
-    });
-    if (error) {
-      console.warn(`⚠️ Upload Storage échoué: ${error.message}; média gardé en base64`);
-      return value;
-    }
-    return client.storage.from('media').getPublicUrl(filePath).data.publicUrl;
+    return await uploadBufferToSupabase(parsed.buffer, parsed.mimeType, `media-${index}.bin`, index, 'articles');
   } catch (err) {
     console.warn(`⚠️ Upload Storage exception: ${err.message}; média gardé en base64`);
     return value;
@@ -222,49 +240,88 @@ async function uploadMediaToStorage(value, index) {
 async function uploadArticleMedia(payload) {
   const items = Array.isArray(payload.mediaurls) ? payload.mediaurls : [];
   if (!items.length) return payload;
-  
+
   const uploadedItems = await Promise.all(items.map(async (item, index) => {
     if (!item) return null;
-    
-    const isDataUrl = typeof item === 'string' && item.startsWith('data:');
-    if (isDataUrl) {
-      console.warn(`⚠️ Item ${index}: Data URL détecté; ignoring to keep response small`);
-      return null;
-    }
-    
-    const parsed = parseDataUrl(item?.url || item);
+
+    const rawValue = typeof item === 'string' ? item : (item?.url || '');
+    if (!rawValue) return null;
+
+    const parsed = parseDataUrl(rawValue);
     if (!parsed) {
-      if (typeof item === 'string' && item.trim().length > 0) return item;
+      if (typeof rawValue === 'string' && rawValue.trim().length > 0) return rawValue;
       return null;
     }
-    
-    const client = getSupabaseClient();
-    if (!client) {
-      console.warn(`⚠️ Item ${index}: Supabase Storage non configuré; ignoré`);
-      return null;
-    }
-    
+
     try {
-      const extension = parsed.mimeType.split('/')[1]?.replace('jpeg', 'jpg') || 'bin';
-      const filePath = `articles/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${extension}`;
-      const { error } = await client.storage.from('media').upload(filePath, parsed.buffer, {
-        contentType: parsed.mimeType,
-        upsert: false
-      });
-      if (error) throw error;
-      return client.storage.from('media').getPublicUrl(filePath).data.publicUrl;
+      return await uploadBufferToSupabase(parsed.buffer, parsed.mimeType, `media-${index}.bin`, index, 'articles');
     } catch (err) {
-      console.warn(`⚠️ Item ${index} upload failed: ${err.message}; ignoré`);
-      return null;
+      console.warn(`⚠️ Item ${index} upload failed: ${err.message}; fallback vers la data URL locale`);
+      return rawValue;
     }
   }));
-  
+
   const validItems = uploadedItems.filter(Boolean);
   return {
     ...payload,
-    mediaurl: validItems.length === 1 ? validItems[0] : (validItems.length ? JSON.stringify(validItems) : ''),
+    mediaurl: validItems.length === 1 ? validItems[0] : (validItems.length ? JSON.stringify(validItems) : payload.mediaurl || ''),
     mediaurls: validItems
   };
+}
+
+function parseMultipartForm(body, boundary) {
+  if (!body || !boundary) return [];
+
+  const boundaryMarker = Buffer.from(`--${boundary}`);
+  const parts = [];
+  let start = body.indexOf(boundaryMarker);
+  if (start === -1) return parts;
+
+  start += boundaryMarker.length;
+  while (start < body.length) {
+    if (body[start] === 13 && body[start + 1] === 10) {
+      start += 2;
+    }
+
+    const headersEnd = body.indexOf(Buffer.from('\r\n\r\n'), start);
+    if (headersEnd === -1) break;
+
+    const headers = body.slice(start, headersEnd).toString('utf8');
+    let fieldName = '';
+    let fileName = '';
+    let contentType = 'application/octet-stream';
+
+    for (const line of headers.split('\r\n')) {
+      if (!line) continue;
+      if (line.toLowerCase().startsWith('content-disposition:')) {
+        const matchName = line.match(/name="([^"]+)"/i);
+        const matchFile = line.match(/filename="([^"]*)"/i);
+        if (matchName) fieldName = matchName[1];
+        if (matchFile) fileName = matchFile[1];
+      }
+      if (line.toLowerCase().startsWith('content-type:')) {
+        contentType = line.split(':').slice(1).join(':').trim();
+      }
+    }
+
+    const dataStart = headersEnd + 4;
+    const nextBoundary = body.indexOf(Buffer.from(`\r\n--${boundary}`), dataStart);
+    const dataEnd = nextBoundary >= 0 ? nextBoundary : body.length;
+    const content = body.slice(dataStart, dataEnd);
+
+    parts.push({
+      name: fieldName,
+      filename: fileName,
+      contentType,
+      content: content.length > 0 && content[content.length - 1] === 13 ? content.slice(0, -1) : content
+    });
+
+    if (nextBoundary < 0) break;
+    start = nextBoundary + `\r\n--${boundary}`.length;
+    if (body.slice(start, start + 2).toString('utf8') === '--') break;
+  }
+
+  return parts;
 }
 
 const server = http.createServer(async (req, res) => {
@@ -325,6 +382,68 @@ const server = http.createServer(async (req, res) => {
       res.end('<h1>Google Drive est connecté</h1><p>Vous pouvez fermer cette fenêtre et publier votre article.</p>');
     } catch (error) {
       sendJson(res, 400, { error: error.message });
+    }
+    return;
+  }
+
+  if ((url.pathname === '/api/upload' || url.pathname === '/upload') && req.method === 'POST') {
+    try {
+      const contentType = req.headers['content-type'] || '';
+      let body = '';
+
+      req.on('data', chunk => {
+        body += chunk.toString('utf8');
+      });
+
+      req.on('end', async () => {
+        try {
+          if (!body.trim()) {
+            throw new Error('Corps de requête vide.');
+          }
+
+          let payload = {};
+          if (contentType.includes('application/json')) {
+            payload = JSON.parse(body || '{}');
+          } else {
+            const boundaryMatch = contentType.match(/boundary=(?:"([^"]+)"|([^;]+))/i);
+            const boundary = boundaryMatch ? (boundaryMatch[1] || boundaryMatch[2]) : '';
+            if (!boundary) {
+              throw new Error('Requête multipart/form-data invalide.');
+            }
+
+            const parsedBody = Buffer.from(body, 'utf8');
+            const parts = parseMultipartForm(parsedBody, boundary);
+            const filePart = parts.find(part => part.name === 'file' && (part.filename || part.contentType));
+            if (!filePart) throw new Error('Fichier absent dans la requête upload.');
+
+            payload = {
+              name: filePart.filename || 'uploaded-media.bin',
+              mime: filePart.contentType || 'application/octet-stream',
+              content: `data:${filePart.contentType || 'application/octet-stream'};base64,${filePart.content.toString('base64')}`
+            };
+          }
+
+          const content = payload.content || payload.dataUrl || payload.file;
+          const parsed = parseDataUrl(content);
+          if (!parsed) {
+            throw new Error('Contenu image introuvable dans la requête upload.');
+          }
+
+          const publicUrl = await uploadBufferToSupabase(
+            parsed.buffer,
+            parsed.mimeType,
+            payload.name || 'uploaded-media.bin',
+            Date.now(),
+            'articles'
+          );
+
+          sendJson(res, 200, { ok: true, url: publicUrl, publicUrl }, origin);
+        } catch (error) {
+          sendJson(res, 400, { error: error.message || 'Upload local impossible' }, origin);
+        }
+      });
+    } catch (error) {
+      sendJson(res, 400, { error: error.message || 'Upload local impossible' }, origin);
     }
     return;
   }
