@@ -262,7 +262,9 @@
 <script>
   const SUPABASE_URL = 'https://dkhgaehodxugrwpdvbuk.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_27QjPv6iSD64BTyIjm--jA_j3oJwSkv';
-  const SUPABASE_PROXY_URL = 'https://api.cabmy-maranatha.com/api';
+  const SUPABASE_PROXY_URL = /localhost|127\.0\.0\.1/.test(window.location.hostname)
+    ? 'http://localhost:8001/api'
+    : '/api';
   let supabaseClient = null;
   let supabaseEnabled = false;
   const categoryLabels = { resultats: '📊 Résultats', vie: '🏫 Vie du collège', spiritualite: '⛪ Spiritualité', soir: '🌙 Cours du soir' };
