@@ -9,7 +9,7 @@ require('dotenv').config({ path: '.env.local' });
 const PORT = Number(process.env.PORT || 8001);
 const APP_ORIGIN = (process.env.APP_ORIGIN || process.env.PUBLIC_URL || `http://localhost:${PORT}`).replace(/\/$/, '');
 const GOOGLE_OAUTH_REDIRECT_URI = process.env.GOOGLE_OAUTH_REDIRECT_URI || new URL('/oauth2callback', APP_ORIGIN).toString();
-const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'http://localhost:8000,http://localhost:8001,https://cabmy.netlify.app,https://site-cabmy.onrender.com').split(',').map(item => item.trim()).filter(Boolean);
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'http://localhost:8000,http://localhost:8001,https://cabmy.netlify.app,https://cabmy-maranatha.netlify.app,https://cabmy-maranatha.com,https://www.cabmy-maranatha.com,https://site-cabmy.onrender.com').split(',').map(item => item.trim()).filter(Boolean);
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://dkhgaehodxugrwpdvbuk.supabase.co';
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 const GOOGLE_DRIVE_FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID || '1PVlizDx7kuKO7NYp9VgchePO-K77_e_w';
