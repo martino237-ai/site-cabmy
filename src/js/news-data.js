@@ -189,8 +189,56 @@ window.renderNewsCardHtml = function(article, options = {}) {
 window.renderHomepageNews = function(count) {
   const container = document.querySelector('.news-section .news-grid');
   if (!container || !window.CABMY_NEWS) return;
-  const cards = window.getCabmyNews(count).map(article => window.renderNewsCardHtml(article, { home: true, useCategoryLabel: true }));
-  container.innerHTML = cards.join('');
+
+  const newsCardsHtml = window.getCabmyNews(count).map(article => window.renderNewsCardHtml(article, { home: true, useCategoryLabel: true }));
+  container.classList.add('home-news-slider');
+  container.innerHTML = `
+    <div class="news-carousel-controls">
+      <button type="button" class="news-carousel-btn" data-news-dir="-1" aria-label="Actualités précédentes">‹</button>
+      <button type="button" class="news-carousel-btn" data-news-dir="1" aria-label="Actualités suivantes">›</button>
+    </div>
+    <div class="news-track">${newsCardsHtml.join('')}</div>
+  `;
+
+  const track = container.querySelector('.news-track');
+  const buttons = container.querySelectorAll('.news-carousel-btn');
+  if (!track || !buttons.length) return;
+
+  const trackCards = Array.from(track.children);
+  if (!trackCards.length) return;
+
+  let currentIndex = 0;
+
+  const getCardWidth = () => {
+    const firstCard = trackCards[0];
+    if (!firstCard) return 0;
+    const styles = window.getComputedStyle(track);
+    const gap = parseFloat(styles.gap || '22');
+    return firstCard.getBoundingClientRect().width + gap;
+  };
+
+  const updateNewsPosition = () => {
+    const cardWidth = getCardWidth();
+    track.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+  };
+
+  const moveNews = (direction) => {
+    currentIndex = (currentIndex + direction + trackCards.length) % trackCards.length;
+    updateNewsPosition();
+  };
+
+  buttons.forEach(button => {
+    button.addEventListener('click', () => moveNews(Number(button.dataset.newsDir || 1)));
+  });
+
+  let carouselTimer = setInterval(() => moveNews(1), 4500);
+  container.addEventListener('mouseenter', () => clearInterval(carouselTimer));
+  container.addEventListener('mouseleave', () => {
+    carouselTimer = setInterval(() => moveNews(1), 4500);
+  });
+
+  window.addEventListener('resize', updateNewsPosition);
+  updateNewsPosition();
 };
 
 window.renderArticlesGrid = function(articles) {
