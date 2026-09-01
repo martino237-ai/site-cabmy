@@ -384,9 +384,56 @@
     }
   }
 
+  async function fetchPublishedSupabaseArticles() {
+    const columns = [
+      'id', 'titre', 'cat', 'statut', 'featured', 'resume', 'contenu', 'emoji',
+      'date', 'dateSort', 'mediaType', 'mediaUrl', 'mediaUrls', 'mediaAlt', 'created_at'
+    ].join(',');
+
+    const endpoints = [
+      `${SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(columns)}&statut=eq.publie&order=dateSort.desc.nullslast`,
+      `${SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(columns)}&statut=eq.publie&order=created_at.desc`,
+      `${SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(columns)}&order=created_at.desc`
+    ];
+
+    for (const endpoint of endpoints) {
+      try {
+        const response = await fetch(endpoint, {
+          headers: {
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+          }
+        });
+
+        if (!response.ok) {
+          const text = await response.text();
+          console.warn('Supabase direct query failed', endpoint, text);
+          continue;
+        }
+
+        const payload = await response.json();
+        return Array.isArray(payload) ? payload : [];
+      } catch (err) {
+        console.warn('Direct Supabase fetch failed for endpoint', endpoint, err);
+      }
+    }
+
+    return [];
+  }
+
   async function loadNews() {
     const localArticles = getLocalArticles().filter(article => article.statut !== 'brouillon');
     const builtInArticles = Array.isArray(window.CABMY_NEWS) ? window.CABMY_NEWS : [];
+
+    try {
+      const directArticles = await fetchPublishedSupabaseArticles();
+      if (Array.isArray(directArticles) && directArticles.length) {
+        renderArticlesGrid(mergeArticles(directArticles, localArticles, builtInArticles));
+        return;
+      }
+    } catch (err) {
+      console.warn('Supabase direct fetch failed', err);
+    }
 
     if (!supabaseEnabled) {
       renderArticlesGrid(mergeArticles(localArticles, builtInArticles));

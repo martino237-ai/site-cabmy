@@ -27,6 +27,7 @@ create table if not exists public.articles (
   contenu text,
   emoji text default '📰',
   date text, -- Date affichée (ex: "15 juin 2024")
+  dateSort timestamptz, -- Date de tri pour l'ordre des actualités
   mediaType text, -- image, video, none
   mediaUrl text, -- URL de l'image/vidéo
   mediaUrls jsonb, -- Pour multiple medias
