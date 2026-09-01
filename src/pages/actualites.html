@@ -102,9 +102,6 @@
 <section class="py-16 bg-white">
   <div class="max-w-7xl mx-auto px-4">
 
-    <!-- ARTICLE À LA UNE -->
-    <div id="featured-news" class="mb-16"></div>
-
     <!-- FILTRES -->
     <div class="flex flex-wrap gap-3 mb-10 animate-fade">
       <button onclick="filterNews('all')" class="filter-btn active px-5 py-2 rounded-full text-sm font-medium" data-fr="Toutes" data-en="All">Toutes</button>
@@ -375,94 +372,9 @@
     renderArticlesGrid(mergeArticles(localArticles, builtInArticles));
   }
 
-  let featuredNewsList = [];
-  let featuredNewsIndex = 0;
-  let featuredNewsTimer = null;
-
-  function getFeaturedArticles(articles) {
-    const safeArticles = Array.isArray(articles) ? articles.filter(Boolean) : [];
-    if (!safeArticles.length) return [];
-
-    const explicitFeatured = safeArticles.filter(article => Boolean(article.featured) || Boolean(article.isFeatured));
-    if (explicitFeatured.length) {
-      return explicitFeatured.slice().sort((a, b) => String(b.dateSort || b.date || '').localeCompare(String(a.dateSort || a.date || '')));
-    }
-
-    return safeArticles.slice().sort((a, b) => String(b.dateSort || b.date || '').localeCompare(String(a.dateSort || a.date || ''))).slice(0, 4);
-  }
-
-  function renderFeaturedCard(articles) {
-    const container = document.getElementById('featured-news');
-    if (!container) return;
-
-    const featuredArticles = getFeaturedArticles(articles);
-    if (!featuredArticles.length) {
-      container.innerHTML = '';
-      return;
-    }
-
-    featuredNewsList = featuredArticles;
-    const article = featuredArticles[featuredNewsIndex % featuredArticles.length];
-    const category = article.categoryFr || article.category || categoryLabels[article.cat] || article.cat || 'Actualité';
-    const title = article.titleFr || article.titre || article.title || 'Actualité CABMY';
-    const summary = article.resumeFr || article.resume || article.contenu || article.contenuFr || '';
-    const dateText = article.date || 'Date non disponible';
-    const mediaUrl = window.getMediaUrl ? window.getMediaUrl(article) : '';
-    const mediaHtml = mediaUrl
-      ? `<div class="news-img"><img src="${window.escapeNewsHtml ? window.escapeNewsHtml(mediaUrl) : mediaUrl}" alt="${window.escapeNewsHtml ? window.escapeNewsHtml(article.titleFr || title) : (article.titleFr || title)}" /></div>`
-      : `<div class="news-img" style="background:linear-gradient(135deg,var(--blue-light),#d0ddf5);display:flex;align-items:center;justify-content:center;font-size:3rem;">${window.escapeNewsHtml ? window.escapeNewsHtml(article.emoji || '📰') : (article.emoji || '📰')}</div>`;
-
-    const controlsHtml = featuredArticles.length > 1 ? `
-      <div class="flex items-center gap-3 mt-6">
-        <button type="button" class="btn-primary px-4 py-2 rounded-lg text-sm" data-featured-dir="-1" data-fr="Précédent" data-en="Previous">Précédent</button>
-        <button type="button" class="btn-primary px-4 py-2 rounded-lg text-sm" data-featured-dir="1" data-fr="Suivant" data-en="Next">Suivant</button>
-      </div>
-    ` : '';
-
-    container.innerHTML = `
-      <div class="featured-card rounded-2xl overflow-hidden shadow-lg grid lg:grid-cols-2 animate-fade">
-        ${mediaHtml}
-        <div class="p-10 flex flex-col justify-center">
-          <div class="flex items-center gap-2 mb-4 flex-wrap">
-            <span class="text-xs font-bold px-3 py-1 rounded-full" style="background:var(--gold-light);color:#7a5c00" data-fr="À LA UNE" data-en="FEATURED">À LA UNE</span>
-            <span class="text-xs font-semibold px-3 py-1 rounded-full" style="background:var(--blue-light);color:var(--blue)" data-fr="${window.escapeNewsHtml ? window.escapeNewsHtml(category) : category}" data-en="${window.escapeNewsHtml ? window.escapeNewsHtml(category) : category}">${window.escapeNewsHtml ? window.escapeNewsHtml(category) : category}</span>
-          </div>
-          <h2 class="text-3xl font-bold mb-4" style="color:var(--blue)" data-fr="${window.escapeNewsHtml ? window.escapeNewsHtml(title) : title}" data-en="${window.escapeNewsHtml ? window.escapeNewsHtml(title) : title}">${window.escapeNewsHtml ? window.escapeNewsHtml(title) : title}</h2>
-          <p class="text-gray-500 mb-6 leading-relaxed" data-fr="${window.escapeNewsHtml ? window.escapeNewsHtml(summary) : summary}" data-en="${window.escapeNewsHtml ? window.escapeNewsHtml(summary) : summary}">${window.escapeNewsHtml ? window.escapeNewsHtml(summary) : summary}</p>
-          <div class="flex items-center gap-4 text-sm text-gray-400 flex-wrap">
-            <span>📅 ${window.escapeNewsHtml ? window.escapeNewsHtml(dateText) : dateText}</span>
-            <span>✍️ Administration CABMY</span>
-          </div>
-          ${controlsHtml}
-        </div>
-      </div>
-    `;
-
-    container.querySelectorAll('[data-featured-dir]').forEach(button => {
-      button.addEventListener('click', () => {
-        const step = Number(button.dataset.featuredDir || 1);
-        featuredNewsIndex = (featuredNewsIndex + step + featuredArticles.length) % featuredArticles.length;
-        renderFeaturedCard(featuredArticles);
-      });
-    });
-  }
-
-  function startFeaturedRotation(articles) {
-    if (featuredNewsTimer) clearInterval(featuredNewsTimer);
-    const featuredArticles = getFeaturedArticles(articles);
-    if (featuredArticles.length < 2) return;
-    featuredNewsTimer = setInterval(() => {
-      if (!featuredNewsList.length) return;
-      featuredNewsIndex = (featuredNewsIndex + 1) % featuredNewsList.length;
-      renderFeaturedCard(featuredNewsList);
-    }, 7000);
-  }
-
   function renderArticlesGrid(articles) {
     const grid = document.getElementById('articles-grid');
     if (!grid || !Array.isArray(articles)) return;
-    renderFeaturedCard(articles);
-    startFeaturedRotation(articles);
     grid.innerHTML = articles.map(article => {
       const mediaBlock = renderMediaBlock(article);
       const category = article.categoryFr || categoryLabels[article.cat] || article.cat || 'Actualité';
