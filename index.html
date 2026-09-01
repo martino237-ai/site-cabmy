@@ -469,65 +469,6 @@
      SCRIPTS
 ════════════════════════════════════════════ -->
 <script>window.CABMY_NEWS_MEDIA_PATH = 'images/';</script>
-<script>
-window.CABMY_NEWS = [
-  { id: 'be_pc_2024', cat: 'resultats', emoji: '🏅', mediaType: 'photo', mediaFilename: '7.jpg', categoryFr: 'Résultats', categoryEn: 'Results', titleFr: 'BEPC 2024 : Le CABMY réalise un taux de réussite exceptionnel de 96%', titleEn: 'BEPC 2024: CABMY achieves an exceptional 96% pass rate', resumeFr: 'La communauté du CABMY célèbre une année exceptionnelle. Grâce au travail acharné des élèves et au dévouement du corps enseignant, le taux de réussite au BEPC 2024 atteint 96%.', resumeEn: 'The CABMY community celebrates an exceptional year. Thanks to the hard work of students and dedication of staff, the 2024 BEPC pass rate reaches 96%.', date: 'Juin 2024', dateSort: '2024-06-01', link: 'src/pages/actualites.html' },
-  { id: 'priere_2024', cat: 'spiritualite', emoji: '⛪', mediaType: 'photo', mediaFilename: '2.jpeg', categoryFr: 'Spiritualité', categoryEn: 'Spirituality', titleFr: 'Semaine de prière 2024 : un moment de grâce pour tous', titleEn: '2024 Prayer Week: a moment of grace for all', resumeFr: 'La communauté scolaire s’est réunie pour une semaine de prière enrichissante, pleine de témoignages et de partages fraternels.', resumeEn: 'The school community gathered for an enriching prayer week, full of testimonies and fraternal sharing.', date: 'Mai 2024', dateSort: '2024-05-01', link: 'src/pages/actualites.html' },
-  { id: 'soir_2026', cat: 'soir', emoji: '🌙', mediaType: 'photo', mediaFilename: '1.jpeg', categoryFr: 'Cours du soir', categoryEn: 'Evening Classes', titleFr: 'Rentrée 2026 des cours du soir : inscription ouverte', titleEn: '2026 Evening Classes Term Begins: Enrolment Open', resumeFr: 'Les inscriptions pour la nouvelle année des cours du soir sont officiellement ouvertes. Adultes et travailleurs, c’est votre moment !', resumeEn: 'Enrolment for the new evening classes year is officially open. Adults and workers, this is your moment!', date: 'Juil. 2026', dateSort: '2026-07-01', link: 'src/pages/actualites.html' },
-  { id: 'gce_2024', cat: 'resultats', emoji: '🏅', mediaType: 'photo', mediaFilename: '7.jpg', categoryFr: 'Résultats', categoryEn: 'Results', titleFr: 'GCE 2024 : Excellents résultats pour la section anglophone', titleEn: 'GCE 2024: Excellent results for the English section', resumeFr: 'La section anglophone enregistre d’excellents résultats aux GCE O/L et A/L de 2024, avec plusieurs mentions très bien.', resumeEn: 'The English section records excellent results in the 2024 GCE O/L and A/L, with several distinctions.', date: 'Juillet 2024', dateSort: '2024-07-01', link: 'src/pages/actualites.html' },
-  { id: 'tournoi_2024', cat: 'vie', emoji: '⚽', mediaType: 'photo', mediaFilename: '8.webp', categoryFr: 'Vie du collège', categoryEn: 'College Life', titleFr: 'Tournoi sportif inter-scolaire : le CABMY brille', titleEn: 'Inter-school Sports Tournament: CABMY shines', resumeFr: 'Nos élèves ont participé avec brio au tournoi sportif annuel de la région, remportant plusieurs trophées en football et en athlétisme.', resumeEn: 'Our students brilliantly participated in the annual regional sports tournament, winning several trophies in football and athletics.', date: 'Mars 2024', dateSort: '2024-03-01', link: 'src/pages/actualites.html' },
-  { id: 'diplomes_2024', cat: 'vie', emoji: '🎓', mediaType: 'photo', mediaFilename: '6.jpeg', categoryFr: 'Vie du collège', categoryEn: 'College Life', titleFr: 'Cérémonie de remise des diplômes – Promotion 2024', titleEn: 'Graduation Ceremony – Class of 2024', resumeFr: 'Une cérémonie émouvante pour récompenser les élèves de la promotion 2024 qui ont brillé aux examens nationaux.', resumeEn: 'A moving ceremony to reward the class of 2024 students who excelled in national examinations.', date: 'Août 2024', dateSort: '2024-08-01', link: 'src/pages/actualites.html' }
-];
-window.renderHomepageNews = function(count) {
-  const container = document.querySelector('.news-section .news-grid');
-  if (!container || !Array.isArray(window.CABMY_NEWS)) return;
-  const items = [...window.CABMY_NEWS].sort((a, b) => (b.dateSort || '').localeCompare(a.dateSort || '')).slice(0, count || 3);
-  container.classList.add('home-news-slider');
-  container.innerHTML = `
-    <div class="news-carousel-controls">
-      <button type="button" class="news-carousel-btn" data-news-dir="-1" aria-label="Actualités précédentes">‹</button>
-      <button type="button" class="news-carousel-btn" data-news-dir="1" aria-label="Actualités suivantes">›</button>
-    </div>
-    <div class="news-track">${items.map(article => `
-      <div class="news-card card-hover visible">
-        <div class="news-card-thumb"><img src="images/${article.mediaFilename}" alt="${article.titleFr}" /></div>
-        <div class="news-card-body">
-          <span class="news-badge" style="${article.cat === 'resultats' ? 'background:var(--gold-light);color:#7a5c00' : article.cat === 'spiritualite' ? 'background:var(--blue-light);color:var(--blue)' : 'background:rgba(255,255,255,.1);color:rgba(255,255,255,.8)'}">${article.categoryFr}</span>
-          <h4 class="news-card-title">${article.titleFr}</h4>
-          <p class="news-card-desc">${article.resumeFr}</p>
-          <div class="news-card-footer"><span>${article.date}</span><a href="src/pages/actualites.html" class="news-card-read">Lire →</a></div>
-        </div>
-      </div>
-    `).join('')}</div>
-  `;
-
-  const track = container.querySelector('.news-track');
-  const buttons = container.querySelectorAll('.news-carousel-btn');
-  if (!track || !buttons.length) return;
-
-  const cards = Array.from(track.children);
-  if (!cards.length) return;
-
-  let currentIndex = 0;
-  const getCardWidth = () => cards[0].getBoundingClientRect().width + 22;
-
-  const updatePosition = () => {
-    track.style.transform = `translateX(-${currentIndex * getCardWidth()}px)`;
-  };
-
-  const moveNews = direction => {
-    currentIndex = (currentIndex + direction + cards.length) % cards.length;
-    updatePosition();
-  };
-
-  buttons.forEach(button => button.addEventListener('click', () => moveNews(Number(button.dataset.newsDir || 1))));
-  let timer = setInterval(() => moveNews(1), 4500);
-  container.addEventListener('mouseenter', () => clearInterval(timer));
-  container.addEventListener('mouseleave', () => { timer = setInterval(() => moveNews(1), 4500); });
-  window.addEventListener('resize', updatePosition);
-  updatePosition();
-};
-</script>
 <script src="src/js/news-data.js"></script>
 <script>
 /* ── LANG ── */
