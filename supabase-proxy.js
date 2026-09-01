@@ -114,6 +114,7 @@ function normalizeArticleRow(article) {
     contenu: article.contenu ?? '',
     emoji: article.emoji ?? '📰',
     date: article.date ?? '',
+    dateSort: article.dateSort ?? article.datesort ?? null,
     mediaType: article.mediaType ?? article.mediatype ?? inferredMediaType ?? null,
     mediaUrl: mediaUrl || '',
     mediaUrls,

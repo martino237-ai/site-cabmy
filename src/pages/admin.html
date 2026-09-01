@@ -631,6 +631,7 @@ function buildArticlePayloadVariants(article) {
     contenu: article.contenu || ''
   };
   if (article.date) base.date = article.date;
+  if (article.dateSort) base.dateSort = article.dateSort;
 
   return [
     { ...base, emoji: article.emoji || '📰' },
@@ -1294,6 +1295,7 @@ async function saveArticle(e) {
   const articleDate = Number.isNaN(parsedDate.getTime())
     ? new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })
     : parsedDate.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  const articleDateSort = Number.isNaN(parsedDate.getTime()) ? new Date().toISOString() : parsedDate.toISOString();
 
   const article = {
     titre:     document.getElementById('art-titre').value,
@@ -1308,7 +1310,8 @@ async function saveArticle(e) {
     mediaUrls: mediaUrls,
     mediaItems: mediaItems,
     mediaAlt:  document.getElementById('art-media-alt').value.trim(),
-    date:      articleDate
+    date:      articleDate,
+    dateSort:  articleDateSort
   };
   if (article.mediaType === 'none') {
     article.mediaUrl = '';

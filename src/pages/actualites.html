@@ -302,6 +302,7 @@
     const contentFr = article.contenu || article.contenuFr || resumeFr;
     const contentEn = article.contenuEn || article.contenu || resumeEn;
 
+    const sortCandidate = article.dateSort || article.dateSortISO || article.created_at || article.date || '';
     return {
       ...article,
       id: article.id || `${titleFr}-${cat}-${article.date || ''}`,
@@ -313,6 +314,7 @@
       contenuFr: contentFr,
       contenuEn: contentEn,
       date: article.date || article.dateFr || (article.created_at ? new Date(article.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }) : ''),
+      dateSort: article.dateSort || article.dateSortISO || sortCandidate,
       categoryFr: article.categoryFr || categoryLabels[cat] || cat,
       categoryEn: article.categoryEn || categoryLabels[cat] || cat
     };
@@ -358,9 +360,12 @@
       seen.add(key);
       return true;
     }).sort((a, b) => {
-      const aDate = parseFrenchDate(a.dateSort || a.date || a.created_at || '');
-      const bDate = parseFrenchDate(b.dateSort || b.date || b.created_at || '');
-      return bDate - aDate;
+      const aDateValue = a.dateSort || a.created_at || a.date || '';
+      const bDateValue = b.dateSort || b.created_at || b.date || '';
+      const aDate = parseFrenchDate(aDateValue);
+      const bDate = parseFrenchDate(bDateValue);
+      if (bDate !== aDate) return bDate - aDate;
+      return String(b.created_at || '').localeCompare(String(a.created_at || ''));
     });
   }
 
