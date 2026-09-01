@@ -418,8 +418,9 @@
         <button type="button" class="news-media-btn next" aria-label="Média suivant">›</button>
         <div class="news-media-dots">${mediaItems.map((_, index) => `<button type="button" class="news-media-dot ${index === 0 ? 'active' : ''}" data-index="${index}" aria-label="Voir le média ${index + 1}"></button>`).join('')}</div>
       ` : '';
+      const countBadge = mediaItems.length > 1 ? `<div class="media-count-badge">${mediaItems.length} photos</div>` : '';
 
-      return `<div class="news-media-carousel"><div class="news-media-track">${slides}</div>${controls}</div>`;
+      return `<div class="news-media-carousel"><div class="news-media-track">${slides}</div>${controls}${countBadge}</div>`;
     }
     return `<div class="news-img" style="background:linear-gradient(135deg,var(--blue-light),#d0ddf5)">${article.emoji || 'ðŸ“°'}</div>`;
   }
