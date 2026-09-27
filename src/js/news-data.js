@@ -1,37 +1,5 @@
 window.CABMY_NEWS = [
   {
-    id: 'graduation_2026',
-    cat: 'vie',
-    emoji: '🎓',
-    mediaType: 'photo',
-    featured: true,
-    mediaUrls: [
-      '/images/graduation/WhatsApp Image 2026-09-25 at 13.4.06.jpeg',
-      '/images/graduation/WhatsApp Image 2026-09-25 at 13.45.0.jpeg',
-      '/images/graduation/WhatsApp Image 2026-09-25 at 13.45.02.jpeg',
-      '/images/graduation/WhatsApp Image 2026-09-25 at 13.45.03.jpeg',
-      '/images/graduation/WhatsApp Image 2026-09-25 at 13.45.04.jpeg',
-      '/images/graduation/WhatsApp Image 2026-09-25 at 13.45.05.jpeg',
-      '/images/graduation/WhatsApp Image 2026-09-25 at 13.45.06.jpeg',
-      '/images/graduation/WhatsApp Image 2026-09-25 at 13.45.07.jpeg',
-      '/images/graduation/WhatsApp Image 2026-09-25 at 13.45.08.jpeg',
-      '/images/graduation/WhatsApp Image 2026-09-25 at 13.45.6.jpeg',
-      '/images/graduation/WhatsApp Image 2026-09-25 at 13.45.8.jpeg',
-      '/images/graduation/WhatsApp Image 2026-09-25 at 13.5.07.jpeg'
-    ],
-    categoryFr: 'Vie du collège',
-    categoryEn: 'College Life',
-    titleFr: 'Graduation 2026 : une cérémonie placée sous le signe de la réussite',
-    titleEn: 'Graduation 2026: a ceremony celebrating success',
-    resumeFr: 'Revivez en images les temps forts de la cérémonie de graduation 2026 du CABMY.',
-    resumeEn: 'Relive the highlights of CABMY\'s 2026 graduation ceremony in pictures.',
-    contenuFr: 'La communauté du CABMY célèbre ses élèves à l’occasion de la graduation 2026. Découvrez les temps forts de cette cérémonie en images.',
-    contenuEn: 'The CABMY community celebrates its students during the 2026 graduation. Discover the highlights of this ceremony in pictures.',
-    date: '25 septembre 2026',
-    dateSort: '2026-09-25',
-    link: 'src/pages/actualites.html'
-  },
-  {
     id: 'be_pc_2024',
     cat: 'resultats',
     emoji: '🏅',
@@ -142,10 +110,7 @@ window.CABMY_NEWS = [
 ];
 
 window.getCabmyNews = function(count) {
-  const sorted = [...window.CABMY_NEWS].sort((a, b) => {
-    if (Boolean(b.featured) !== Boolean(a.featured)) return b.featured ? 1 : -1;
-    return (b.dateSort || '').localeCompare(a.dateSort || '');
-  });
+  const sorted = [...window.CABMY_NEWS].sort((a, b) => (b.dateSort || '').localeCompare(a.dateSort || ''));
   return typeof count === 'number' ? sorted.slice(0, count) : sorted;
 };
 
@@ -208,16 +173,11 @@ window.renderNewsCardHtml = function(article, options = {}) {
   const visibleClass = options.home ? 'visible' : 'fade-up';
   const delayClass = options.home ? '' : 'fade-up-d1';
 
-  const mediaItems = window.getMediaItems(article);
-  const homeMediaHtml = mediaItems.length > 1
-    ? `<div class="news-card-gallery">${mediaItems.map((url) => `<img src="${escapeNewsHtml(url)}" alt="${escapeNewsHtml(article.titleFr || article.titleEn || 'Actualité')}" loading="lazy" />`).join('')}<span class="news-card-gallery-count">${mediaItems.length} photos</span></div>`
-    : mediaHtml;
-
   return `
-    <div class="news-card card-hover ${article.featured ? 'news-card-featured' : ''} ${visibleClass} ${delayClass}">
-      <div class="news-card-thumb">${options.home ? homeMediaHtml : mediaHtml}</div>
+    <div class="news-card card-hover ${visibleClass} ${delayClass}">
+      <div class="news-card-thumb">${mediaHtml}</div>
       <div class="news-card-body">
-        <span class="news-badge" style="${badgeColor}" data-fr="${escapeNewsHtml(article.featured ? 'À la une · ' + (article.categoryFr || label) : article.categoryFr || label)}" data-en="${escapeNewsHtml(article.featured ? 'Featured · ' + (article.categoryEn || label) : article.categoryEn || label)}">${escapeNewsHtml(article.featured ? 'À la une · ' + (article.categoryFr || label) : article.categoryFr || label)}</span>
+        <span class="news-badge" style="${badgeColor}" data-fr="${escapeNewsHtml(article.categoryFr || label)}" data-en="${escapeNewsHtml(article.categoryEn || label)}">${escapeNewsHtml(article.categoryFr || label)}</span>
         <h4 class="news-card-title" data-fr="${escapeNewsHtml(article.titleFr)}" data-en="${escapeNewsHtml(article.titleEn)}">${escapeNewsHtml(article.titleFr)}</h4>
         <p class="news-card-desc" data-fr="${escapeNewsHtml(article.resumeFr)}" data-en="${escapeNewsHtml(article.resumeEn)}">${escapeNewsHtml(article.resumeFr)}</p>
         <div class="news-card-footer"><span>${escapeNewsHtml(article.date)}</span><a href="${link}" class="news-card-read" ${clickHandler} data-fr="${escapeNewsHtml(readTextFr)}" data-en="${escapeNewsHtml(readTextEn)}">${escapeNewsHtml(readTextFr)}</a></div>
